@@ -15,7 +15,7 @@ namespace Data
 
         public SqlDataReader Reader { get { return reader; } }
 
-        public AccesoDatos()
+        public DatabaseAccess()
         {
             connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
             command = new SqlCommand();
