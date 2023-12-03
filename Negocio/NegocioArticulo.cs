@@ -12,11 +12,9 @@ namespace Negocio
     {
         DatabaseAccess datos = null;
         List<Articulo> Articulos = null;
-        List<string> imagenes = null;
-        Articulo articulo;
+
         public List<Categoria> categorias;
         public List<Marca> marcas;
-        public List<int> idMarcas;
 
         
         public List<Articulo> ListarArticulos()
