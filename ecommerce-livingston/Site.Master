@@ -13,10 +13,10 @@
     </asp:PlaceHolder>
 
     <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <%--<link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />--%>
 
 </head>
-<body class="p-0">
+<body>
     <form runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>
@@ -40,15 +40,15 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-gradient fixed-top p-3" style="background-color:#055114;">
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">Plantando Ando</a>
+            <a class="navbar-brand" href="/">Plantando Ando</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ms-auto d-flex">
-                <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="#Nosotros">Nosotros</a></li>
+                <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Nosotros">Nosotros</a></li>
                 <li class="nav-item me-3 dropdown">
-                   <a class="nav-link active dropdown-toggle" aria-current="page" href="#Productos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                   <a class="nav-link active dropdown-toggle" aria-current="page" href="Productos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Productos
                    </a>
                     <ul class="dropdown-menu"> <%--FALTA PONER OPCIONES--%>
@@ -58,17 +58,26 @@
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                   </ul>
                 </li>
-                <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="#Contacto">Contacto</a></li>
+                <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Contacto">Contacto</a></li>
+                <li class="nav-item ms-2 me-2">
+                    <a type="button" class="btn  fs-5 position-relative" href="ListaCarrito.aspx">
+                        <i class="fs-4 bi bi-cart4"></i> 
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <asp:Label ID="lblTotalArticulos" runat="server" />
+                            <span class="visually-hidden">Items en carrito</span>
+                        </span>
+                    </a>
+                </li>
               </ul>
             </div>
           </div>
         </nav>
-        <div class="container body-content">
+        <div class="bg-dark-subtle" style="margin-top:40px">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-            <hr />
+            <hr/>
             <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - My ASP.NET Application</p>
+                <p>&copy; <%: DateTime.Now.Year %> - Paula Livingston</p>
             </footer>
         </div>
 
