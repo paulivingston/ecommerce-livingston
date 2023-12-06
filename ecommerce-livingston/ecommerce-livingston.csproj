@@ -108,6 +108,7 @@
     <Content Include="About.aspx">
       <BrowseToURL>~/Nosotros.aspx</BrowseToURL>
     </Content>
+    <Content Include="Carrito.aspx" />
     <Content Include="connectionStrings.config" />
     <Content Include="Contact.aspx" />
     <Content Include="Contacto.aspx" />
@@ -129,7 +130,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
-    <Content Include="favicon.ico" />
+    <Content Include="glasses.ico" />
     <Content Include="Global.asax" />
     <Content Include="Nosotros.aspx" />
     <Content Include="Nosotros.html" />
@@ -297,6 +298,13 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Carrito.aspx.cs">
+      <DependentUpon>Carrito.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Carrito.aspx.designer.cs">
+      <DependentUpon>Carrito.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

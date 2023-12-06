@@ -6,14 +6,14 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plantando Ando</title>
+    <title>Algo de Lentes</title>
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
     <webopt:bundlereference runat="server" path="~/Content/css" />
-    <%--<link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />--%>
+    <link href="glasses.ico" rel="icon" type="image/x-icon" />
 
 </head>
 <body>
@@ -40,7 +40,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-gradient fixed-top p-3" style="background-color:#055114;">
           <div class="container-fluid">
-            <a class="navbar-brand" href="/">Plantando Ando</a>
+            <a class="navbar-brand" href="Default.aspx">Plantando Ando</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -60,12 +60,8 @@
                 </li>
                 <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Contacto">Contacto</a></li>
                 <li class="nav-item ms-2 me-2">
-                    <a type="button" class="btn  fs-5 position-relative" href="ListaCarrito.aspx">
+                    <a type="button" class="btn fs-5 position-relative" href="Carrito.aspx">
                         <i class="fs-4 bi bi-cart4"></i> 
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            <asp:Label ID="lblTotalArticulos" runat="server" />
-                            <span class="visually-hidden">Items en carrito</span>
-                        </span>
                     </a>
                 </li>
               </ul>
