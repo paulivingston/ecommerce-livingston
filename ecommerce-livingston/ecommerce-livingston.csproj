@@ -128,9 +128,11 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\img\cart-shopping-solid.png" />
+    <Content Include="Content\img\cart-shopping-solid.svg" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
-    <Content Include="glasses.ico" />
+    <Content Include="eagle.ico" />
     <Content Include="Global.asax" />
     <Content Include="Nosotros.aspx" />
     <Content Include="Nosotros.html" />

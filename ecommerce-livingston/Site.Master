@@ -6,14 +6,14 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Algo de Lentes</title>
-
+    <title>Ojo de Águila</title>
+    <script src="https://kit.fontawesome.com/d4f4cb28d3.js" crossorigin="anonymous"></script> 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
     <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link href="glasses.ico" rel="icon" type="image/x-icon" />
+    <link href="eagle.ico" rel="icon" type="image/x-icon" />
 
 </head>
 <body>
@@ -38,7 +38,7 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-gradient fixed-top p-3" style="background-color:#055114;">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient fixed-top p-3"">
           <div class="container-fluid">
             <a class="navbar-brand" href="Default.aspx">Plantando Ando</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@
                 <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Contacto">Contacto</a></li>
                 <li class="nav-item ms-2 me-2">
                     <a type="button" class="btn fs-5 position-relative" href="Carrito.aspx">
-                        <i class="fs-4 bi bi-cart4"></i> 
+                        <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
                     </a>
                 </li>
               </ul>
