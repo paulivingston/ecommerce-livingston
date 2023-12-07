@@ -104,17 +104,17 @@ CREATE PROCEDURE sp_ListarArticulos
 AS
 BEGIN
 	SELECT 
-		A.Id, 
-		A.Nombre, 
-		A.Descripcion, 
-		A.IdMarca, 
+		A.Id AS 'Id', 
+		A.Nombre AS 'Nombre', 
+		A.Descripcion AS 'Descripcion', 
+		A.IdMarca AS 'IdMarca', 
 		M.Descripcion AS 'Marca', 
-		A.IdCategoria, 
+		A.IdCategoria AS 'IdCategoria', 
 		C.Descripcion AS 'Categoria', 
-		A.Precio, 
-		A.Estado, 
-		A.Stock, 
-		A.ImagenUrl 
+		A.Precio AS 'Precio', 
+		A.Estado AS 'Estado', 
+		A.Stock AS 'Stock', 
+		A.ImagenUrl AS 'ImagenUrl' 
 	FROM ARTICULOS AS A 
 	INNER JOIN MARCAS AS M 
 	ON A.IdMarca = M.Id 
@@ -300,5 +300,141 @@ BEGIN
 	WHERE Id = @id
 END
 GO
+
+CREATE PROCEDURE sp_ListarPedidos
+AS BEGIN
+	SELECT  
+		P.IdPedido as 'IDPedido',
+		P.IdUsuarios as 'IDUsuario', 
+		U.Nombre+' '+U.Apellido as 'Usuario',
+		P.Cantidad as 'CantidadArticulos', 
+		P.Fecha as 'Fecha',
+		P.Estado as 'Estado', 
+		P.DireccionEntrega as 'Direccion', 
+		P.Descuento as 'Descuento', 
+		P.PrecioTotal as 'PrecioTotal'
+	FROM PEDIDOS P 
+	INNER JOIN USUARIOS U 
+	ON P.IdUsuarios = U.Id
+END
+
+
+CREATE PROCEDURE sp_ListarPedidosPorID
+@id int
+AS BEGIN
+	SELECT 
+		IdPedido, 
+		IdUsuarios,
+		U.Nombre+' '+U.Apellido as 'Usuario', 
+		Cantidad, 
+		Fecha, 
+		Estado, 
+		DireccionEntrega, 
+		Descuento, 
+		PrecioTotal 
+	FROM PEDIDOS 
+	INNER JOIN USUARIOS U 
+	ON IdUsuarios = U.Id 
+	WHERE IdPedido = @id
+END
+
+
+CREATE PROCEDURE sp_ListarPedidosPorFiltro
+@filtro varchar(20)
+AS BEGIN
+	SELECT 
+		IdPedido, 
+		IdUsuarios,
+		U.Nombre+' '+U.Apellido as 'Usuario', 
+		Cantidad, 
+		Fecha, 
+		Estado, 
+		DireccionEntrega, 
+		Descuento, 
+		PrecioTotal 
+	FROM PEDIDOS 
+	INNER JOIN USUARIOS U 
+	ON IdUsuarios = U.Id 
+	WHERE Estado = @filtro
+END
+
+CREATE PROCEDURE sp_CrearPedido 
+@IdUsuario int,
+@Cantidad int,
+@Estado varchar(20),
+@DireccionEntrega varchar(20),
+@Descuento decimal,
+@PrecioTotal decimal
+AS
+BEGIN
+	INSERT INTO PEDIDOS (
+		IdUsuarios, 
+		Cantidad, 
+		Fecha, 
+		Estado, 
+		DireccionEntrega, 
+		Descuento, 
+		PrecioTotal
+		)
+	OUTPUT inserted.IdPedido
+	VALUES (
+		@IdUsuario, 
+		@Cantidad, 
+		GETDATE(), 
+		@Estado, 
+		@DireccionEntrega, 
+		@Descuento, 
+		@PrecioTotal
+		)
+END
+GO
+
+
+CREATE PROCEDURE sp_ModificarPedido 
+@IdPedido int,
+@IdUsuario int,
+@Cantidad int,
+@Fecha date,
+@Estado varchar(20),
+@DireccionEntrega varchar(20),
+@Descuento decimal,
+@PrecioTotal decimal
+AS
+BEGIN
+	UPDATE PEDIDOS 
+	SET 
+		IdUsuarios = @IdUsuario, 
+		Cantidad = @Cantidad, 
+		Fecha = @Fecha, 
+		Estado = @Estado, 
+		DireccionEntrega = @DireccionEntrega, 
+		Descuento = @Descuento, 
+		PrecioTotal = @PrecioTotal 
+	WHERE IdPedido = @IdPedido
+END
+GO
+
+CREATE PROCEDURE sp_EliminarPedido
+@id int
+AS
+BEGIN
+	DELETE FROM PEDIDOS 
+	WHERE IdPedido = @id
+END
+GO
+
+CREATE PROCEDURE sp_ModificarEstado
+@id int,
+@Estado varchar(20)
+AS
+BEGIN
+	UPDATE PEDIDOS 
+	SET Estado = @estado 
+	WHERE IdPedido = @id
+END
+GO
+
+
+
 
 ------------FIN STORE PROCEDURES------------
