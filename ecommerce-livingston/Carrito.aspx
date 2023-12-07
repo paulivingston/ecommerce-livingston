@@ -4,7 +4,7 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <main aria-labelledby="title">
-        <%--cuando está vacio--%>
+        <%-- cuando NO tiene items --%>
         <div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center" id="divCarritoVacio" runat="server">
             <div class="row">
                 <div class="col-md-12">
@@ -17,6 +17,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- cuando SI tiene items -->
+        <div class="container" runat="server" id="divCarrito">
+            <div class="row">
+                <div class="col">
+                    <asp:UpdatePanel runat="server">
+                        <ContentTemplate>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+            </div>
+        </div>
+
+        <!-- resumen compra -->
+        <div class="container" runat="server" id="divResumen">
+            <div class="row">
+                <div class="col">
+                    <asp:UpdatePanel runat="server">
+                        <ContentTemplate>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+            </div>
+        </div>
+
     </main>
+
+
+
 </asp:Content>
 
