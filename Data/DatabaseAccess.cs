@@ -17,7 +17,7 @@ namespace Data
 
         public DatabaseAccess()
         {
-            connection = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            connection = new SqlConnection("server=.\\SQLEXPRESS;database=ECOMMERCELIVINGSTON;Integrated Security=true");
             command = new SqlCommand();
         }
 
