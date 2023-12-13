@@ -15,6 +15,7 @@ namespace Negocio
         public List<ItemCarrito> listaCarrito { get; set; }
         Pedido pedido;
 
+        public List<ItemCarrito> ArticulosPedido { get; set; }
 
         public List<Pedido> ListarPedidos()
         {
@@ -53,7 +54,7 @@ namespace Negocio
             }
         }
 
-        public List<Pedido> ListarPedidos(int id)
+        public Pedido ListarPedidos(int id)
         {
             datos = new DatabaseAccess();
 
@@ -64,7 +65,6 @@ namespace Negocio
 
                 datos.ReadData();
 
-                pedidos = new List<Pedido>();
                 while (datos.Reader.Read())
                 {
                     pedido = new Pedido();
@@ -77,10 +77,8 @@ namespace Negocio
                     pedido.DireccionEntrega = datos.Reader["DireccionEntrega"].ToString();
                     pedido.Descuento = (decimal)datos.Reader["Descuento"];
                     pedido.precioTotal = (decimal)datos.Reader["PrecioTotal"];
-
-                    pedidos.Add(pedido);
                 }
-                return pedidos;
+                return pedido;
             }
             catch (Exception ex)
             {
@@ -130,7 +128,7 @@ namespace Negocio
             }
         }
 
-        public void CrearPedido(Pedido pedido, string tipo)
+        public int CrearPedido(Pedido pedido, string tipo)
         {
             datos = new DatabaseAccess();
 
@@ -147,10 +145,12 @@ namespace Negocio
                 datos.SetParameter("@PrecioTotal", pedido.precioTotal);
 
                 datos.ExecuteNonQuery();
+
+                return 1;
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                return 0;
             }
             finally
             {
@@ -165,7 +165,6 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_ModificarPedido");
-
                 datos.SetParameter("@IdPedido", pedido.IdPedido);
                 datos.SetParameter("@IdUsuario", pedido.IdUsuario);
                 datos.SetParameter("@Cantidad", pedido.Cantidad);
@@ -174,8 +173,6 @@ namespace Negocio
                 datos.SetParameter("@DireccionEntrega", pedido.DireccionEntrega);
                 datos.SetParameter("@Descuento", pedido.Descuento);
                 datos.SetParameter("@PrecioTotal", pedido.precioTotal);
-
-                datos.ReadData();
 
                 datos.ExecuteNonQuery();
             }
@@ -234,6 +231,211 @@ namespace Negocio
                 datos.CloseConnection();
             }
         }
+
+        public Pedido CargarPedido(List<ItemCarrito> lista, Usuario usuario, decimal total, string dirEntrega = null, decimal descuento = 0.00M)
+        {
+            try
+            {
+                pedido = new Pedido();
+
+                pedido.IdUsuario = usuario.Id;
+                pedido.Usuario = usuario.Nombre + usuario.Apellido;
+                pedido.fecha = DateTime.Now;
+                pedido.Estado = "INICIADO";
+                pedido.DireccionEntrega = dirEntrega ?? usuario.Direccion;
+                pedido.totalItems = new List<ItemCarrito>(lista);
+                pedido.Cantidad = lista.Sum(itm => itm.Cantidad); // articulos distintos, no unidades totales
+
+                //Aca podriamos calcular nuevamente el total a partir de info en lista y llamar un metodo para calcular el total final si usamos descuento
+                pedido.Descuento = descuento > 0.00M ? descuento : 0.00M;
+                pedido.precioTotal = total;
+
+                return pedido;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void CargarIdPedido(List<ItemCarrito> items, int idPedido)
+        {
+            try
+            {
+                items.ForEach(itm => itm.IdPedido = idPedido);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<ItemCarrito> ListarArticulosPedido()
+        {
+            datos = new DatabaseAccess();
+            ArticulosPedido = new List<ItemCarrito>();
+            ItemCarrito item;
+
+            try
+            {
+                datos.SetProcedure("sp_ListarArticulosPedido");
+                datos.ReadData();
+                
+                while (datos.Reader.Read())
+                {
+                    item = new ItemCarrito();
+                    item.Id = (int)datos.Reader["IdArticulo"];
+                    item.IdPedido = (int)datos.Reader["IdPedido"];
+                    item.Cantidad = (int)datos.Reader["Cantidad"];
+                    ArticulosPedido.Add(item);
+                }
+                return ArticulosPedido;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        
+        public List<ItemCarrito> ListarArticulosPedido(int id)
+        {
+            datos = new DatabaseAccess();
+            ArticulosPedido = new List<ItemCarrito>();
+            ItemCarrito item;
+
+            try
+            {
+                datos.SetProcedure("sp_ListarArticulosPedidoPorID");
+                datos.SetParameter("@id", id);
+                datos.ReadData();
+
+                while (datos.Reader.Read())
+                {
+                    item = new ItemCarrito();
+                    item.Id = (int)datos.Reader["IdArticulo"];
+                    item.IdPedido = (int)datos.Reader["IdPedido"];
+                    item.Cantidad = (int)datos.Reader["Cantidad"];
+                    ArticulosPedido.Add(item);
+                }
+                return ArticulosPedido;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public int AgregarArticuloPedido(ItemCarrito item)
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_AgregarArticuloPedido");
+                datos.SetParameter("@IdPedido", item.IdPedido);
+                datos.SetParameter("@IdArticulo", item.Id);
+                datos.SetParameter("@Cantidad", item.Cantidad);
+
+                datos.ExecuteNonQuery();
+
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public int AgregarArticuloPedido(List<ItemCarrito> items)
+        {
+            datos = new DatabaseAccess();
+
+            try
+            {
+                datos.SetProcedure("sp_AgregarArticuloPedido");
+                int cont = 0;
+
+                foreach (ItemCarrito item in items)
+                {
+                    datos.SetParameter("@IdPedido", item.IdPedido);
+                    datos.SetParameter("@IdArticulo", item.Id);
+                    datos.SetParameter("@Cantidad", item.Cantidad);
+                    datos.ExecuteNonQuery();
+                    cont += 1;
+                    datos.DisposeParameters();
+                }
+                return cont;
+            }
+            catch 
+            {
+                return 0;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public int EditarArticuloPedido(ItemCarrito item)
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_EditarArticuloPedido");
+                datos.SetParameter("@IdPedido", item.IdPedido);
+                datos.SetParameter("@IdArticulo", item.Id);
+                datos.SetParameter("@Cantidad", item.Cantidad);
+
+                datos.ExecuteNonQuery();
+
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public int EliminarArticuloPedido(int idArt, int idPed)
+        {
+            datos = new DatabaseAccess();
+
+            try
+            {
+                datos.SetProcedure("sp_EliminarArticuloPedido");
+                datos.SetParameter("@IdPedido", idPed);
+                datos.SetParameter("@IdArticulo", idArt);
+
+                datos.ExecuteNonQuery();
+
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
     }
 }
 

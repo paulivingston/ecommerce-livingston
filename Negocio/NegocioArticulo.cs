@@ -135,6 +135,32 @@ namespace Negocio
                 datos.CloseConnection();
             }
         }
+    
+        public List<string> ListarImgArt(int id)
+        {
+            datos = new DatabaseAccess();
+            List<string> img = new List<string>();
 
+            try
+            {
+                datos.SetProcedure("sp_ListarImgArt");
+                datos.SetParameter("@id", id);
+                datos.ReadData();
+
+                while (datos.Reader.Read())
+                {
+                    img.Add(datos.Reader["ImagenUrl"].ToString());
+                }
+                return img;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
     }
 }

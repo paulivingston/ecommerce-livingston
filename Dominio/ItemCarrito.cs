@@ -13,6 +13,7 @@ namespace Dominio
         public decimal Precio { get; set; }
         public int Cantidad { get; set; }
         public string ImagenUrl { get; set; }
+        public string TotalParcial { get { return string.Format("{0:C2}", Precio * Cantidad); } }
         public int IdPedido { get; set; } 
         public string Descripcion { get; set; }
         public string Marca { get; set; }
