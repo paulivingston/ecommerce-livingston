@@ -13,7 +13,6 @@ namespace ecommerce_livingston
     {
         NegocioCategoria NegocioCategoria;
         NegocioMarca NegocioMarca;
-        NegocioArticulo negocioArticulos = null;
         Articulo articulo;
         ItemCarrito item;
         public int CountCarrito { get; set; } = 0;
@@ -69,21 +68,20 @@ namespace ecommerce_livingston
             }
         }
 
-
         private void cargarFiltros()
         {
             NegocioMarca = new NegocioMarca();
             NegocioCategoria = new NegocioCategoria();
 
-            ddlFiltroMarca.DataSource = NegocioMarca.ListarMarcas();
-            ddlFiltroMarca.DataBind();
-            ddlFiltroMarca.DataValueField = "Id";
-            ddlFiltroMarca.DataTextField = "Descripcion";
-
             ddlFiltroCategoria.DataSource = NegocioCategoria.ListarCategorias();
-            ddlFiltroCategoria.DataBind();
             ddlFiltroCategoria.DataValueField = "Id";
             ddlFiltroCategoria.DataTextField = "Descripcion";
+            ddlFiltroCategoria.DataBind();
+
+            ddlFiltroMarca.DataSource = NegocioMarca.ListarMarcas();
+            ddlFiltroMarca.DataValueField = "Id";
+            ddlFiltroMarca.DataTextField = "Descripcion";
+            ddlFiltroMarca.DataBind();
         }
 
 
@@ -161,19 +159,12 @@ namespace ecommerce_livingston
             Response.Redirect("Productos.aspx", false);
         }
 
-        protected void btnDetalles_Click(object sender, EventArgs e)
-        {
-            int id = int.Parse(((Button)sender).CommandArgument);
-
-            Response.Redirect("Detalle.aspx?idProd=" + id, false);
-        }
-
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             try
             {
                 int itemId = int.Parse((sender as Button).CommandArgument);
-                negocioArticulos = new NegocioArticulo();
+                NegocioArticulo negocioArticulos = new NegocioArticulo();
                 item = new ItemCarrito();
 
                 List<Articulo> list = Session["listaPrincipal"] as List<Articulo>;
@@ -197,6 +188,13 @@ namespace ecommerce_livingston
                 Session.Add("error", ex);
                 Response.Redirect("Error.aspx");
             }
+        }
+
+        protected void btnDetalles_Click(object sender, EventArgs e)
+        {
+            int id = int.Parse(((Button)sender).CommandArgument);
+
+            Response.Redirect("Detalle.aspx?idProd=" + id, false);
         }
 
     }
