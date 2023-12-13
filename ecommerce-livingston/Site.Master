@@ -14,6 +14,8 @@
 
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="eagle.ico" rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" href="/Content/styles.css">
+    <link rel="stylesheet" href="/Content/slider.css"/>
 
 </head>
 <body>
@@ -38,44 +40,159 @@
             </Scripts>
         </asp:ScriptManager>
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient fixed-top p-3"">
-          <div class="container-fluid">
-            <a class="navbar-brand" href="Default.aspx">Plantando Ando</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav ms-auto d-flex">
-                <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Nosotros">Nosotros</a></li>
-                <li class="nav-item me-3 dropdown">
-                   <a class="nav-link active dropdown-toggle" aria-current="page" href="Productos" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Productos
-                   </a>
-                    <ul class="dropdown-menu"> <%--FALTA PONER OPCIONES--%>
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                  </ul>
-                </li>
-                <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Contacto">Contacto</a></li>
-                <li class="nav-item ms-2 me-2">
-                    <a type="button" class="btn fs-5 position-relative" href="Carrito.aspx">
-                        <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
-                    </a>
-                </li>
-              </ul>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-gradient fixed-top p-3 header">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="Default.aspx">
+                    <asp:Image ImageUrl="Content/img/logo.jpg" Height="35px" Width="35px" CssClass="img-fluid" AlternateText="logo" runat="server" ImageAlign="Middle" />
+                    OJO DE ÁGUILA</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto d-flex">
+                        <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Nosotros">Nosotros</a></li>
+                        <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Productos">Productos</a></li>
+                        <li class="nav-item me-2 ">
+                            <a type="button" class="btn fs-5 position-relative" id="btnIrAdmin" href="Admin.aspx" runat="server" visible="false">👨‍💻</a> <!-- ir a admin -->
+                        </li>
+                        <li class="nav-item me-2 ">
+                            <button type="button" class="btn fs-5" data-bs-toggle="modal" data-bs-target="#modalBusqueda"><i class="bi bi-search fw-bold"> Buscar</i></button>
+                        </li>
+                        <asp:UpdatePanel runat="server">
+                            <ContentTemplate>
+                                <li class="nav-item ms-2 me-2">
+                                    <a type="button" class="btn fs-5 position-relative" href="Carrito.aspx">
+                                        <i class="fa-solid fa-cart-shopping" style="color: #ffffff;"></i>
+                                        <%if (Flag)
+                                            {%>
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            <asp:Label ID="lblTotalArticulos" runat="server" />
+                                            <span class="visually-hidden">Items en carrito</span>
+                                        </span>
+                                        <%}%>
+                                    </a>
+                                </li>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                        <li class="nav-item me-2 ">
+                            <button id="btnLoggin" type="button" class="btn fs-5" data-bs-toggle="modal" data-bs-target="#modalLogin" runat="server">
+                                <i class="bi bi-box-arrow-in-right fw-bold">Login</i>
+                            </button>
+                            <asp:Button Text="Cerrar Sesion" CssClass="btn fs-5 bi bi-box-arrow-in-right" ID="btnSignOut" OnClick="btnSignOut_Click" runat="server" />
+                        </li>
+                    </ul>
+                </div>
             </div>
-          </div>
         </nav>
-        <div class="bg-dark-subtle" style="margin-top:40px">
+
+        <!-- Modal Login -->
+        <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content bg-body-secondary">
+                    <div class="modal-header bg-primary text-light">
+                        <h1 class="modal-title fs-4 fw-bold" id="modalLoginLabel">Inicio de sesión</h1>
+                        <button id="btnCerrarModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" runat="server" onServerClick="btnCerrarModal_Click"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-12">
+                            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                            <asp:TextBox CssClass="form-control" ID="txtMailLogin" ToolTip="name@example.com" runat="server" />
+                            <asp:RegularExpressionValidator ID="regexEmailValidator" ControlToValidate="txtMailLogin" ValidationExpression="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" ErrorMessage="El formato de correo electrónico no es válido." runat="server" CssClass="text-danger form-text mb-2" />
+                        </div>
+                        <div class="col-12">
+                            <label for="password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+                            <asp:TextBox CssClass="form-control" ID="txtClaveLogin" TextMode="Password" ToolTip="Ingrese contraseña" runat="server" />
+                        </div>
+                    </div>
+                    <asp:UpdatePanel runat="server">
+                        <ContentTemplate>
+                            <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end m-2">
+                                <p id="lblUsuarioNoExiste" visible="false" runat="server">
+                                    <span class="badge text-bg-danger text-light me-2">
+                                        <asp:Label ID="lblRespuestaLoggin" runat="server" />
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="d-flex">
+                                    <asp:Button Text="Registrarse" ID="btnRegistro" OnClick="btnRegistro_Click" runat="server" cssClass="btn btn-secondary me-3"/>
+                                    <asp:Button Text="Ingresar" CssClass="btn btn-primary" ID="btnIngresar" OnClick="btnIngresar_Click" runat="server" />
+                                </div>
+                            </div>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Busqueda -->
+        <div class="modal fade" id="modalBusqueda" tabindex="-1" aria-labelledby="modalBusquedaLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalBusquedaLabel"><i class="bi bi-search"> Busqueda de artículos</i></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <asp:TextBox runat="server" ID="tbFiltroRapido" placeholder="Ingrese el nombre del artículo" CssClass="form-control mt-3 mb-3" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <asp:Button Text="Buscar" runat="server" ID="btnFiltroRapido" CssClass="btn btn-primary" OnClick="btnFiltroRapido_Click" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             <hr/>
-            <footer>
-                <p>&copy; <%: DateTime.Now.Year %> - Paula Livingston</p>
+            <footer class="footer">
+                <section id="contacto">
+                <div class="container text-center text-md-start" >
+                    <div class="row">
+                        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+                            <h6 class="text-uppercase fw-bold mb-4 text-center" id="repositorio-foot">
+                                Repositorio
+                            </h6>
+                            <p class="text-center ">
+                                <a href="https://github.com/paulivingston/ecommerce-livingston" class="me-4 link-grayish text-decoration-none text-black">
+                                    <img src="/Content/img/logos/github.png" alt="logo github" width="25"/>
+                                    paulivingston
+                                </a>
+                            </p>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
+                            <h6 class="text-uppercase fw-bold mb-4 text-center" id="redes-foot">
+                                Linkedin
+                            </h6>
+                            <p class="text-center">
+                                <a href="https://www.frgp.utn.edu.ar/" class="link-grayish text-decoration-none text-black">
+                                    <img src="/Content/img/logos/linkedin.png" alt="logo linkedin" width="25"/>
+                                    Paula Livingston
+                                </a>
+                            </p>
+                        </div>
+                        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+                            <h6 class="text-uppercase fw-bold mb-4 text-center" id="contacto-foot">Profesor</h6>
+                            <p class="text-center">
+                                <a href="https://github.com/msarfernandez" class="link-grayish text-decoration-none text-black">
+                                    <img src="/Content/img/logos/github.png" alt="logo github" width="25"/>
+                                    Max Sar Fernandez
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center p-1 text-white pb-1" id="copyright"  font-size: 12px;" id="pie">
+                    &copy; Paula Livingston - <%: DateTime.Now.Year %>
+                </div>
+            </section>
             </footer>
         </div>
+
+        <script src="/Content/slider.js"></script>
 
     </form>
 </body>
