@@ -105,13 +105,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="About.aspx">
-      <BrowseToURL>~/Nosotros.aspx</BrowseToURL>
-    </Content>
     <Content Include="Carrito.aspx" />
-    <Content Include="connectionStrings.config" />
-    <Content Include="Contact.aspx" />
-    <Content Include="Contacto.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -130,12 +124,15 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\img\cart-shopping-solid.png" />
     <Content Include="Content\img\cart-shopping-solid.svg" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\slider.css" />
+    <Content Include="Content\slider.js" />
+    <Content Include="Content\styles.css" />
     <Content Include="Default.aspx" />
+    <Content Include="Detalle.aspx" />
     <Content Include="eagle.ico" />
+    <Content Include="Error.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Nosotros.aspx" />
-    <Content Include="Nosotros.html" />
     <Content Include="Productos.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -292,13 +289,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="About.aspx.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="About.aspx.designer.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Carrito.aspx.cs">
       <DependentUpon>Carrito.aspx</DependentUpon>
@@ -307,26 +297,26 @@
     <Compile Include="Carrito.aspx.designer.cs">
       <DependentUpon>Carrito.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Contact.aspx.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contact.aspx.designer.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Contacto.aspx.cs">
-      <DependentUpon>Contacto.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contacto.aspx.designer.cs">
-      <DependentUpon>Contacto.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Detalle.aspx.cs">
+      <DependentUpon>Detalle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Detalle.aspx.designer.cs">
+      <DependentUpon>Detalle.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -370,6 +360,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\img\banner\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -384,6 +375,10 @@
     <ProjectReference Include="..\Dominio\Dominio.csproj">
       <Project>{fcf1387f-0944-45ab-8a98-d81886ad9b6e}</Project>
       <Name>Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mensajes\Mensajes.csproj">
+      <Project>{9687cd8d-b40d-4a24-8fdf-fc3300496271}</Project>
+      <Name>Mensajes</Name>
     </ProjectReference>
     <ProjectReference Include="..\Negocio\Negocio.csproj">
       <Project>{925938ae-1088-491a-99bc-87eb23a23c33}</Project>
