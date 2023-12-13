@@ -93,5 +93,17 @@ namespace Data
             connection.Close();
         }
 
+        public void DisposeParameters()
+        {
+            try
+            {
+                command?.Parameters.Clear();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }
