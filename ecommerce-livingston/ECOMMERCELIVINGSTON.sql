@@ -123,6 +123,32 @@ BEGIN
 END 
 GO
 
+CREATE PROCEDURE sp_ListarArticulosPorID
+@Id int
+AS
+BEGIN
+	SELECT 
+		A.Id AS 'Id', 
+		A.Nombre AS 'Nombre', 
+		A.Descripcion AS 'Descripcion', 
+		A.IdMarca AS 'IdMarca', 
+		M.Descripcion AS 'Marca', 
+		A.IdCategoria AS 'IdCategoria', 
+		C.Descripcion AS 'Categoria', 
+		A.Precio AS 'Precio', 
+		A.Estado AS 'Estado', 
+		A.Stock AS 'Stock', 
+		A.ImagenUrl AS 'ImagenUrl' 
+	FROM ARTICULOS AS A 
+	INNER JOIN MARCAS AS M 
+	ON A.IdMarca = M.Id 
+	INNER JOIN CATEGORIAS AS C 
+	ON A.IdCategoria = C.Id
+	WHERE A.Id = @id
+END 
+GO
+
+
 CREATE PROCEDURE sp_CrearArticulo
 @Id int,
 @nombre varchar(50),
@@ -426,7 +452,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sp_ModificarEstado
+CREATE PROCEDURE sp_ModificarEstadoPedido
 @id int,
 @Estado varchar(20)
 AS
@@ -672,6 +698,112 @@ BEGIN
 	AND IdArticulo = @IdArticulo
 END
 GO
+
+CREATE PROCEDURE sp_CantidadPedidos
+AS
+BEGIN
+	SELECT COUNT(*) AS 'Cantidad'
+	FROM PEDIDOS 
+	WHERE 
+		ESTADO='FINALIZADO' 
+		OR ESTADO='INICIADO'
+END
+GO
+
+CREATE PROCEDURE sp_CantidadPedidosMesAnterior
+AS
+BEGIN
+	SELECT COUNT(*) AS 'Cantidad'
+	FROM PEDIDOS 
+	WHERE 
+		ESTADO='FINALIZADO' 
+		OR ESTADO='INICIADO'
+		AND MONTH(Fecha)=MONTH(GETDATE())-1
+END
+GO
+
+CREATE PROCEDURE sp_RecaudacionTotal
+AS
+BEGIN
+	SELECT SUM(PrecioTotal) AS 'Recaudacion'
+	FROM PEDIDOS
+END
+GO
+
+CREATE PROCEDURE sp_RecaudacionPromedio
+AS
+BEGIN
+	SELECT AVG(PrecioTotal) AS 'Recaudacion'
+	FROM PEDIDOS
+END
+GO
+
+CREATE PROCEDURE sp_PedidosCompletados
+AS
+BEGIN
+	select count(*) AS 'Completados'
+	from PEDIDOS 
+	where Estado ='FINALIZADO'
+END
+GO
+
+CREATE PROCEDURE sp_PedidosPendientes
+AS
+BEGIN
+	select count(*) AS 'Pendientes'
+	from pedidos 
+	where Estado='INICIADO'
+END
+GO
+
+CREATE PROCEDURE sp_CantidadUsuarios
+AS
+BEGIN
+	select count(*) AS 'Usuarios' 
+	from USUARIOS 
+	where Activo=1
+END
+GO
+
+CREATE PROCEDURE sp_CantidadArticulos
+AS
+BEGIN
+	select count(*) AS 'Articulos' 
+	from ARTICULOS 
+	where ESTADO=1
+END
+GO
+
+CREATE PROCEDURE sp_CantidadMarcas
+AS
+BEGIN
+	select count(*) AS 'Marcas' 
+	from MARCAS
+END
+GO
+
+CREATE PROCEDURE sp_CambiarEstadoArticulo
+@id int,
+@estado bit
+AS
+BEGIN
+	UPDATE ARTICULOS 
+	SET Estado = @estado 
+	WHERE Id = @id
+END
+GO
+
+CREATE PROCEDURE sp_ExisteCategoria
+@descripcion varchar(50)
+AS
+BEGIN
+	SELECT Id 
+	FROM CATEGORIAS 
+	WHERE Descripcion = @descripcion
+END
+GO
+
+
 
 
 
