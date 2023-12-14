@@ -413,7 +413,7 @@ namespace Negocio
             }
         }
 
-        public int EliminarArticuloPedido(int idArt, int idPed)
+        public int EliminarArticuloPedido(int idPed)
         {
             datos = new DatabaseAccess();
 
@@ -421,7 +421,6 @@ namespace Negocio
             {
                 datos.SetProcedure("sp_EliminarArticuloPedido");
                 datos.SetParameter("@IdPedido", idPed);
-                datos.SetParameter("@IdArticulo", idArt);
 
                 datos.ExecuteNonQuery();
 

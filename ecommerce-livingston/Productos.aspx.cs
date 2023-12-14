@@ -141,9 +141,12 @@ namespace ecommerce_livingston
             List<Articulo> listaPrincipal = (List<Articulo>)Session["listaPrincipal"];
             try
             {
+                string cat = ddlFiltroCategoria.Text;
+                string mrc = ddlFiltroMarca.Text;
+
                 repArticulos.DataSource = listaPrincipal.FindAll(x =>
-                    x.Categoria.Descripcion.Contains(ddlFiltroCategoria.Text)
-                    && x.Marca.Descripcion.Contains(ddlFiltroMarca.Text));
+                    x.Categoria.Descripcion.ToUpperInvariant().Contains(cat.ToUpperInvariant())
+                    && x.Marca.Descripcion.ToUpperInvariant().Contains(mrc.ToUpperInvariant()));
                 repArticulos.DataBind();
             }
             catch (Exception ex)

@@ -689,13 +689,11 @@ END
 GO
 
 CREATE PROCEDURE sp_EliminarArticuloPedido
-@IdPedido int,
-@IdArticulo int
+@IdPedido int
 AS
 BEGIN
 	DELETE FROM PEDIDO_ARTICULO 
 	WHERE IdPedido = @IdPedido
-	AND IdArticulo = @IdArticulo
 END
 GO
 
