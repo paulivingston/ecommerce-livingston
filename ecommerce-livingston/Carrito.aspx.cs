@@ -195,7 +195,7 @@ namespace ecommerce_livingston
         {
             Session.Remove("listaCarrito");
             Session.Remove("countCarrito");
-            Response.Redirect("ListaCarrito.aspx", false);
+            Response.Redirect("Carrito.aspx", false);
         }
 
         protected void btnConfirmarPedido_Click(object sender, EventArgs e)
@@ -260,7 +260,7 @@ namespace ecommerce_livingston
 
         protected void btnContinuarCompra_Click(object sender, EventArgs e)
         {
-            Response.Redirect("ListaCarrito.aspx?text=ok", false);
+            Response.Redirect("Carrito.aspx?text=ok", false);
         }
 
         public void CargarPantallaFinalizarCompra(bool logged, List<ItemCarrito> lista)

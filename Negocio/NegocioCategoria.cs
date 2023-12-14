@@ -104,6 +104,26 @@ namespace Negocio
                 datos.CloseConnection();
             }
         }
-        
+
+        public int ExisteCategoria(string desc)
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_ExisteCategoria");
+                datos.SetParameter("@descripcion", desc);
+                datos.ReadData();
+                return (int)datos.Reader["Id"];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
     }
 }

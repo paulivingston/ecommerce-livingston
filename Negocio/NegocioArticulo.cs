@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dominio;
 using Data;
+using System.Data.SqlTypes;
 
 namespace Negocio
 {
@@ -60,7 +61,47 @@ namespace Negocio
             }
         }
 
-        public void CrearArticulo(Articulo articulo)
+        public Articulo ListarArticulos(int id)
+        {
+            datos = new DatabaseAccess();
+            Articulo articulo = new Articulo();
+
+            try
+            {
+                datos.SetProcedure("sp_ListarArticulosPorID");
+                datos.SetParameter("@Id", id);
+                datos.ReadData();
+
+                while (datos.Reader.Read())
+                {
+                    articulo.Id = (int)datos.Reader["Id"];
+                    articulo.Nombre = datos.Reader["Nombre"].ToString();
+                    articulo.Descripcion = datos.Reader["Descripcion"].ToString();
+
+                    articulo.Marca.Id = (int)datos.Reader["IdMarca"];
+                    articulo.Marca.Descripcion = datos.Reader["Marca"].ToString();
+
+                    articulo.Categoria.Id = (int)datos.Reader["IdCategoria"];
+                    articulo.Categoria.Descripcion = datos.Reader["Categoria"].ToString();
+
+                    articulo.Precio = (decimal)datos.Reader["Precio"];
+                    articulo.Estado = (bool)datos.Reader["Estado"];
+                    articulo.Stock = (int)datos.Reader["Stock"];
+                    articulo.ImagenUrl = datos.Reader["ImagenUrl"].ToString();
+                }
+                return articulo;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public int CrearArticulo(Articulo articulo)
         {
             DatabaseAccess datos = new DatabaseAccess();
             try
@@ -77,10 +118,12 @@ namespace Negocio
                 datos.SetParameter("@imagenUrl", articulo.ImagenUrl);
 
                 datos.ExecuteNonQuery();
+
+                return 1;
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                return 0;
             }
             finally
             {
@@ -88,7 +131,7 @@ namespace Negocio
             }
         }
 
-        public void ModificarArticulo(Articulo articulo)
+        public int ModificarArticulo(Articulo articulo)
         {
             datos = new DatabaseAccess();
             try
@@ -105,10 +148,12 @@ namespace Negocio
                 datos.SetParameter("@imagenUrl", articulo.ImagenUrl);
 
                 datos.ExecuteNonQuery();
+
+                return 1;
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                return 0;
             }
             finally
             {
@@ -116,7 +161,7 @@ namespace Negocio
             }
         }
 
-        public void EliminarArticulo(int idArticulo)
+        public int EliminarArticulo(int idArticulo)
         {
             datos = new DatabaseAccess();
             try
@@ -125,10 +170,12 @@ namespace Negocio
                 datos.SetParameter("@id", idArticulo);
 
                 datos.ExecuteNonQuery();
+
+                return 1;
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                return 0;
             }
             finally
             {
@@ -162,5 +209,30 @@ namespace Negocio
                 datos.CloseConnection();
             }
         }
+
+        public int CambiarEstado(int id, bool estado)
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_CambiarEstadoArticulo");
+                SqlBoolean sqlBoolEstado = estado;
+                datos.SetParameter("@estado", sqlBoolEstado);
+                datos.SetParameter("@id", id);
+
+                datos.ExecuteNonQuery();
+
+                return 1;
+            }
+            catch 
+            {
+                return 0;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
     }
 }

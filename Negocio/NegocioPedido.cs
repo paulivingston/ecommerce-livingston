@@ -158,7 +158,7 @@ namespace Negocio
             }
         }
 
-        public void ModificarPedido(Pedido pedido)
+        public int ModificarPedido(Pedido pedido)
         {
             datos = new DatabaseAccess();
 
@@ -168,21 +168,19 @@ namespace Negocio
                 datos.SetParameter("@IdPedido", pedido.IdPedido);
                 datos.SetParameter("@IdUsuario", pedido.IdUsuario);
                 datos.SetParameter("@Cantidad", pedido.Cantidad);
-                datos.SetParameter("@Fecha", pedido.fecha); 
+                datos.SetParameter("@Fecha", pedido.fecha);
                 datos.SetParameter("@Estado", pedido.Estado);
                 datos.SetParameter("@DireccionEntrega", pedido.DireccionEntrega);
                 datos.SetParameter("@Descuento", pedido.Descuento);
                 datos.SetParameter("@PrecioTotal", pedido.precioTotal);
 
                 datos.ExecuteNonQuery();
+
+                return 1;
             }
-            catch (SqlException ex)
+            catch
             {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                return 0;
             }
             finally
             {
@@ -190,7 +188,7 @@ namespace Negocio
             }
         }
 
-        public void EliminarPedido(int id)
+        public int EliminarPedido(int id)
         {
             datos = new DatabaseAccess();
             try
@@ -199,10 +197,12 @@ namespace Negocio
                 datos.SetParameter("@id", id);
 
                 datos.ExecuteNonQuery();
+
+                return 1;
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                return 0;
             }
             finally
             {
@@ -210,21 +210,23 @@ namespace Negocio
             }
         }
 
-        public void ModificarEstado(int id, string estado)
+        public int ModificarEstado(int id, string estado)
         {
             datos = new DatabaseAccess();
 
             try
             {
-                datos.SetProcedure("sp_EliminarPedido");
+                datos.SetProcedure("sp_ModificarEstadoPedido");
                 datos.SetParameter("@estado", estado);
                 datos.SetParameter("@id", id);
 
                 datos.ExecuteNonQuery();
+
+                return 1;
             }
-            catch (Exception ex)
+            catch 
             {
-                throw ex;
+                return 0;
             }
             finally
             {
@@ -246,7 +248,6 @@ namespace Negocio
                 pedido.totalItems = new List<ItemCarrito>(lista);
                 pedido.Cantidad = lista.Sum(itm => itm.Cantidad); // articulos distintos, no unidades totales
 
-                //Aca podriamos calcular nuevamente el total a partir de info en lista y llamar un metodo para calcular el total final si usamos descuento
                 pedido.Descuento = descuento > 0.00M ? descuento : 0.00M;
                 pedido.precioTotal = total;
 
@@ -280,7 +281,7 @@ namespace Negocio
             {
                 datos.SetProcedure("sp_ListarArticulosPedido");
                 datos.ReadData();
-                
+
                 while (datos.Reader.Read())
                 {
                     item = new ItemCarrito();
@@ -301,7 +302,7 @@ namespace Negocio
             }
         }
 
-        
+
         public List<ItemCarrito> ListarArticulosPedido(int id)
         {
             datos = new DatabaseAccess();
@@ -378,7 +379,7 @@ namespace Negocio
                 }
                 return cont;
             }
-            catch 
+            catch
             {
                 return 0;
             }
@@ -436,6 +437,185 @@ namespace Negocio
             }
         }
 
+        public int CantidadPedidos()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_CantidadPedidos");
+                datos.ReadData();
+
+                return (int)datos.Reader["Cantidad"];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public int CantidadPedidosMesAnterior()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_CantidadPedidosMesAnterior");
+                datos.ReadData();
+
+                return (int)datos.Reader["Cantidad"];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public decimal RecaudacionTotal()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_RecaudacionTotal");
+                datos.ReadData();
+
+                return (decimal)datos.Reader["Recaudacion"];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public decimal RecaudacionPromedio()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_RecaudacionPromedio");
+                datos.ReadData();
+
+                return (decimal)datos.Reader["Recaudacion"];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public int PedidosCompletados()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_PedidosCompletados");
+                datos.ReadData();
+
+                return (int)datos.Reader["Completados"];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public int PedidosPendientes()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_PedidosPendientes");
+                datos.ReadData();
+
+                return (int)datos.Reader["Pendientes"];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public decimal CantidadUsuarios()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_CantidadUsuarios");
+                datos.ReadData();
+
+                return (int)datos.Reader["Usuarios"];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public int CantidadArticulos()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_CantidadArticulos");
+                datos.ReadData();
+
+                return (int)datos.Reader["Articulos"];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public decimal CantidadMarcas()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_CantidadMarcas");
+                datos.ReadData();
+
+                return (int)datos.Reader["Marcas"];
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
     }
 }
 
