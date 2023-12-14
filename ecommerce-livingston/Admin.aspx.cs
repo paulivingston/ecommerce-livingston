@@ -41,5 +41,21 @@ namespace ecommerce_livingston
         protected void btnLimpiarFiltrosUsuarios_Click(object sender, EventArgs e)
         {
         }
+
+        protected void btnPedidosTodos_Click(object sender, EventArgs e)
+        {
+        }
+
+        protected void btnCrearNuevoPedidoMenu_Click(object sender, EventArgs e)
+        {
+        }
+
+        protected void btnAgregarNuevoUsuario_Click(object sender, EventArgs e)
+        {
+        }
+
+        
+
+
     }
 }

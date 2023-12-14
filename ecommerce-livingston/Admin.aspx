@@ -10,7 +10,53 @@
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"></a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start mt-5" id="menu">
-
+                        <li class="nav-item mt-5">
+                            <a href="Admin.aspx" class="nav-link align-middle px-0">
+                                <i class="fs-3 bi-house text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Inicio</span>
+                            </a>
+                        </li>
+                        <li> <!-- pedidos -->
+                            <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                                <i class="fs-3 bi-table text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Pedidos</span></a>
+                            <ul class="collapse nav flex-column ms-1 " id="submenu2" data-bs-parent="#menu">
+                                <li class="w-100 ">
+                                    <asp:Button ID="btnPedidosTodos" Text="Todos los Pedidos" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnPedidosTodos_Click" runat="server" />
+                                </li>
+                                <li>
+                                    <asp:Button ID="btnCrearNuevoPedidoMenu" Text="Crear Nuevo Pedido" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnCrearNuevoPedidoMenu_Click" runat="server" />
+                                </li>
+                            </ul>
+                        </li>
+                        <li> <!-- articulos -->
+                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                                <i class="fs-3 bi-grid text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Artículos</span> </a>
+                            <ul class="collapse nav flex-column ms-1 " id="submenu3" data-bs-parent="#menu">
+                                <li class="w-100 ">
+                                    <a href="Admin.aspx?id=3" class="nav-link px-0"><span class="d-none d-sm-inline text-light ms-4">Marcas</span></a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="Admin.aspx?id=4" class="nav-link px-0"><span class="d-none d-sm-inline text-light ms-4">Categorias</span></a>
+                                </li>
+                                <li>
+                                    <a href="Admin.aspx?id=5" class="nav-link px-0"><span class="d-none d-sm-inline text-light ms-4">Todos los artículos</span></a>
+                                </li>
+                                <li>
+                                    <a href="Admin.aspx?id=7" class="nav-link px-0"><span class="d-none d-sm-inline text-light ms-4">Nuevo artículo</span></a>
+                                </li>
+                            </ul>
+                        </li> <!-- usuarios -->
+                        <li>
+                            <a href="#submenu4" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
+                                <i class="fs-3 bi-people text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Usuarios</span> </a>
+                            <ul class="collapse nav flex-column ms-1 " id="submenu4" data-bs-parent="#menu">
+                                <li class="w-100 ">
+                                    <a href="Admin.aspx?id=6" class="nav-link px-0"><span class="d-none d-sm-inline text-light ms-4">Todos</span></a>
+                                </li>
+                                <li>
+                                    <asp:Button Text="Crear Nuevo Usuario" ID="btnAgregarNuevoUsuario" OnClick="btnAgregarNuevoUsuario_Click" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" runat="server" />
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </div>

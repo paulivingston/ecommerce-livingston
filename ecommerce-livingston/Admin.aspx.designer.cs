@@ -15,6 +15,33 @@ namespace ecommerce_livingston
     {
 
         /// <summary>
+        /// btnPedidosTodos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnPedidosTodos;
+
+        /// <summary>
+        /// btnCrearNuevoPedidoMenu control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCrearNuevoPedidoMenu;
+
+        /// <summary>
+        /// btnAgregarNuevoUsuario control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAgregarNuevoUsuario;
+
+        /// <summary>
         /// divEstadisticas control.
         /// </summary>
         /// <remarks>
