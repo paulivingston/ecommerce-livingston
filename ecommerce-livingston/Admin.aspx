@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <div class="col-md-8 mt-5" background-image: url(https://img3.wallspic.com/crops/9/3/0/4/6/164039/164039-banner_de_contraccion_de_la_galaxia-contraccion_nerviosa-banner_web-streaming_de_medios_de_comunicacion-gamer-3840x2160.png)">
+            <div class="col-md-8 mt-5">
                 <asp:UpdatePanel runat="server">
                     <ContentTemplate>
 
@@ -704,7 +704,7 @@
                         <div class="row">
                             <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" id="titleMarcas" runat="server"><strong>Administración de Marcas</strong></h1>
                             <div class="col-10 mt-5" id="sectionAgregarMarca" runat="server">
-                                <asp:Button ID="btnAgregarMarca" Text="Agregar nueva Marca" CssClass="fs-5 m-3 btn btn-warning btn-lg m-3" runat="server" OnClick="btnAgregarMarca_Click" />
+                                <asp:Button ID="btnAgregarMarca" Text="Agregar nueva Marca" CssClass="fs-5 m-3 btn btn-primary btn-lg m-3" runat="server" OnClick="btnAgregarMarca_Click" />
                             </div>
                             <asp:Repeater ID="dgvAdminMarca" runat="server">
                                 <ItemTemplate>
@@ -716,7 +716,7 @@
                                             <div class="d-flex justify-content-center align-items-center mt-5">
                                                 <asp:UpdatePanel runat="server">
                                                     <ContentTemplate>
-                                                        <asp:Image ID="imgMarca" runat="server" ImageUrl='<%#Eval("ImagenUrl") %>' onerror="this.src='./Recursos/image-not-found.png'" Width="170px" Height="170px" CssClass="ml-2" />
+                                                        <asp:Image ID="imgMarca" runat="server" ImageUrl='<%#Eval("ImagenUrl") %>' onerror="this.src='./Content/img/image-not-found.png'" Width="170px" Height="170px" CssClass="ml-2" />
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
                                             </div>
@@ -748,9 +748,9 @@
                         
                         </asp:Panel>
 
-                        <%-- registrar nueva marca--%>
-                        <div class="row d-flex justify-content-center align-items-center vh-100">
-                            <div class="card rounded-4 col-8 bg-light ms-5" style="margin-top: 100px; margin-bottom: 100px;" id="sectionNuevaMarca" visible="false" runat="server">
+                        <%-- panel nueva marca--%>
+                        <div class="row d-flex justify-content-center align-items-center vh-100" id="sectionNuevaMarca" visible="false" runat="server">
+                            <div class="card rounded-4 col-8 bg-light ms-5" style="margin-top: 100px; margin-bottom: 100px;">
                                 <div class=" card-header text-center">
                                     <h1> Agregar Marca </h1>
                                 </div>
@@ -784,10 +784,92 @@
                         </div>
 
                         
-
-
                         <%-- panel categorias --%>
 
+                         <asp:Panel ID="panelAdminCategorias" runat="server" Visible="false">
+
+                        <div class="row">
+                            <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" id="titleCategoria" runat="server"><strong>Administración de Categorias</strong></h1>
+                            <div class="col-10 mt-5" id="sectionAgregarCategoria" runat="server">
+                                <asp:Button ID="btnAgregarCategoria" Text="Agregar nueva Categoria" CssClass="fs-5 m-3 btn btn-primary btn-lg m-3" runat="server" OnClick="btnAgregarCategoria_Click" />
+                            </div>
+                            <asp:Repeater ID="dgvAdminCate" runat="server">
+                                <ItemTemplate>
+                                    <div class="col-3 mt-2 mb-3 text-center">
+                                        <div class="card h-100 m-3 bg-light border-primary " runat="server" id="cardCategoria">
+                                            <div class="card-header">
+                                                <asp:Label runat="server" ID="lblIdCategoria" Text='<%# Eval("Id") %>' CssClass="mt-3"></asp:Label>
+                                            </div>
+                                            <div class="d-flex justify-content-center align-items-center mt-5">
+                                                <asp:UpdatePanel runat="server">
+                                                    <ContentTemplate>
+                                                        <asp:Image ID="imgCategoria" runat="server" ImageUrl='<%#Eval("ImagenUrl") %>' onerror="this.src='./Content/img/image-not-found.png'" Width="170px" Height="170px" CssClass="ml-2" />
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <asp:Label runat="server" ID="lblCategoria" Text='<%# Eval("Descripcion") %>'></asp:Label>
+                                                    <asp:TextBox runat="server" ID="txtCategoria" Visible="false" CssClass="form-control"></asp:TextBox>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <asp:Label ID="lblCambiarImgCategoria" Text="URL Imágen" runat="server" Visible="false" CssClass="mt-5" />
+                                                    <asp:Label runat="server" ID="lblUrlCategoria" Text='<%# Eval("ImagenUrl") %>' CssClass="mt-3" Visible="false"></asp:Label>
+                                                    <asp:TextBox runat="server" ID="tbUrlImgCategoria" AutoPostBack="true" Visible="false" CssClass="form-control mt-3" OnTextChanged="tbUrlImgCate_TextChanged"></asp:TextBox>
+                                                </p>
+                                            </div>
+                                            <div class="col-12 bg-danger text-center">
+                                                <i class="bi bi-trash-fill fs-5"></i>
+                                                <asp:Button runat="server" ID="btnEliminarCategoria" Text="Eliminar" Font-Bold="true" CssClass="btn" OnClick="btnEliminarCategoria_Click" OnClientClick="return confirm('¿Estás seguro de que deseas eliminar esta categoria?');"/>
+                                            </div>
+                                            <div class="col-12 card-footer text-center bg-primary">
+                                                <i class="bi bi-pencil-fill fs-5"></i>
+                                                <asp:Button runat="server" ID="btnEditarCategoria" Text="Editar" Font-Bold="true" Visible="true" CssClass="btn btn-primary" OnClick="btnEditarCategoria_Click"/>
+                                                <asp:Button runat="server" ID="btnGuardarCategoria" Text="Guardar" Font-Bold="true" Visible="false" CssClass="btn btn-warning" OnClick="btnGuardarCategoria_Click" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </div>
+                        
+                        </asp:Panel>
+
+                        <%-- panel nueva categoria--%>
+                        <div class="row d-flex justify-content-center align-items-center" id="sectionNuevaCategoria" visible="false" runat="server">
+                            <div class="card rounded-4 col-8 bg-primary text-light ms-5" style="margin-top: 100px; margin-bottom: 100px;">
+                                <div class=" card-header text-center">
+                                    <h1>Nueva Categoria</h1>
+                                </div>
+                                <div class="row p-2">
+                                    <div class="col-6 mt-3">
+                                        <label for="Nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control" ID="tbNombreCate" runat="server" />
+                                    </div>
+                                    <div class="col-8 mt-3">
+                                        <label for="img" class="form-label">URL imágen <span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control" ID="tbUrlImgCate" runat="server" AutoPostBack="true" OnTextChanged="tbUrlImgNuevaCategoria_TextChanged" />
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <asp:UpdatePanel runat="server">
+                                            <ContentTemplate>
+                                                <asp:Image ID="imgNuevaCate" runat="server" ImageUrl="~/recursos/img/agregar-img.png" Width="200px" CssClass="mt-3 ms-5" />
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <asp:Button Text="Guardar categoría" ID="btnAgregarCate" CssClass="btn btn-light mb-3 ps-5 pe-5 fs-4" runat="server" OnClick="btnGuardarNewCategoria_Click" />
+                                        </div>
+                                        <div class="d-flex justify-content-start align-items-start">
+                                            <asp:LinkButton Text="Volver a categorías" CssClass="link-body-emphasis m-3" ID="volverCate" OnClick="volverCategoria_Click" runat="server" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
 
                         <!-- SUBMENU USUARIOS -->
 

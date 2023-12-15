@@ -29,6 +29,9 @@ namespace ecommerce_livingston
         NegocioMarca NegocioMarca;
         List<Marca> Marcas;
         Marca marca;
+        NegocioCategoria NegocioCategoria;
+        List<Categoria> Categorias;
+        Categoria categoria;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -59,6 +62,8 @@ namespace ecommerce_livingston
             sectionModificarUsuario.Visible = false;
             panelAdminMarcas.Visible = false;
             sectionNuevaMarca.Visible = false;
+            panelAdminCategorias.Visible = false;
+            sectionNuevaCategoria.Visible = false;
 
             sectionAdminPedidos.Visible = true;
             sectionAdminPedidosTodos.Visible = true;
@@ -94,13 +99,29 @@ namespace ecommerce_livingston
             sectionAdminPedidoIndividual.Visible = false;
             sectionAdminUsuarios.Visible = false;
             sectionModificarUsuario.Visible = false;
+            panelAdminCategorias.Visible = false;
+            sectionNuevaCategoria.Visible = false;
 
             panelAdminMarcas.Visible = true;
             sectionNuevaMarca.Visible = false;
         }
         private void CargarCategorias()
         {
+            NegocioCategoria = new NegocioCategoria();
+            Categorias = NegocioCategoria.ListarCategorias();
+            dgvAdminCate.DataSource = Categorias;
+            dgvAdminCate.DataBind();
 
+            divEstadisticas.Visible = false;
+            sectionAdminPedidos.Visible = false;
+            sectionAdminPedidoIndividual.Visible = false;
+            sectionAdminUsuarios.Visible = false;
+            sectionModificarUsuario.Visible = false;
+            panelAdminMarcas.Visible = false;
+            sectionNuevaMarca.Visible = false;
+
+            panelAdminCategorias.Visible = true;
+            sectionNuevaCategoria.Visible = false;
         }
 
 
@@ -135,6 +156,8 @@ namespace ecommerce_livingston
             sectionAdminPedidoIndividual.Visible = false;
             panelAdminMarcas.Visible = false;
             sectionNuevaMarca.Visible = false;
+            panelAdminCategorias.Visible = false;
+            sectionNuevaCategoria.Visible = false;
 
             sectionAdminUsuarios.Visible=true;
             lblAdministracionUsuarios.Visible = true;
@@ -818,10 +841,158 @@ namespace ecommerce_livingston
             System.Web.UI.WebControls.Image imgMarca = (Image)repeaterItem.FindControl("imgMarca");
             imgMarca.ImageUrl = tbUrlImgMarca.Text;
         }
-        
 
 
 
+
+
+        #endregion
+
+
+        #region SUBMENU CATEGORIAS
+
+        protected void btnAgregarCategoria_Click(object sender, EventArgs e)
+        {
+            panelAdminCategorias.Visible = false;
+            sectionNuevaCategoria.Visible = true;
+        }
+
+        protected void btnEliminarCategoria_Click(object sender, EventArgs e)
+        {
+            //busco card
+            NegocioCategoria = new NegocioCategoria();
+            Button btn = (Button)sender;
+            RepeaterItem repeaterItem = (RepeaterItem)btn.NamingContainer;
+            var card = (HtmlGenericControl)repeaterItem.FindControl("cardCategoria");
+
+            //obtengo id y elimino
+            var lblId = (Label)card.FindControl("lblIdCategoria");
+            NegocioCategoria.EliminarCategoria(Convert.ToInt32(lblId.Text));
+
+            //vuelvo a cargar
+            CargarCategorias();
+        }
+
+        protected void btnEditarCategoria_Click(object sender, EventArgs e)
+        {
+            //busco card
+            NegocioCategoria = new NegocioCategoria();
+            Button btn = (Button)sender;
+            RepeaterItem repeaterItem = (RepeaterItem)btn.NamingContainer;
+            var card = (HtmlGenericControl)repeaterItem.FindControl("cardCategoria");
+
+            //obtengo datos
+            var lblCategoria = (Label)card.FindControl("lblCategoria");
+            var txtCategoria = (TextBox)card.FindControl("txtCategoria");
+            var lblUrlCategoria = (Label)card.FindControl("lblUrlCategoria");
+            var tbUrlImgCategoria = (TextBox)card.FindControl("tbUrlImgCategoria");
+
+            //asigno el valor a los textbox
+            txtCategoria.Text = lblCategoria.Text;
+            tbUrlImgCategoria.Text = lblUrlCategoria.Text;
+
+            //cambio vistas
+            lblCategoria.Visible = false;
+            txtCategoria.Visible = true;
+            lblUrlCategoria.Visible = false;
+            tbUrlImgCategoria.Visible = true;
+
+            var btnGuardarCategoria = (Button)card.FindControl("btnGuardarCategoria");
+            btnGuardarCategoria.Visible = true;
+            var btnEditarCategoria = (Button)card.FindControl("btnEditarCategoria");
+            btnEditarCategoria.Visible = false;
+        }
+
+        protected void btnGuardarCategoria_Click(object sender, EventArgs e)
+        {
+            //busco card
+            NegocioCategoria = new NegocioCategoria();
+            Button btn = (Button)sender;
+            RepeaterItem repeaterItem = (RepeaterItem)btn.NamingContainer;
+            var card = (HtmlGenericControl)repeaterItem.FindControl("cardCategoria");
+
+            //obtengo datos
+            var lblIdCategoria = (Label)card.FindControl("lblIdCategoria");
+            var lblCategoria = (Label)card.FindControl("lblCategoria");
+            var txtCategoria = (TextBox)card.FindControl("txtCategoria");
+            var lblUrlCategoria = (Label)card.FindControl("lblUrlCategoria");
+            var tbUrlImgCategoria = (TextBox)card.FindControl("tbUrlImgCategoria");
+
+
+            if (string.IsNullOrWhiteSpace(lblIdCategoria.Text) || string.IsNullOrWhiteSpace(txtCategoria.Text) || string.IsNullOrWhiteSpace(tbUrlImgCategoria.Text))
+            {
+                Mensajes.Mensajes.MensajePopUp(this, "Faltan completar campos");
+                return;
+            }
+            else
+            {
+                //guardo
+                categoria = new Categoria();
+                NegocioCategoria = new NegocioCategoria();
+
+                categoria.Id = int.Parse(lblIdCategoria.Text);
+                categoria.Descripcion = txtCategoria.Text;
+                categoria.ImagenUrl = tbUrlImgCategoria.Text;
+
+                //modifico
+                NegocioCategoria.ModificarCategoria(categoria);
+                Mensajes.Mensajes.MensajePopUp(this, "Categoria modificada con exito!");
+            }
+            //asigno el valor a los label
+            lblCategoria.Text = txtCategoria.Text;
+            lblUrlCategoria.Text = tbUrlImgCategoria.Text;
+
+            //cambio vistas
+            lblCategoria.Visible = true;
+            txtCategoria.Visible = false;
+            lblUrlCategoria.Visible = false;
+            tbUrlImgCategoria.Visible = false;
+
+            var btnGuardarCategoria = (Button)card.FindControl("btnGuardarCategoria");
+            btnGuardarCategoria.Visible = false;
+            var btnEditarCategoria = (Button)card.FindControl("btnEditarCategoria");
+            btnEditarCategoria.Visible = true;
+        }
+
+        protected void tbUrlImgNuevaCategoria_TextChanged(object sender, EventArgs e)
+        {
+            imgNuevaCate.ImageUrl = tbUrlImgCate.Text;
+        }
+
+        protected void btnGuardarNewCategoria_Click(object sender, EventArgs e)
+        {
+            categoria = new Categoria();
+            NegocioCategoria = new NegocioCategoria();
+
+            if (string.IsNullOrWhiteSpace(tbNombreCate.Text) || string.IsNullOrWhiteSpace(tbUrlImgCate.Text))
+            {
+                Mensajes.Mensajes.MensajePopUp(this, "Faltan completar campos");
+                return;
+            }
+            else
+            {
+                categoria.Descripcion = tbNombreCate.Text;
+                categoria.ImagenUrl = tbUrlImgCate.Text;
+
+                NegocioCategoria.CrearCategoria(categoria);
+                Mensajes.Mensajes.MensajePopUp(this, "Nueva categoria registrada con exito!");
+
+                CargarCategorias();
+            }
+        }
+
+        protected void volverCategoria_Click(object sender, EventArgs e)
+        {
+            CargarCategorias();
+        }
+
+        protected void tbUrlImgCate_TextChanged(object sender, EventArgs e)
+        {
+            TextBox tbUrlImgCategoria = (TextBox)sender;
+            RepeaterItem repeaterItem = (RepeaterItem)tbUrlImgCategoria.NamingContainer;
+            System.Web.UI.WebControls.Image imgCategoria = (Image)repeaterItem.FindControl("imgCategoria");
+            imgCategoria.ImageUrl = tbUrlImgCategoria.Text;
+        }
 
         #endregion
 
