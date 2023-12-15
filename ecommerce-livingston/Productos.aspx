@@ -8,7 +8,7 @@
 
             <div class="col-md-3 bg-light border mb-3 p-1">
                 <div class="p-5">
-                    <asp:DropDownList id="ddlFiltroCategoria" class="form-select h-1 mb-4" runat="server" AutoPostBack="false"></asp:DropDownList>
+                    <asp:DropDownList id="ddlFiltroCategoria" class="form-select h-1 mb-4" runat="server" AutoPostBack="false" ></asp:DropDownList>
                     <asp:DropDownList id="ddlFiltroMarca" class="form-select h-1 mb-4" runat="server" AutoPostBack="false"></asp:DropDownList>
                     <asp:Button class="btn btn-info btn-sm mb-5" Text="Aplicar" runat="server" id="btnFiltro" OnClick="btnFiltro_Click" />
                     <asp:Button class="btn btn-outline-info btn-sm mb-5" Text="Eliminar Filtros" runat="server" id="btnEliminarFilros" OnClick="btnEliminarFilros_Click" />

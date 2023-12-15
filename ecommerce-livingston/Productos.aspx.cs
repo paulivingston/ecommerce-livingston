@@ -138,15 +138,21 @@ namespace ecommerce_livingston
 
         protected void btnFiltro_Click(object sender, EventArgs e)
         {
+            if (Session["listaPrincipal"] == null)
+                Session.Add("listaPrincipal", new NegocioArticulo().ListarArticulos());
+
             List<Articulo> listaPrincipal = (List<Articulo>)Session["listaPrincipal"];
+
             try
             {
-                string cat = ddlFiltroCategoria.Text;
-                string mrc = ddlFiltroMarca.Text;
+                string cat = ddlFiltroCategoria.SelectedValue;
+                string mrc = ddlFiltroMarca.SelectedValue;
 
-                repArticulos.DataSource = listaPrincipal.FindAll(x =>
-                    x.Categoria.Descripcion.ToUpperInvariant().Contains(cat.ToUpperInvariant())
-                    && x.Marca.Descripcion.ToUpperInvariant().Contains(mrc.ToUpperInvariant()));
+                listaPrincipal = listaPrincipal.FindAll(x =>
+                    x.Categoria.Id.ToString()==cat
+                    && x.Marca.Id.ToString()== mrc);
+
+                repArticulos.DataSource = listaPrincipal;
                 repArticulos.DataBind();
             }
             catch (Exception ex)
