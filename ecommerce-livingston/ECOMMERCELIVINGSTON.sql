@@ -827,30 +827,30 @@ VALUES (0,'Anteojos de Sol Rusty Bruk Sblk Polarizado S10','Género: Unisex
 Color del Armazón: Negro brillante
 Color y Tipo del Lente: negro uniforme polarizado
 Material: Acetato
-Estilo: Cuadrado',4,0,'https://www.masvision.com.ar/cdn/shop/files/BRUKSBLK-POLS10FRENTE_869x576.jpg?v=1683294063',50000,1,500)
+Estilo: Cuadrado',5,1,'https://www.masvision.com.ar/cdn/shop/files/BRUKSBLK-POLS10FRENTE_869x576.jpg?v=1683294063',50000,1,500)
 INSERT INTO [dbo].[ARTICULOS] ([Id],[Nombre],[Descripcion],[IdMarca],[IdCategoria],[ImagenUrl],[Precio],[Estado],[Stock]) 
 VALUES (1,'Anteojos de Sol Vulk Arvin Mdblu Revo Blue','Género: Hombre
 Color del Armazón: Azul marino
 Color y Tipo del Lente: Celeste espejado
 Material: Acetato 
-Estilo: Cuadrado',1,0,'https://www.masvision.com.ar/cdn/shop/files/ArvinMDBLUREVOBLUEF_870x580.jpg?v=1683207183',52000,1,500)
+Estilo: Cuadrado',2,1,'https://www.masvision.com.ar/cdn/shop/files/ArvinMDBLUREVOBLUEF_870x580.jpg?v=1683207183',52000,1,500)
 INSERT INTO [dbo].[ARTICULOS] ([Id],[Nombre],[Descripcion],[IdMarca],[IdCategoria],[ImagenUrl],[Precio],[Estado],[Stock]) 
 VALUES (2,'Anteojos de Sol Vulk Boston Mblk Revo Red','Género: Unisex
 Color del Armazón: Negro mate
 Color y Tipo del Lente: Rojo Degrade
 Material: Acetato
-Estilo: Cuadrado',1,0,'https://www.masvision.com.ar/cdn/shop/files/BOSTON-MBLK-REVO-RED---FRENTE--PRINCIPAL-WEB_869x427.jpg?v=1683208233',55000,1,300)
+Estilo: Cuadrado',2,1,'https://www.masvision.com.ar/cdn/shop/files/BOSTON-MBLK-REVO-RED---FRENTE--PRINCIPAL-WEB_869x427.jpg?v=1683208233',55000,1,300)
 INSERT INTO [dbo].[ARTICULOS] ([Id],[Nombre],[Descripcion],[IdMarca],[IdCategoria],[ImagenUrl],[Precio],[Estado],[Stock]) 
 VALUES (3,'Anteojos de Sol Rusty Ant Ul C3 Revo Blue','Género: Unisex
 Color del Armazón: Negro
 Color y Tipo del Lente: Azul Espejado
 Material: Metal y Acetato
-Estilo: Redondo',4,0,'https://www.masvision.com.ar/cdn/shop/files/UL---C3---PERFIL_871x428.jpg?v=1683204061',36000,1,5)
+Estilo: Redondo',5,1,'https://www.masvision.com.ar/cdn/shop/files/UL---C3---PERFIL_871x428.jpg?v=1683204061',36000,1,5)
 INSERT INTO [dbo].[ARTICULOS] ([Id],[Nombre],[Descripcion],[IdMarca],[IdCategoria],[ImagenUrl],[Precio],[Estado],[Stock]) 
 VALUES (4,'Anteojos de Sol Rusty Marilyn 23 Sblk 940','Género: Unisex
 Color del Armazón: Negro
 Color y Tipo del Lente: verde oscuro
 Material: Acetato
-Estilo: Envolvente ovalado',4,0,'https://www.masvision.com.ar/cdn/shop/products/MARILYN23AGALERIA-WEB-SBLK-940_871x428.jpg?v=1674065465',46000,1,50)
+Estilo: Envolvente ovalado',5,1,'https://www.masvision.com.ar/cdn/shop/products/MARILYN23AGALERIA-WEB-SBLK-940_871x428.jpg?v=1674065465',46000,1,50)
 
 ------------FIN DUMMY DATA------------

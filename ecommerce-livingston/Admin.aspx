@@ -691,9 +691,261 @@
                         
                         <%-- panel articulos --%>
 
+                        <asp:Panel ID="sectionAdminArticulos" runat="server" Visible="false">
+
+                        <%-- filtros --%>
+                        <div class="row">
+                            <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" id="lblAdministracionArticulos"><strong>Administración de Articulos</strong></h1>
+                            <div id="FiltrosArticulos" class="col-3 p-5" >
+                                <h5>Filtro automático</h5>
+                                <div class="dropend">
+                                    <button class="btn dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Marcas
+                                    </button>
+                                    <ul class="dropdown-menu ">
+                                        <asp:UpdatePanel runat="server">
+                                            <ContentTemplate>
+                                                <asp:Repeater runat="server" ID="rptMarcas">
+                                                    <ItemTemplate>
+                                                        <li>
+                                                            <asp:Button CssClass="btn" Text='<%#Eval("Descripcion") %>' runat="server" ID="btnFiltroMarca" OnClick="btnFiltroMarca_Click" CommandArgument='<%#Eval("Id") %>' />
+                                                        </li>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                    </ul>
+                                </div>
+                                <div class="dropend ">
+                                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Categorias
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <asp:UpdatePanel runat="server">
+                                            <ContentTemplate>
+                                                <asp:Repeater runat="server" ID="rptCategorias">
+                                                    <ItemTemplate>
+                                                        <li>
+                                                            <asp:Button CssClass="btn" Text='<%#Eval("Descripcion") %>' runat="server" ID="btnFiltroCate" OnClick="btnFiltroCate_Click" CommandArgument='<%#Eval("Id") %>' />
+                                                        </li>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                    </ul>
+                                </div>
+                                <div class="dropend">
+                                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Ordenar
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <asp:UpdatePanel runat="server">
+                                            <ContentTemplate>
+                                                <li>
+                                                    <asp:Button CssClass="btn" Text="Mayor precio" runat="server" ID="btnFiltroPrecioAsc" OnClick="btnFiltroPrecioAsc_Click" />
+                                                </li>
+                                                <li>
+                                                    <asp:Button CssClass="btn" Text="Menor precio" runat="server" ID="btnFiltroPrecioDesc" OnClick="btnFiltroPrecioDesc_Click" />
+                                                </li>
+                                                </ItemTemplate>
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                    </ul>
+                                </div>
+                                <div class="dropend mb-4">
+                                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Estado    
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <asp:Button ID="btnFiltroEstadoAlta" CssClass="btn" Text="Alta" CommandArgument="Activo" OnClick="btnFiltroEstadoAlta_Click"  runat="server"/>
+                                        </li>
+                                        <li>
+                                            <asp:Button ID="btnFiltroEstadoBaja" CssClass="btn" Text="Baja" CommandArgument="Inactivo" OnClick="btnFiltroEstadoBaja_Click" runat="server"/>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <h5>Filtro Manual</h5>
+                                <asp:DropDownList ID="ddlFiltroCategoria" CssClass="form-select h-1 mb-4" runat="server" AutoPostBack="false"></asp:DropDownList>
+                                <asp:DropDownList ID="ddlFiltroMarca" CssClass="form-select h-1 mb-4" runat="server" AutoPostBack="false"></asp:DropDownList>
+                                <asp:Button CssClass="btn btn-primary btn-sm mb-5" Text="Aplicar" runat="server" ID="btnFiltro" OnClick="btnFiltro_Click" />
+                                <asp:Button CssClass="btn btn-info btn-sm mb-5" Text="Eliminar Filtros" runat="server" ID="btnBorrarFilros" OnClick="btnBorrarFilros_Click" />
+                            </div>
+
+                            <%-- lista --%>
+                            <div class="col-8">
+                                <asp:UpdatePanel runat="server">
+                                    <ContentTemplate>
+                                        <asp:GridView ID="dgvAdminArticulo" runat="server" CssClass="table table-striped mt-5 text-center" AutoGenerateColumns="true" OnPageIndexChanging="dgvAdmin_PageIndexChanging">
+                                            <PagerSettings Mode="NumericFirstLast" />
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="Imagen">
+                                                    <ItemTemplate>
+                                                        <asp:Image runat="server" ImageUrl='<%#Eval("ImagenUrl") %>' onerror="this.src='./Content/img/image-not-found.png'" Width="70px" Height="70px" CssClass="ml-2" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Nombre">
+                                                    <ItemTemplate>
+                                                        <asp:Label runat="server" Text='<%# Eval("Nombre") %>' CssClass="mt-3"></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Descripción">
+                                                    <ItemTemplate>
+                                                        <asp:Label runat="server" Text='<%# Eval("Descripcion") %>' CssClass="mt-3"></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Marca">
+                                                    <ItemTemplate>
+                                                        <asp:Label runat="server" Text='<%# Eval("Marca") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Categoría">
+                                                    <ItemTemplate>
+                                                        <asp:Label runat="server" Text='<%# Eval("Categoria") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Precio">
+                                                    <ItemTemplate>
+                                                        <asp:Label runat="server" Text='<%# string.Format("{0:C2}", Eval("Precio")) %>' CssClass="mt-3"></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:BoundField HeaderText="Estado" DataField="Estado" />
+                                                <asp:TemplateField HeaderText="Acción" ItemStyle-CssClass="m-3">
+                                                    <ItemTemplate>
+                                                        <asp:Button Text="ALTA" ID="btnDarAltaArticulo" CssClass="btn btn-outline-success mt-3" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="ALTA" OnClick="btnCambiarEstadoArticulo_Click" />
+                                                        <asp:Button Text="BAJA" ID="btnDarBajaArticulo" CssClass="btn btn-outline-danger mt-3" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="BAJA" OnClick="btnCambiarEstadoArticulo_Click" />
+                                                        <asp:Button Text="EDITAR" ID="btnEditarArticulo" CssClass="btn btn-outline-secondary mt-3" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="editar_btn" OnClick="btnEditarArticulo_Click" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+
+                        </asp:Panel>
+
+                        <%-- panel articulo individual --%>
+                        <asp:GridView ID="dgvAdminArticuloIndividual" Visible="false" runat="server" CssClass="table table-striped mt-5" AutoGenerateColumns="False"
+                            AllowPaging="true"
+                            PageSize="10"
+                            OnPageIndexChanging="dgvAdmin_PageIndexChanging">
+                            <PagerSettings Mode="NumericFirstLast"/>
+                            <Columns>
+                                <asp:TemplateField HeaderText="Imagen">
+                                    <ItemTemplate>
+                                        <asp:Image runat="server" ImageUrl='<%#Eval("ImagenUrl") %>' onerror="this.src='./Content/image-not-found.png'" Width="70px" Height="70px" CssClass="ml-2" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Nombre">
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# Eval("Nombre") %>' CssClass="mt-3"></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Descripción">
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# Eval("Descripcion") %>' CssClass="mt-3"></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Marca">
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# Eval("Marca") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Categoría">
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# Eval("Categoria") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Precio">
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# string.Format("{0:C2}", Eval("precio")) %>' CssClass="mt-3"></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:BoundField HeaderText="Estado" DataField="EstadoStr"/>
+                            </Columns>
+                        </asp:GridView>
 
 
                         <%-- panel crear o modificar articulo --%>
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="card rounded-4 col-10 bg-warning ms-5" style="margin-top: 100px; margin-bottom: 100px;" id="sectionNuevoArticulo" visible="false" runat="server">
+                                <div class=" card-header text-center">
+                                    <h1 id="tituloEditarArticulo" runat="server">Editar Artículo</h1>
+                                    <h1 id="tituloNuevoArticulo" runat="server">Nuevo Artículo</h1>
+                                </div>
+                                <div class="row p-2">
+                                    <div class="col-6 mt-3">
+                                        <label for="IdArticulo" class="form-label">Número de ID <span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control" ID="tbIdArt" placeholder="ID Articulo" runat="server" />
+                                    </div>
+                                    <div class="col-6 mt-3">
+                                        <label for="Nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control" ID="tbNombreArt" runat="server" />
+                                    </div>
+                                    <div class="row justify-content-center">
+                                        <div class="col-4 mt-3">
+                                            <label for="ddlMarca" class="form-label">Marca<span class="text-danger">*</span></label>
+                                            <asp:DropDownList runat="server" ID="ddlMarca" CssClass="btn btn-light dropdown-toggle" Width="280px"></asp:DropDownList>
+                                        </div>
+                                        <div class="col-4 mt-3">
+                                            <label for="ddlCategoria" class="form-label">Categoría <span class="text-danger">*</span></label>
+                                            <asp:DropDownList runat="server" ID="ddlCategoria" CssClass="btn btn-light dropdown-toggle" Width="280px"></asp:DropDownList>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <label for="Stock" class="form-label">Stock <span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control" ID="tbStockArt" runat="server" />
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <label for="Precio" class="form-label">Precio <span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control" ID="tbPrecioArt" runat="server" />
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <label for="img" class="form-label">URL imágen <span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control" ID="tbImgArt" runat="server" AutoPostBack="true" OnTextChanged="tbImgArt_TextChanged" />
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <label for="Descripcion" class="form-label">Descripcion <span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control pb-4" ID="tbDescripArt" runat="server" />
+                                    </div>
+                                    <div class="row justify-content-center aling-items-center">
+                                        <div class="col-4 mt-3">
+                                            <asp:UpdatePanel runat="server">
+                                                <ContentTemplate>
+                                                    <asp:Image ID="imgNuevoArt" runat="server" ImageUrl="~/recursos/img/agregar-img.png" Width="200px" CssClass="mt-3 ms-5" />
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+                                        </div>
+                                        <hr />
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <asp:Button Text="Guardar Cambios" ID="btnAgregar" CssClass="btn btn-dark text-light mb-3 ps-5 pe-5 fs-4" runat="server" OnClick="btnAgregar_Click" OnClientClick="return confirm('¿Seguro de Continuar?');" />
+                                        </div>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <asp:Button Text="Eliminar" ID="btnEliminarArticulo" CssClass="btn btn-danger mb-3 ps-5 pe-5 fs-4" OnClick="btnEliminarArticulo_Click" OnClientClick="return confirm('¿Seguro de Eliminar?');" runat="server" />
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <asp:LinkButton Text="Volver a Lista Articulos" CssClass="link-body-emphasis mt-5" ID="linkButtonVolverListaArticulos" OnClick="btnLinkVolverListaArticulos_Click"  runat="server" />
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <p id="lblErrorArticulos" visible="false" runat="server">
+                                                <span class="badge text-bg-danger text-light me-2">
+                                                    <asp:Label ID="lblRespuestaError" runat="server" />
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        
 
 
 

@@ -10,8 +10,10 @@ using Negocio;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
 
-
+//falta estadisticas
 //falta solucionar filtros tipo dropdown
+//falta marca y categoria en tabla de articulos
+//aplicar filtro articulo
 
 namespace ecommerce_livingston
 {
@@ -25,6 +27,7 @@ namespace ecommerce_livingston
         List<Usuario> Usuarios;
         Usuario usuario;
         NegocioArticulo NegocioArticulo;
+        List<Articulo> Articulos;
         Articulo articulo;
         NegocioMarca NegocioMarca;
         List<Marca> Marcas;
@@ -80,12 +83,103 @@ namespace ecommerce_livingston
 
         private void CargarArticulos()
         {
-            
+            try
+            {
+                //vistas
+                divEstadisticas.Visible = false;
+                sectionAdminPedidos.Visible = false;
+                sectionAdminPedidoIndividual.Visible = false;
+                sectionAdminUsuarios.Visible = false;
+                sectionModificarUsuario.Visible = false;
+                panelAdminCategorias.Visible = false;
+                sectionNuevaCategoria.Visible = false;
+                panelAdminMarcas.Visible = false;
+                sectionNuevaMarca.Visible = false;
+
+                sectionAdminArticulos.Visible = true;
+                dgvAdminArticuloIndividual.Visible = false;
+                sectionNuevoArticulo.Visible = false;
+
+                //filtros
+                NegocioMarca = new NegocioMarca();
+                NegocioCategoria = new NegocioCategoria();
+
+                ddlFiltroMarca.DataSource = NegocioMarca.ListarMarcas();
+                ddlFiltroMarca.DataValueField = "Id";
+                ddlFiltroMarca.DataTextField = "Descripcion";
+                ddlFiltroMarca.DataBind();
+                rptMarcas.DataSource = NegocioMarca.ListarMarcas();
+                rptMarcas.DataBind();
+
+                ddlFiltroCategoria.DataSource = NegocioCategoria.ListarCategorias();
+                ddlFiltroCategoria.DataValueField = "Id";
+                ddlFiltroCategoria.DataTextField = "Descripcion";
+                ddlFiltroCategoria.DataBind();
+                rptCategorias.DataSource = NegocioCategoria.ListarCategorias();
+                rptCategorias.DataBind();
+
+                //articulos
+                NegocioArticulo = new NegocioArticulo();
+                Articulos = NegocioArticulo.ListarArticulos();
+
+                if (Session["listaPrincipal"]==null)
+                    Session.Add("listaPrincipal", new List<Articulo>());
+
+                Session["listaPrincipal"] = Articulos;
+                
+                dgvAdminArticulo.DataSource = Articulos;
+                dgvAdminArticulo.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+        }
+
+        protected void CargaDdl()
+        {
+            try
+            {
+                NegocioCategoria = new NegocioCategoria();
+                NegocioMarca = new NegocioMarca();
+                ddlCategoria.DataSource = NegocioCategoria.ListarCategorias();
+                ddlCategoria.DataTextField = "Descripcion";
+                ddlCategoria.DataValueField = "Id";
+                ddlCategoria.DataBind();
+                ddlMarca.DataSource = NegocioMarca.ListarMarcas();
+                ddlMarca.DataTextField = "Descripcion";
+                ddlMarca.DataValueField = "Id";
+                ddlMarca.DataBind();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private void CargarNuevoArticulo()
         {
+            //vistas
+            divEstadisticas.Visible = false;
+            sectionAdminPedidos.Visible = false;
+            sectionAdminPedidoIndividual.Visible = false;
+            sectionAdminUsuarios.Visible = false;
+            sectionModificarUsuario.Visible = false;
+            panelAdminCategorias.Visible = false;
+            sectionNuevaCategoria.Visible = false;
+            panelAdminMarcas.Visible = false;
+            sectionNuevaMarca.Visible = false;
 
+            sectionAdminArticulos.Visible = false;
+            dgvAdminArticuloIndividual.Visible = false;
+            sectionNuevoArticulo.Visible = true;
+            tituloEditarArticulo.Visible = false;
+            btnAgregar.Text = "Crear Articulo";
+            btnEliminarArticulo.Visible = false;
+
+            //cargar ddls
+            CargaDdl();
         }
         private void CargarMarcas()
         {
@@ -101,10 +195,14 @@ namespace ecommerce_livingston
             sectionModificarUsuario.Visible = false;
             panelAdminCategorias.Visible = false;
             sectionNuevaCategoria.Visible = false;
+            sectionAdminArticulos.Visible = false;
+            dgvAdminArticuloIndividual.Visible = false;
+            sectionNuevoArticulo.Visible = false;
 
             panelAdminMarcas.Visible = true;
             sectionNuevaMarca.Visible = false;
         }
+
         private void CargarCategorias()
         {
             NegocioCategoria = new NegocioCategoria();
@@ -119,6 +217,9 @@ namespace ecommerce_livingston
             sectionModificarUsuario.Visible = false;
             panelAdminMarcas.Visible = false;
             sectionNuevaMarca.Visible = false;
+            sectionAdminArticulos.Visible = false;
+            dgvAdminArticuloIndividual.Visible = false;
+            sectionNuevoArticulo.Visible = false;
 
             panelAdminCategorias.Visible = true;
             sectionNuevaCategoria.Visible = false;
@@ -158,6 +259,9 @@ namespace ecommerce_livingston
             sectionNuevaMarca.Visible = false;
             panelAdminCategorias.Visible = false;
             sectionNuevaCategoria.Visible = false;
+            sectionAdminArticulos.Visible = false;
+            dgvAdminArticuloIndividual.Visible = false;
+            sectionNuevoArticulo.Visible = false;
 
             sectionAdminUsuarios.Visible=true;
             lblAdministracionUsuarios.Visible = true;
@@ -658,32 +762,67 @@ namespace ecommerce_livingston
         }
 
 
-        /* protected void btnCrearNuevoPedidoMenu_Click(object sender, EventArgs e)
+        #endregion
+
+
+        #region SUBMENU ARTICULOS
+
+        //filtros
+        private List<Articulo> filtrarLista(object param, string tipoParam = null)
         {
             try
             {
-                sectionAdminPedidosTodos.Visible = false;
-                divEstadisticas.Visible = false;
+                if (Session["listaPrincipal"] == null)
+                    return null;
+                if (Session["listaFiltrada"] == null)
+                    Session.Add("listaFiltrada", new List<Articulo>());
 
-                //cargo articulos
-                ddlAgregarArticuloPedido.DataSource = new NegocioArticulo().ListarArticulos();
-                ddlAgregarArticuloPedido.DataTextField = "Nombre";
-                ddlAgregarArticuloPedido.DataValueField = "Id";
-                ddlAgregarArticuloPedido.DataBind();
+                List<Articulo> listaPrincipal = (List<Articulo>)Session["listaPrincipal"];
+                List<Articulo> listaFiltrada = (List<Articulo>)Session["listaFiltrada"];
 
-                if (Session["PedidoArticulosListaEdit"] != null)
-                    Session.Remove("PedidoArticulosListaEdit");
+                if (param is string)
+                {
+                    string match = param as string;
 
-                accordionPedidoArticulos.Visible = true;
+                    if (tipoParam == "estado")
+                    {
+                        if (match == "Activo")
+                            listaFiltrada = listaPrincipal.FindAll(art => art.Estado == true);
+                        else if (match == "Inactivo")
+                            listaFiltrada = listaPrincipal.FindAll(art => art.Estado == false);
+                    }
+                    else
+                    {
+                        listaFiltrada = listaPrincipal.FindAll(
+                            x => (x.Nombre.ToUpperInvariant().Contains(match.ToUpperInvariant()) ||
+                            x.Marca.Descripcion.ToUpperInvariant().Contains(match.ToUpperInvariant()))
+                            );
+                    }
+                }
+                else if (param is int)
+                {
+                    int match = (int)param;
 
-                seccionEditarPedidos.Visible = true;
-                lblNuevoPedido.Visible = true;
-                lblModificarPedido.Visible = false;
-                btnEliminarArticulosPedido.Visible = false;
+                    if (tipoParam == "idCate")
+                        listaFiltrada = listaPrincipal.FindAll(art => art.Categoria.Id == match);
+                    else if (tipoParam == "idMarca")
+                        listaFiltrada = listaPrincipal.FindAll(art => art.Marca.Id == match);
+                }
+                Session["listaFiltrada"] = listaFiltrada;
+                return listaFiltrada;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-                txtFechaModificarPedido.Text = DateTime.Now.ToString("yyyy-MM-dd");
-
-                //falta ocultar otros submenu
+        protected void btnFiltroMarca_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dgvAdminArticulo.DataSource = filtrarLista(int.Parse(((Button)sender).CommandArgument), "idMarca");
+                dgvAdminArticulo.DataBind();
             }
             catch (Exception ex)
             {
@@ -691,7 +830,339 @@ namespace ecommerce_livingston
                 Response.Redirect("Error.aspx", false);
             }
         }
-        */
+
+        protected void btnFiltroCate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dgvAdminArticulo.DataSource = filtrarLista(int.Parse(((Button)sender).CommandArgument), "idCate");
+                dgvAdminArticulo.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+        }
+
+        protected void btnFiltroEstadoAlta_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dgvAdminArticulo.DataSource = filtrarLista(((Button)sender).CommandArgument, "estado");
+                dgvAdminArticulo.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+        }
+
+        protected void btnFiltroEstadoBaja_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                dgvAdminArticulo.DataSource = filtrarLista(((Button)sender).CommandArgument, "estado");
+                dgvAdminArticulo.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+        }
+
+        protected void btnFiltro_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<Articulo> listaArticulos;
+                List<Articulo> listaFiltrada;
+
+                if (Session["listaFiltrada"] == null)
+                    Session.Add("listaFiltrada", new List<Articulo>());
+
+                listaArticulos = (List<Articulo>)Session["listaPrincipal"];
+                if (listaArticulos == null) return;
+
+                listaFiltrada = listaArticulos.FindAll(x =>
+                    x.Categoria.Descripcion.Contains(ddlFiltroCategoria.Text)
+                    && x.Marca.Descripcion.Contains(ddlFiltroMarca.Text));
+
+                Session["listaFiltrada"] = listaFiltrada;
+                dgvAdminArticulo.DataSource = listaFiltrada;
+                dgvAdminArticulo.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx");
+            }
+        }
+
+        protected void btnFiltroPrecioDesc_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<Articulo> listaArticulos;
+                if (Session["listaFiltrada"] == null)
+                    listaArticulos = (List<Articulo>)Session["listaPrincipal"];
+                else
+                    listaArticulos = (List<Articulo>)Session["listaFiltrada"];
+
+                dgvAdminArticulo.DataSource = listaArticulos?.OrderByDescending(Productos => Productos.Precio).ToList();
+                dgvAdminArticulo.DataBind();
+
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx");
+            }
+
+        }
+
+        protected void btnFiltroPrecioAsc_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<Articulo> listaArticulos;
+                if (Session["listaFiltrada"] == null)
+                    listaArticulos = (List<Articulo>)Session["listaPrincipal"];
+                else
+                    listaArticulos = (List<Articulo>)Session["listaFiltrada"];
+
+                dgvAdminArticulo.DataSource = listaArticulos?.OrderBy(Productos => Productos.Precio).ToList();
+                dgvAdminArticulo.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx");
+            }
+
+        }
+
+        protected void btnBorrarFilros_Click(object sender, EventArgs e)
+        {
+            Session.Remove("listaFiltrada");
+            CargarArticulos();
+        }
+
+
+        //lista
+
+        
+
+        private void CargarArticuloEnformulario(Articulo art)
+        {
+            tbIdArt.Text = art.Id.ToString();
+            tbNombreArt.Text = art.Nombre;
+            tbDescripArt.Text = art.Descripcion;
+            tbPrecioArt.Text = art.Precio.ToString();
+            tbStockArt.Text = art.Stock.ToString();
+            CargaDdl();
+            tbImgArt.Text = art.ImagenUrl;
+            imgNuevoArt.ImageUrl = art.ImagenUrl;
+        }
+
+        protected void btnEditarArticulo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                NegocioArticulo = new NegocioArticulo();
+                int id = int.Parse(((Button)sender).CommandArgument);
+
+                articulo = NegocioArticulo.ListarArticulos(id);
+
+                CargarArticuloEnformulario(articulo);
+                ddlCategoria.SelectedValue = articulo.Categoria.Id.ToString();
+                ddlMarca.SelectedValue = articulo.Marca.Id.ToString();
+
+                dgvAdminArticuloIndividual.Visible = true;
+                dgvAdminArticulo.Visible = false;
+                sectionNuevoArticulo.Visible = true;
+                tituloNuevoArticulo.Visible = false;
+                tituloEditarArticulo.Visible = true;
+                btnAgregar.Text = "Guardar Cambios";
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+        }
+
+        protected void btnCambiarEstadoArticulo_Click(object sender, EventArgs e)
+        {
+            NegocioArticulo = new NegocioArticulo();
+            int id = int.Parse(((Button)sender).CommandArgument);
+
+            string estado = ((Button)sender).CommandName;
+            if (estado == "ALTA")
+                NegocioArticulo.CambiarEstado(id, true);
+            else if (estado == "BAJA")
+                NegocioArticulo.CambiarEstado(id, false);
+
+            Articulos = NegocioArticulo.ListarArticulos();
+            dgvAdminArticulo.DataSource = Articulos;
+            dgvAdminArticulo.DataBind();
+        }
+
+        protected void dgvAdmin_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            dgvAdminArticulo.PageIndex = e.NewPageIndex;
+            CargarArticulos();
+        }
+
+        //nuevo articulo
+
+        protected void tbImgArt_TextChanged(object sender, EventArgs e)
+        {
+            imgNuevoArt.ImageUrl = tbImgArt.Text;
+        }
+
+
+
+
+        protected void btnAgregar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string tipo = ((Button)sender).Text; 
+                marca = new Marca();
+                marca.Id = Convert.ToInt32(ddlMarca.SelectedValue);
+                marca.Descripcion = ddlMarca.SelectedItem.ToString();
+                categoria = new Categoria();
+                categoria.Id = Convert.ToInt32(ddlCategoria.SelectedValue);
+                categoria.Descripcion = ddlCategoria.SelectedItem.ToString();
+
+                NegocioArticulo = new NegocioArticulo();
+                articulo = new Articulo();
+
+                //valido
+                if (string.IsNullOrWhiteSpace(tbIdArt.Text) || !tbIdArt.Text.All(c => char.IsNumber(c)))
+                {
+                    lblRespuestaError.Text = "Debe ingresar un ID y tiene que ser un numero";
+                    lblErrorArticulos.Visible = true;
+                    sectionNuevoArticulo.Visible = true;
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(tbNombreArt.Text))
+                {
+                    lblRespuestaError.Text = "Debe Ingresar un Nombre";
+                    lblErrorArticulos.Visible = true;
+                    sectionNuevoArticulo.Visible = true;
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(tbPrecioArt.Text))
+                {
+                    lblRespuestaError.Text = "Debe ingresar un Precio";
+                    lblErrorArticulos.Visible = true;
+                    sectionNuevoArticulo.Visible = true;
+                    return;
+                } //falta validar si es solo numero
+                
+                if (string.IsNullOrWhiteSpace(tbStockArt.Text))
+                {
+                    lblRespuestaError.Text = "Debe ingresar un stock";
+                    lblErrorArticulos.Visible = true;
+                    sectionNuevoArticulo.Visible = true;
+                    return;
+                }
+                if (!tbStockArt.Text.All(c => char.IsDigit(c) || char.IsNumber(c)))
+                {
+                    lblRespuestaError.Text = "El Stock esta mal Ingresado";
+                    lblErrorArticulos.Visible = true;
+                    sectionNuevoArticulo.Visible = true;
+                    return;
+                }
+
+                decimal result = decimal.Parse(tbPrecioArt.Text);
+
+                if (result < 0 || int.Parse(tbStockArt.Text) < 0)
+                {
+                    lblRespuestaError.Text = "El Precio/Stock no puede ser negativo";
+                    lblErrorArticulos.Visible = true;
+                    sectionNuevoArticulo.Visible = true;
+                    return;
+                }
+                articulo.Id = Convert.ToInt32(tbIdArt.Text);
+                articulo.Nombre = tbNombreArt.Text;
+                articulo.Descripcion = tbDescripArt.Text;
+                articulo.ImagenUrl = tbImgArt.Text;
+                articulo.Precio = result;
+                articulo.Marca = marca;
+                articulo.Categoria = categoria;
+                articulo.Estado = true;
+                articulo.Stock = int.Parse(tbStockArt.Text);
+
+                //guardo
+                if (btnAgregar.Text == "Crear Articulo")
+                {
+                    if (NegocioArticulo.CrearArticulo(articulo) == 1)
+                    {
+                        Mensajes.Mensajes.MensajePopUp(this, "Articulo Creado Exitosamente");
+                        CargarArticulos();
+                    }
+                }
+                else if (btnAgregar.Text == "Guardar Cambios")
+                {
+                    if (NegocioArticulo.ModificarArticulo(articulo) == 1)
+                    {
+                        Mensajes.Mensajes.MensajePopUp(this, "Articulo Modificado Exitosamente");
+                        CargarArticulos();
+                    }
+                }
+                else
+                {
+                    Mensajes.Mensajes.MensajePopUp(this, "Hubo un error en la creacion/modificacion del articulo");
+                } 
+            }
+            catch (Exception ex)
+            {
+                Session.Add("Error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+
+        } //revisar validaciones
+
+        
+        protected void btnLinkVolverListaArticulos_Click(object sender, EventArgs e)
+        {
+            NegocioArticulo = new NegocioArticulo();
+            dgvAdminArticulo.DataSource = NegocioArticulo.ListarArticulos();
+            dgvAdminArticulo.DataBind();
+            sectionAdminArticulos.Visible=true;
+            dgvAdminArticulo.Visible = true;
+            dgvAdminArticuloIndividual.Visible = false;
+        }
+
+
+        protected void btnEliminarArticulo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int idMatch = int.Parse(tbIdArt.Text);
+                NegocioArticulo = new NegocioArticulo();
+                if (NegocioArticulo.EliminarArticulo(idMatch) > 0)
+                {
+
+                    Mensajes.Mensajes.MensajePopUp(this, "Articulo Eliminado");
+                    CargarArticulos();
+                }
+                else
+                {
+                    Mensajes.Mensajes.MensajePopUp(this, "Hubo un error en la eliminacion del articulo");
+                }
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+        }
 
 
         #endregion
