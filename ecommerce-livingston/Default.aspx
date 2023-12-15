@@ -1,8 +1,9 @@
 ﻿<%@ Page Title="Ojo de Aguila" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="ecommerce_livingston.Default" %>
 
-
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <main>
+
+        <!-- carousel -->
          <div id="carousel-1" class="carousel slide mt-5" data-bs-ride="false">
              <div class="carousel-inner">
                  <div class="carousel-item active"><img class="w-100 d-block" src="/Content/img/banner/banner-01.jpg" alt="Slide Image" /></div>
@@ -18,18 +19,19 @@
              </div>
          </div>
 
-         <div class="container mt-5 container-inicio">
+        <!-- categorias -->
+         <div class="container mt-5 container-inicio rounded pb-5 mb-4">
              <div class="row">
                  <div class="col">
-                     <h1 class="mt-5 fw-bold text-light">Encontra todo lo que buscas</h1>
+                     <h1 class="mt-4 fw-bold text-dark">Encontra todo lo que buscas</h1>
                      <div class="slider responsive">
                          <asp:Repeater runat="server" ID="rptCategorias">
                              <ItemTemplate>
-                                 <div class="card text-center" style="width: 18rem;">
+                                 <div class="card text-center mb-3" style="width: 18rem;">
                                     <div class="div-inicio-img">
                                         <asp:ImageButton ImageUrl='<%# Eval("ImagenUrl") %>' class="card-img-top inicio-img" OnClick="btnImgCategoria_Click" CommandArgument='<%# Eval("Id") %>' runat="server" />
                                     </div>
-                                  <div class="card-body">
+                                  <div>
                                     <h5 class="card-header"><%#Eval("Descripcion") %></h5>
                                   </div>
                                 </div>
@@ -40,18 +42,16 @@
              </div>
          </div>
          
-         <div class="container mt-5 container-inicio">
+        <!-- marcas -->
+         <div class="container mt-5 container-inicio rounded">
              <div class="row">
                  <div class="col">
-                     <h1 class="mt-5 fw-bold text-light">Las Mejores Marcas</h1>
+                     <h1 class="mt-4 fw-bold text-dark">Las Mejores Marcas</h1>
                      <div class="slider responsive">
                          <asp:Repeater runat="server" ID="rptMarcas">
                              <ItemTemplate>
-                                 <div class="card div-inicio-img" style="width: 18rem;">
-                                  <asp:ImageButton ImageUrl='<%# Eval("ImagenUrl") %>' class="card-img-top inicio-img" OnClick="btnImgMarca_Click" CommandArgument='<%# Eval("Id") %>' runat="server" />
-                                  <div class="card-body">
-                                    <h5 class="card-title"><%#Eval("Descripcion") %></h5>
-                                  </div>
+                                 <div class="card div-inicio-img text-center">
+                                  <asp:ImageButton ImageUrl='<%# Eval("ImagenUrl") %>' class="card-img" OnClick="btnImgMarca_Click" CommandArgument='<%# Eval("Id") %>' runat="server" style="max-height:170px; width:15rem;"/>
                                 </div>
                              </ItemTemplate>
                          </asp:Repeater>

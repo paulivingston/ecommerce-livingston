@@ -49,10 +49,13 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 17rem;
 }
 .inicio-img {
     max-height:175px;
-    width:auto
+    width:15rem;
+    align-self:center;
+    justify-self:center;
 }
 
 /* Productos */
