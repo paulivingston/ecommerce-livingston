@@ -124,7 +124,7 @@ namespace Negocio
             }
         }
 
-        public void CrearUsuario(Usuario usuario)
+        public int CrearUsuario(Usuario usuario)
         {
             datos = new DatabaseAccess();
             try
@@ -141,6 +141,7 @@ namespace Negocio
                 datos.SetParameter("@Activo", usuario.Activo);
 
                 datos.ExecuteNonQuery();
+                return 1;
             }
             catch (Exception ex)
             {
