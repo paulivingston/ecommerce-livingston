@@ -182,6 +182,8 @@ namespace ecommerce_livingston
                     item.ImagenUrl = articulo.ImagenUrl;
                     item.Cantidad = 1;
                     carrito.AgregarItem(item);
+
+                    Mensajes.Mensajes.MensajePopUp(this, "Articulo agregado el carrito");
                 }
 
                 totalItemsCarrito();

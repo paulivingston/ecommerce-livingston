@@ -128,7 +128,7 @@ namespace Negocio
             }
         }
 
-        public int CrearPedido(Pedido pedido, string tipo)
+        public int CrearPedido(Pedido pedido)
         {
             datos = new DatabaseAccess();
 
@@ -136,7 +136,7 @@ namespace Negocio
             {
                 int totalItems = (pedido.totalItems == null) ? pedido.Cantidad : pedido.totalItems.Count;
 
-                datos.SetProcedure("sp_AgregarPedido");
+                datos.SetProcedure("sp_CrearPedido");
                 datos.SetParameter("@IdUsuario", pedido.IdUsuario);
                 datos.SetParameter("@Cantidad", totalItems);
                 datos.SetParameter("@Estado", pedido.Estado);
@@ -144,13 +144,11 @@ namespace Negocio
                 datos.SetParameter("@Descuento", pedido.Descuento);
                 datos.SetParameter("@PrecioTotal", pedido.precioTotal);
 
-                datos.ExecuteNonQuery();
-
-                return 1;
+                return datos.ExecuteScalar();
             }
-            catch
+            catch (Exception ex)
             {
-                return 0;
+                throw ex;
             }
             finally
             {
@@ -241,7 +239,7 @@ namespace Negocio
                 pedido = new Pedido();
 
                 pedido.IdUsuario = usuario.Id;
-                pedido.Usuario = usuario.Nombre + usuario.Apellido;
+                pedido.Usuario = usuario.Nombre + ' ' + usuario.Apellido;
                 pedido.fecha = DateTime.Now;
                 pedido.Estado = "INICIADO";
                 pedido.DireccionEntrega = dirEntrega ?? usuario.Direccion;
@@ -442,29 +440,8 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_CantidadPedidos");
-                datos.ReadData();
 
-                return (int)datos.Reader["Cantidad"];
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                datos.CloseConnection();
-            }
-        }
-
-        public int CantidadPedidosMesAnterior()
-        {
-            datos = new DatabaseAccess();
-            try
-            {
-                datos.SetProcedure("sp_CantidadPedidosMesAnterior");
-                datos.ReadData();
-
-                return (int)datos.Reader["Cantidad"];
+                return datos.ExecuteScalar();
             }
             catch (Exception ex)
             {
@@ -482,9 +459,8 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_RecaudacionTotal");
-                datos.ReadData();
 
-                return (decimal)datos.Reader["Recaudacion"];
+                return datos.ExecuteScalar();
             }
             catch (Exception ex)
             {
@@ -502,9 +478,8 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_RecaudacionPromedio");
-                datos.ReadData();
 
-                return (decimal)datos.Reader["Recaudacion"];
+                return datos.ExecuteScalar();
             }
             catch (Exception ex)
             {
@@ -522,9 +497,8 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_PedidosCompletados");
-                datos.ReadData();
 
-                return (int)datos.Reader["Completados"];
+                return datos.ExecuteScalar();
             }
             catch (Exception ex)
             {
@@ -542,9 +516,8 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_PedidosPendientes");
-                datos.ReadData();
 
-                return (int)datos.Reader["Pendientes"];
+                return datos.ExecuteScalar();
             }
             catch (Exception ex)
             {
@@ -562,9 +535,8 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_CantidadUsuarios");
-                datos.ReadData();
 
-                return (int)datos.Reader["Usuarios"];
+                return datos.ExecuteScalar();
             }
             catch (Exception ex)
             {
@@ -582,9 +554,8 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_CantidadArticulos");
-                datos.ReadData();
 
-                return (int)datos.Reader["Articulos"];
+                return datos.ExecuteScalar();
             }
             catch (Exception ex)
             {
@@ -602,9 +573,8 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_CantidadMarcas");
-                datos.ReadData();
 
-                return (int)datos.Reader["Marcas"];
+                return datos.ExecuteScalar();
             }
             catch (Exception ex)
             {

@@ -56,10 +56,10 @@ CREATE TABLE IMAGENES(
 
 GO
 
+
 CREATE TABLE PEDIDOS(
 	IdPedido INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	IdUsuarios INT NOT NULL,
-	IdArticulos INT NOT NULL,
 	Cantidad INT NOT NULL,
 	Fecha DATE NOT NULL,
 	Estado VARCHAR(20) NOT NULL,
@@ -396,7 +396,6 @@ BEGIN
 		Descuento, 
 		PrecioTotal
 		)
-	OUTPUT inserted.IdPedido
 	VALUES (
 		@IdUsuario, 
 		@Cantidad, 
@@ -406,6 +405,8 @@ BEGIN
 		@Descuento, 
 		@PrecioTotal
 		)
+
+		SELECT @@IDENTITY AS 'Id'
 END
 GO
 
@@ -700,18 +701,6 @@ BEGIN
 	WHERE 
 		ESTADO='FINALIZADO' 
 		OR ESTADO='INICIADO'
-END
-GO
-
-CREATE PROCEDURE sp_CantidadPedidosMesAnterior
-AS
-BEGIN
-	SELECT COUNT(*) AS 'Cantidad'
-	FROM PEDIDOS 
-	WHERE 
-		ESTADO='FINALIZADO' 
-		OR ESTADO='INICIADO'
-		AND MONTH(Fecha)=MONTH(GETDATE())-1
 END
 GO
 

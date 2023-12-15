@@ -250,7 +250,7 @@ namespace Negocio
                 datos.SetProcedure("sp_ComprobarIdUsuario");
                 datos.SetParameter("@id", id);
 
-                return Convert.ToInt32(datos.ExecuteScalar());
+                return datos.ExecuteScalar();
             }
             catch (Exception ex)
             {

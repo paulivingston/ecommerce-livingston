@@ -12,7 +12,10 @@ namespace ecommerce_livingston
 {
     public partial class Carrito : System.Web.UI.Page
     {
+        NegocioUsuario NegocioUsuario;
+        Usuario usuario;
         NegocioItemCarrito items;
+        NegocioPedido NegocioPedido;
         public bool logged = false;
         protected decimal totalAcumulado = 0;
         public decimal TotalAcumulado
@@ -31,7 +34,21 @@ namespace ecommerce_livingston
                     items = Session["listaCarrito"] as NegocioItemCarrito;
                     var listaItems = items?.Items;
 
-                    CargarPantallaCarrito(listaItems);
+                    if (Request.QueryString["text"] == "ok")
+                    {
+                        NegocioUsuario = new NegocioUsuario();
+                        usuario = (Usuario)Session["usuarioActual"];
+                        CargarPantallaFinalizarCompra(NegocioUsuario.IsLogged(usuario), listaItems);
+                    }
+                    else
+                    {
+                        CargarPantallaCarrito(listaItems);
+                    }
+                }
+
+                if (Session["totalCarrito"] != null)
+                {
+                    totalAcumulado = (decimal)Session["totalCarrito"];
                 }
             }
             catch (Exception ex)
@@ -202,11 +219,11 @@ namespace ecommerce_livingston
         {
             try
             {
-                NegocioPedido pedidoNegocio = new NegocioPedido();
-                NegocioUsuario negocioUsuario = new NegocioUsuario();
-                Usuario usuarioActual = (Usuario)Session["usuarioActual"];
+                NegocioPedido = new NegocioPedido();
+                NegocioUsuario = new NegocioUsuario();
+                usuario = (Usuario)Session["usuarioActual"];
 
-                if (negocioUsuario.IsLogged(usuarioActual))
+                if (NegocioUsuario.IsLogged(usuario))
                 {
                     items = Session["listaCarrito"] as NegocioItemCarrito;
                     List<ItemCarrito> lista = items.Items;
@@ -217,12 +234,12 @@ namespace ecommerce_livingston
                         return;
                     }
 
-                    Pedido pedido = pedidoNegocio.CargarPedido(lista, usuarioActual, totalAcumulado);
+                    Pedido pedido = NegocioPedido.CargarPedido(lista, usuario, totalAcumulado);
 
-                    int resPedido = 0;
+                    
                     int resArticulos = 0;
 
-                    resPedido = pedidoNegocio.CrearPedido(pedido, "sp");
+                    int resPedido = (int)NegocioPedido.CrearPedido(pedido);
                     if (resPedido == 0)
                     {
                         Mensajes.Mensajes.MensajePopUp(this, "Ocurrio Un Error al Cargar el Pedido");
@@ -230,8 +247,8 @@ namespace ecommerce_livingston
                     }
                     else
                     {
-                        pedidoNegocio.CargarIdPedido(pedido.totalItems, resPedido);
-                        resArticulos = pedidoNegocio.AgregarArticuloPedido(pedido.totalItems);
+                        NegocioPedido.CargarIdPedido(pedido.totalItems, resPedido);
+                        resArticulos = NegocioPedido.AgregarArticuloPedido(pedido.totalItems);
                     }
 
                     if (resArticulos == pedido.totalItems.Count)
@@ -240,10 +257,9 @@ namespace ecommerce_livingston
                         Usuario user = Session["usuarioActual"] as Usuario;
                         emailService.ArmarCorreo(user.Mail, "Ojo de Aguila", newHtmlMsj(user));
                         emailService.EnviarCorreo();
-                        Mensajes.Mensajes.MensajePopUp(this, "Pedido Cargado Correctamente");
+                        Mensajes.Mensajes.MensajePopUp(this, "Pedido Cargado Correctamente.");
 
-                        btnConfirmarPedido.Enabled = false;
-                        datosDePago.Visible = true;
+                        Response.Redirect("Default.aspx", false);
                     }
                     else
                     {
@@ -269,13 +285,19 @@ namespace ecommerce_livingston
             {
                 divCarritoVacio.Visible = false;
                 divCarrito.Visible = false;
-                datosDePago.Visible = false;
                 divResumen.Visible = true;
 
                 if (logged)
+                {
+                    divBtnConfirmarReserva.Visible = true;
                     divRegistroOLoginNecesario.Visible = false;
+                }
                 else
+                {
+                    divRegistroOLoginNecesario.Visible = true;
                     divBtnConfirmarReserva.Visible = false;
+                }
+                    
 
                 rptCarrito.DataSource = lista;
                 rptCarrito.DataBind();
@@ -285,7 +307,6 @@ namespace ecommerce_livingston
             {
                 divCarritoVacio.Visible = true;
                 divCarrito.Visible = false;
-                datosDePago.Visible = false;
                 divResumen.Visible = false;
             }
         }
