@@ -793,44 +793,36 @@
                         <%-- panel agregar o modificar usuarios --%>
                         <asp:UpdatePanel ID="updatePanelModificarUsuario" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
-                                <!-- Card Usuarios -->
                                 <div class="row d-flex justify-content-center align-items-center vh-100" runat="server" id="sectionModificarUsuario" visible="false">
                                     <div class="col col-lg-10 mb-4 mb-lg-0 ">
                                         <div class="card mb-3" style="border-radius: .5rem;">
                                             <div class="row g-0">
-                                                <!-- Columna de Imagen -->
                                                 <div class="col-md-4  text-center bg-warning text-white"
                                                     style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
                                                     <asp:Image ID="userImg" runat="server" ImageUrl="~/recursos/img/avatar.png" Width="120px" CssClass="img-fluid my-5" />
                                                     <h6>
-                                                        <!-- ID Usuario -->
                                                         <strong class="fs-5 text-dark">ID Usuario
-                                                                    <asp:Label runat="server" ID="txtId" />
+                                                            <asp:Label runat="server" ID="txtId" />
                                                         </strong>
                                                     </h6>
                                                 </div>
-                                                <!-- Columna de Inputs -->
                                                 <div class="col-md-8">
                                                     <div class="card-body p-4">
                                                         <h6>Información del usuario</h6>
                                                         <hr class="mt-0 mb-4">
                                                         <div class="row pt-1">
-                                                            <!-- Nombre -->
                                                             <div class="col-6 mb-3">
                                                                 <h6>Nombre/s</h6>
                                                                 <asp:TextBox type="text" runat="server" ID="txtNombre" CssClass="text-muted form-control" required pattern="[A-Za-z]+"/>
                                                             </div>
-                                                            <!-- Apellido -->
                                                             <div class="col-6 mb-3">
                                                                 <h6>Apellido/s</h6>
                                                                 <asp:TextBox type="text" runat="server" ID="txtApellido" CssClass="text-muted form-control" required pattern="^[A-Za-z\\s]+$"/>
                                                             </div>
-                                                            <!-- MAIL -->
                                                             <div class="col-6 mb-3">
                                                                 <h6>Email</h6>
                                                                 <asp:TextBox type="email" runat="server" ID="txtEmail" CssClass="text-muted form-control" required pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"/>
                                                             </div>
-                                                            <!-- DNI -->
                                                             <div class="col-6 mb-3">
                                                                 <h6>Nro. Documento</h6>
                                                                 <asp:TextBox type="number" runat="server" ID="txtDni" CssClass="text-muted form-control" required pattern="^\d+$"/>
@@ -838,18 +830,14 @@
                                                             <h6>Contacto</h6>
                                                             <hr class="mt-0 mb-4">
                                                             <div class="row pt-1">
-                                                                <!-- PASS -->
                                                                 <div class="col-6 mb-3">
                                                                     <h6>Contraseña</h6>
                                                                     <asp:TextBox runat="server" ID="txtClave" CssClass="text-muted form-control" required/>
-                                                                    <%--patron para solo aceptar claves con un mayus, numeros y minusculas    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"    --%>
                                                                 </div>
-                                                                <!-- DIR -->
                                                                 <div class="col-6 mb-3">
                                                                     <h6>Dirección</h6>
                                                                     <asp:TextBox type="text" runat="server" ID="txtDomicilio" CssClass="text-muted form-control" required />
                                                                 </div>
-                                                                <!-- NIVEL -->
                                                                 <div class="col-6 mb-3">
                                                                     <h6>Nivel de usuario</h6>
                                                                     <asp:DropDownList ID="ddlTipoUsuario" runat="server" CssClass="form-select">
@@ -859,15 +847,13 @@
                                                                     </asp:DropDownList>
                                                                 </div>
                                                             </div>
-                                                            <!-- Botones -->
                                                             <div class="row">
                                                                 <div class="d-flex justify-content-end">
                                                                     <asp:Button Text="Dar de alta" runat="server" ID="btnAltaUsuario" CommandName="ALTA" OnClientClick="return confirm('¿Desea dar del alta al usuario seleccionado?');" OnClick="btnCambiarEstadoUsuario_Click" CssClass="btn btn-outline-success mt-3 me-3" />
                                                                     <asp:Button Text="Dar de baja" runat="server" ID="btnBajaUsuario" CommandName="BAJA" OnClientClick="return confirm('¿Desea bar de baja al usuario seleccionado?');" OnClick="btnCambiarEstadoUsuario_Click" CssClass="btn btn-outline-danger mt-3 me-3" />
                                                                     <asp:Button Text="Eliminar" runat="server" ID="btnEliminarUsuario" OnClientClick="return confirm('¿Desea eliminar definitivamente el usuario seleccionado?');" OnClick="btnEliminarUsuario_Click" CssClass="btn btn-danger mt-3 me-3" />
-                                                                    <asp:Button Text="Guardar Cambios" runat="server" ID="btnGuardarUsuario" OnClientClick="return confirm('¿Confirma modificación del usuario?');" OnClick="btnGuardarUsuario_Click" CssClass="btn btn-dark mt-3" />
+                                                                    <asp:Button Text="Guardar Cambios" runat="server" ID="btnGuardarUsuario" OnClientClick="return confirm('¿Confirma guardar?');" OnClick="btnGuardarUsuario_Click" CssClass="btn btn-dark mt-3" />
                                                                 </div>
-                                                                <!-- Link Volver a Lista Usuarios (TEST) -->
                                                                 <div class="d-flex justify-content-center">
                                                                     <asp:LinkButton Text="Volver a Lista Usuarios" CssClass="link-body-emphasis" ID="lnkVolverListaUsuarios" CommandName="btnVolverListaUsuarios" OnClick="lnkVolverListaUsuarios_Click" runat="server" />
                                                                 </div>
@@ -879,10 +865,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Fin Card Usuarios -->
                             </ContentTemplate>
                         </asp:UpdatePanel>
-                        <%-- Fin Modifciar/Agregar Usuario --%>
 
                     </ContentTemplate>
                 </asp:UpdatePanel>

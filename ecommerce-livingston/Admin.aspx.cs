@@ -51,6 +51,8 @@ namespace ecommerce_livingston
             sectionAdminPedidosTodos.Visible = true;
             dgvAdminPedidos.Visible = true;
             sectionAdminUsuarios.Visible = false;
+            sectionModificarUsuario.Visible = false;
+            sectionAdminPedidoIndividual.Visible = false;
         }
 
         protected void btnPedidosTodos_Click(object sender, EventArgs e)
@@ -76,8 +78,8 @@ namespace ecommerce_livingston
             sectionAdminUsuarios.Visible=true;
             lblAdministracionUsuarios.Visible = true;
             filtrosUsuarios.Visible = true;
-
-
+            sectionModificarUsuario.Visible = false;
+            sectionAdminPedidoIndividual.Visible = false;
         }
 
         protected void btnUsuariosTodos_Click(object sender, EventArgs e)
@@ -87,6 +89,24 @@ namespace ecommerce_livingston
 
         protected void btnAgregarNuevoUsuario_Click(object sender, EventArgs e)
         {
+            btnGuardarUsuario.Text = "Agregar Usuario";
+
+            txtId.Text = string.Empty;
+            txtNombre.Text = string.Empty;
+            txtApellido.Text = string.Empty;
+            txtEmail.Text = string.Empty;
+            txtClave.Text = string.Empty;
+            txtDni.Text = string.Empty;
+            txtDomicilio.Text = string.Empty;
+
+            dgvAdminUsuario.Visible = false;
+            btnAltaUsuario.Visible = false;
+            btnBajaUsuario.Visible = false;
+            btnEliminarUsuario.Visible = false;
+            sectionModificarUsuario.Visible = true;
+            lblAdministracionUsuarios.Visible = true;
+            divEstadisticas.Visible = false;
+            filtrosUsuarios.Visible = false;
         }
 
         #endregion
@@ -199,7 +219,7 @@ namespace ecommerce_livingston
                 if (idPedido != 0)
                     Pedidos.RemoveAll(itm => itm.IdPedido != idPedido);
                 if (nombreUser != string.Empty)
-                    Pedidos.RemoveAll(itm => itm.Usuario != nombreUser);
+                    Pedidos.RemoveAll(itm => itm.Usuario.ToUpperInvariant() != nombreUser.ToUpperInvariant());
                 if (fechaDesde != DateTime.MinValue)
                     Pedidos.RemoveAll(itm => itm.fecha.Date != fechaDesde.Date);
 
@@ -542,7 +562,14 @@ namespace ecommerce_livingston
 
         protected void btnVolverListaPedidos_Click(object sender, EventArgs e)
         {
-            CargarPedidos();
+            sectionAdminPedidosTodos.Visible = true;
+            dgvAdminPedidos.Visible = true;
+            dgvAdminPedido.Visible = false;
+            sectionAdminPedidoIndividual.Visible = false;
+
+            dgvArticulosPedido.Visible = false;
+            seccionEditarPedidos.Visible = false;
+            CargarUsuarios();
         }
 
 
@@ -589,6 +616,19 @@ namespace ecommerce_livingston
 
         //submenu usuarios
 
+        private void CargarUsuarioEditar(int id)
+        {
+            NegocioUsuario = new NegocioUsuario();
+            usuario = NegocioUsuario.ListarUsuarios(id);
+            txtNombre.Text = usuario.Nombre;
+            txtApellido.Text = usuario.Apellido;
+            txtEmail.Text = usuario.Mail;
+            txtClave.Text = usuario.Clave;
+            txtDni.Text = usuario.Dni.ToString();
+            txtDomicilio.Text = usuario.Direccion;
+            ddlTipoUsuario.SelectedValue = usuario.Nivel.ToString();
+            txtId.Text = usuario.Id.ToString();
+        }
 
         protected void btnFiltrarEstadoUsuarios_Click(object sender, EventArgs e)
         {
@@ -617,6 +657,37 @@ namespace ecommerce_livingston
         {
             try
             {
+                NegocioUsuario = new NegocioUsuario();
+                Usuarios = NegocioUsuario.ListarUsuarios();
+
+                int idUsuario = string.IsNullOrWhiteSpace(txtIdFiltro_Usuario.Text) ? 0 : Convert.ToInt32(txtIdFiltro_Usuario.Text);
+                int dni = string.IsNullOrWhiteSpace(txtDNIFiltro_Usuario.Text) ? 0 : Convert.ToInt32(txtDNIFiltro_Usuario.Text);
+                string nombre = string.IsNullOrWhiteSpace(txtNombreFiltro_Usuario.Text) ? string.Empty : txtNombreFiltro_Usuario.Text;
+                string apellido = string.IsNullOrWhiteSpace(txtApellidoFiltro_Usuario.Text) ? string.Empty : txtApellidoFiltro_Usuario.Text;
+
+                if (idUsuario != 0)
+                    Usuarios.RemoveAll(itm => itm.Id != idUsuario);
+                if (dni != 0)
+                    Usuarios.RemoveAll(itm => itm.Dni != dni);
+                if (nombre != string.Empty)
+                    Usuarios.RemoveAll(itm => itm.Nombre.ToUpperInvariant() != nombre.ToUpperInvariant());
+                if (apellido != string.Empty)
+                    Usuarios.RemoveAll(itm => itm.Apellido.ToUpperInvariant() != apellido.ToUpperInvariant());
+
+                dgvAdminUsuario.DataSource = Usuarios;
+                dgvAdminUsuario.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+        }
+        
+        protected void btnLimpiarFiltrosUsuarios_Click(object sender, EventArgs e)
+        {
+            try
+            {
                 CargarUsuarios();
             }
             catch (Exception ex)
@@ -625,41 +696,116 @@ namespace ecommerce_livingston
                 Response.Redirect("Error.aspx", false);
             }
         }
-        protected void btnLimpiarFiltrosUsuarios_Click(object sender, EventArgs e)
-        {
-        }
 
         protected void ibtEditarUsuario_Click(object sender, EventArgs e)
         {
+            sectionModificarUsuario.Visible = true;
+            dgvAdminUsuario.Visible = false;
+            CargarUsuarioEditar(int.Parse((sender as ImageButton).CommandArgument));
+            btnAltaUsuario.Visible = true;
+            btnBajaUsuario.Visible = true;
+            btnEliminarUsuario.Visible = true;
+            filtrosUsuarios.Visible = false;
         }
 
         protected void btnCambiarEstadoUsuario_Click(object sender, EventArgs e)
         {
-            //ex alta baja usuario
-            //CommandName="BAJA"
-        }
+            NegocioUsuario = new NegocioUsuario();
+            int id = int.Parse(((Button)sender).CommandArgument);
 
+            string estado = ((Button)sender).CommandName;
+            if (estado == "ALTA")
+                NegocioUsuario.AltaUsuario(id);
+            else if (estado == "BAJA")
+                NegocioUsuario.BajaUsuario(id);
+
+            Usuarios = NegocioUsuario.ListarUsuarios();
+            dgvAdminUsuario.DataSource = Usuarios;
+            dgvAdminUsuario.DataBind();
+        }
 
         protected void btnEliminarUsuario_Click(object sender, EventArgs e)
         {
+            usuario = new Usuario();
+            NegocioUsuario = new NegocioUsuario();
+            usuario.Id = int.Parse(txtId.Text);
+            NegocioUsuario.EliminarUsuario(usuario.Id);
+            CargarUsuarios();
         }
 
         protected void btnGuardarUsuario_Click(object sender, EventArgs e)
         {
+            try
+            {
+                //validaciones
+                if (Page.IsValid)
+                {
+                    if (string.IsNullOrEmpty(txtNombre.Text) || string.IsNullOrEmpty(txtApellido.Text) || string.IsNullOrEmpty(txtDni.Text) || string.IsNullOrEmpty(txtEmail.Text) || string.IsNullOrEmpty(txtClave.Text) || string.IsNullOrEmpty(txtDomicilio.Text))
+                    {
+                        Mensajes.Mensajes.MensajePopUp(this, "Hay campos erróneos o vacíos");
+                        return;
+                    }
+
+                    //asigno a usuario
+                    usuario = new Usuario();
+                    usuario.Nombre = txtNombre.Text;
+                    usuario.Apellido = txtApellido.Text;
+                    usuario.Mail = txtEmail.Text;
+                    usuario.Clave = txtClave.Text;
+                    usuario.Dni = int.Parse(txtDni.Text);
+                    usuario.Direccion = txtDomicilio.Text;
+                    usuario.UrlImgUsuario = "img/usuarios/default.png";
+                    usuario.Nivel = ddlTipoUsuario.SelectedValue.ToString();
+                    usuario.Activo = true;
+                    NegocioUsuario = new NegocioUsuario();
+
+                    //agregar
+                    int res = 0;
+                    if (btnGuardarUsuario.Text == "Agregar Usuario")
+                    {
+                        btnGuardarUsuario.Text = "Guardar Cambios";
+                        NegocioUsuario.CrearUsuario(usuario);
+                        Mensajes.Mensajes.MensajePopUp(this, "Usuario Agregado Exitosamente");
+                        res++;
+                    }
+                    //modificar
+                    else if (btnGuardarUsuario.Text == "Guardar Cambios")
+                    {
+                        NegocioUsuario.ModificarUsuario(usuario);
+                        Mensajes.Mensajes.MensajePopUp(this, "Registro Modificado Exitosamente");
+                        res++;
+                    }
+
+                    if (res == 0)
+                        Mensajes.Mensajes.MensajePopUp(this, "Ocurrio un Error Inesperado"); // va a tirar dos msj si no guarda, mejorar para manejar el error
+
+                    //recargo
+                    Usuarios = NegocioUsuario.ListarUsuarios();
+                    dgvAdminUsuario.DataSource = Usuarios;
+                    dgvAdminUsuario.DataBind();
+                    dgvAdminUsuario.Visible = true;
+                    sectionModificarUsuario.Visible = false;
+                    CargarUsuarios();
+                }
+                else
+                {
+                    Mensajes.Mensajes.MensajePopUp(this, "Hubo error en una validación");
+                }
+            }
+            catch (Exception ex)
+            {
+                Session.Add("Error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
         }
-
-
 
         protected void lnkVolverListaUsuarios_Click(object sender, EventArgs e)
         {
+            dgvAdminUsuario.Visible = true;
+            sectionModificarUsuario.Visible = false;
+            CargarUsuarios();
+            
         }
-
-
-
-
-
-
-        
 
 
         #endregion

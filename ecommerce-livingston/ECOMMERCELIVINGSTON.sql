@@ -565,6 +565,7 @@ BEGIN
 		@UrlImagen, 
 		@Activo
 	)
+
 END
 GO
 
@@ -824,7 +825,7 @@ INSERT INTO [dbo].[MARCAS] ([Id],[Descripcion],[ImagenUrl]) VALUES (2,'Vogue','h
 INSERT INTO [dbo].[MARCAS] ([Id],[Descripcion],[ImagenUrl]) VALUES (3,'Oakley','https://www.masvision.com.ar/cdn/shop/files/marca_Oakley_small.png?v=1697029603')
 INSERT INTO [dbo].[MARCAS] ([Id],[Descripcion],[ImagenUrl]) VALUES (4,'Rusty','https://www.masvision.com.ar/cdn/shop/files/marca_Rusty_small.png?v=1697029603')
 
-INSERT INTO [dbo].[USUARIOS] ([Nombre],[Apellido],[DNI],[Mail],[Clave],[Direccion],[Nivel],[ImagenUrl],[Activo]) VALUES ('Pepe','Pepa',11111111,'pepe.pepa@gmail.com','password1','donde vive pepe 123','N','https://dthezntil550i.cloudfront.net/f4/latest/f41908291942413280009640715/1280_960/1b2d9510-d66d-43a2-971a-cfcbb600e7fe.png',1)
+INSERT INTO [dbo].[USUARIOS] ([Nombre],[Apellido],[DNI],[Mail],[Clave],[Direccion],[Nivel],[ImagenUrl],[Activo]) VALUES ('Pepe','Pepa',11111111,'pepe.pepa@gmail.com','password1','donde vive pepe 123','E','https://dthezntil550i.cloudfront.net/f4/latest/f41908291942413280009640715/1280_960/1b2d9510-d66d-43a2-971a-cfcbb600e7fe.png',1)
 INSERT INTO [dbo].[USUARIOS] ([Nombre],[Apellido],[DNI],[Mail],[Clave],[Direccion],[Nivel],[ImagenUrl],[Activo]) VALUES ('Pepito','Admin',11111111,'pepito.admin@gmail.com','password2','donde vive pepito 456','A','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwD5S3sw60LDdyNbWwv0Od9IBWQ1vYaAMLEmwizhyb-8HkWJsB5tU2F7ljmaRyfzArkq4&usqp=CAU',1)
 
 INSERT INTO [dbo].[ARTICULOS] ([Id],[Nombre],[Descripcion],[IdMarca],[IdCategoria],[ImagenUrl],[Precio],[Estado],[Stock]) 

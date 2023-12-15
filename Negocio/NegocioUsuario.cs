@@ -73,7 +73,7 @@ namespace Negocio
                     usuario.Clave = datos.Reader["Clave"].ToString();
                     usuario.Direccion = datos.Reader["Direccion"].ToString();
                     usuario.Nivel = datos.Reader["Nivel"].ToString();
-                    usuario.UrlImgUsuario = datos.Reader["UrlImagen"].ToString();
+                    usuario.UrlImgUsuario = datos.Reader["ImagenUrl"].ToString();
                     usuario.Activo = (bool)datos.Reader["Activo"];
                 }
                 return usuario;
@@ -169,7 +169,7 @@ namespace Negocio
                 datos.SetParameter("@UrlImagen", usuario.UrlImgUsuario);
                 datos.SetParameter("@Activo", usuario.Activo);
 
-                datos.ExecuteNonQuery();
+                datos.ExecuteNonQuery(); 
             }
             catch (Exception ex)
             {
