@@ -18,31 +18,7 @@ namespace ecommerce_livingston
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
-            {
-                List<Articulo> articulos = null;
-                if (Session["listaPrincipal"] != null)
-                    articulos = (List<Articulo>)Session["listaPrincipal"];
-
-                if (Request.Params["idProd"] != null && articulos != null)
-                {
-                    NegocioArticulo listaArticulos = new NegocioArticulo();
-                    idMatch = int.Parse(Request.Params["idProd"]);
-                    ImgNos = listaArticulos.ListarImgArt(idMatch);
-                    ArtNos = new List<Articulo>();
-
-                    art = articulos.Find(itm => itm.Id == idMatch);
-                    ArtNos.Add(art);
-
-                    rptDetalleArt.DataSource = ArtNos;
-                    rptDetalleArt.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                Session.Add("error", ex);
-                Response.Redirect("Error.aspx");
-            }
+            
         }
     }
 }

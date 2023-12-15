@@ -4,48 +4,15 @@
     
     <section class="container text-center min-vh-100 ">
         <div class="row d-flex justify-content-center mt-5">
-            <div class="card mb-3 w-75 mt-5">
-                <div id="carouselExample" class="carousel slide">
-                    <div class="carousel-inner">
-                        <%if (ImgNos != null)
-                        {%> 
-                        
-                        <% foreach (var item in ImgNos)
-                            { %>
-                        <div class="carousel-item active">
-                            <img src="<%= item %>" class="d-block w-100 mt-5" alt="...">
-                        </div>
-                        <% } %>
-                        
-                        <%}%>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon bg-black" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                        <span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
-                        <span class="visually-hidden ">Next</span>
-                    </button>
+            <div class="card mb-3 w-75 mt-5" style="background-color: #cec3e2;">
+                <div class="text-center mt-2">
+                    <img class="rounded" src="/Content/img/nosotros.jpg" alt="Alternate Text" width="700"/>
                 </div>
-                <asp:Repeater runat="server" ID="rptDetalleArt">
-                    <ItemTemplate>
-                        <%foreach (var item in ArtNos)
-                            {
-                                if (item.Id == idMatch)
-                                {%>
-                                <div class="card-body bg-warning-subtle">
-                                    <h5 class="card-title fs-3"><%=item.Nombre%></h5>
-                                    <p class="card-text"><%=item.Descripcion%></p>
-                                    <p class="card-text">Marca: <%= item.Marca%></p>
-                                    <p class="card-text">Categoria: <%= item.Categoria%></p>
-                                    <p class="card-text text-primary fs-4 mt-4">$ <%=item.Precio%></p>
-                                    <a href="Productos.aspx" class="btn btn-warning "><i class="bi bi-cart-plus-fill">Volver</i></a>
-                                </div>
-                                <%}
-                            }%>
-                    </ItemTemplate>
-                </asp:Repeater>
+                <div class="mt-3 mb-3">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dictum sit amet justo donec enim diam vulputate. Aenean sed adipiscing diam donec adipiscing tristique risus. In iaculis nunc sed augue lacus viverra. Et malesuada fames ac turpis egestas maecenas pharetra. Vitae nunc sed velit dignissim. Consequat id porta nibh venenatis cras sed felis. Odio facilisis mauris sit amet massa. Et tortor consequat id porta. Vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Purus ut faucibus pulvinar elementum integer enim neque volutpat ac. Id nibh tortor id aliquet lectus proin nibh nisl.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
