@@ -83,10 +83,6 @@
                                                             </div>
                                                             <asp:Label ID="lblCantPedidos" CssClass="fs-1 mb-2" runat="server" />
                                                         </div>
-                                                        <div class="mb-0 badge bg-light fs-6">
-                                                            <asp:Label ID="lblCantidadPedidosMesAnterior" runat="server" />
-                                                            <span class="text-muted">Respecto al mes pasado</span>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -103,10 +99,6 @@
                                                                 </div>
                                                             </div>
                                                             <asp:Label ID="lblPedidosCompletados" CssClass="fs-1" runat="server" />
-                                                        </div>
-                                                        <div class="mb-0 badge bg-light fs-6">
-                                                            <asp:Label ID="Label1" runat="server" />
-                                                            <span class="text-muted">Historial</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -125,10 +117,6 @@
                                                             </div>
                                                             <asp:Label ID="lblPedidosPendientes" CssClass="fs-1" runat="server" />
                                                         </div>
-                                                        <div class="mb-0 badge bg-light fs-6">
-                                                            <asp:Label ID="Label2" runat="server" />
-                                                            <span class="text-muted">Historial</span>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -145,10 +133,6 @@
                                                                 </div>
                                                             </div>
                                                             <asp:Label ID="lblRecaudacionPedidos" CssClass="fs-1 mt-1 mb-3" runat="server" />
-                                                        </div>
-                                                        <div class="mb-0 badge bg-light fs-6">
-                                                            <asp:Label ID="Label3" runat="server" />
-                                                            <span class="text-muted">Historial</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -172,10 +156,6 @@
                                                         </div>
                                                         <asp:Label ID="lblRecaudacionProm" CssClass="fs-1 mt-1 mb-3" runat="server" />
                                                     </div>
-                                                    <div class="mb-0 badge bg-light fs-6">
-                                                        <asp:Label ID="Label4" runat="server" />
-                                                        <span class="text-muted">Por pedidos</span>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -192,10 +172,6 @@
                                                             </div>
                                                         </div>
                                                         <asp:Label ID="lblCantidadUsuarios" CssClass="fs-1 mt-1 mb-3" runat="server" />
-                                                    </div>
-                                                    <div class="mb-0 badge bg-light fs-6">
-                                                        <asp:Label ID="Label5" runat="server" />
-                                                        <span class="text-muted">Solo activos</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -214,10 +190,6 @@
                                                         </div>
                                                         <asp:Label ID="lblArtRegistrados" CssClass="fs-1 mt-1 mb-3" runat="server" />
                                                     </div>
-                                                    <div class="mb-0 badge bg-light fs-6">
-                                                        <asp:Label ID="Label6" runat="server" />
-                                                        <span class="text-muted">Solo activos</span>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -234,10 +206,6 @@
                                                             </div>
                                                         </div>
                                                         <asp:Label ID="lblCantMarcas" CssClass="fs-1 mt-1 mb-3" runat="server" />
-                                                    </div>
-                                                    <div class="mb-0 badge bg-light fs-6">
-                                                        <asp:Label ID="Label7" runat="server" />
-                                                        <span class="text-muted">Todas</span>
                                                     </div>
                                                 </div>
                                             </div>

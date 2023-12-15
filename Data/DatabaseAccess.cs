@@ -78,7 +78,7 @@ namespace Data
             {
                 if (connection.State != System.Data.ConnectionState.Open)
                     connection.Open();
-                return (int)command.ExecuteScalar();
+                return Convert.ToInt32(command.ExecuteScalar());
             }
             catch (Exception ex)
             {

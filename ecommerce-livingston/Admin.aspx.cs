@@ -41,6 +41,8 @@ namespace ecommerce_livingston
             try
             {
                 //falta validacion admin
+
+                CargarListaPanelAdmin();
             }
             catch (Exception ex)
             {
@@ -297,6 +299,35 @@ namespace ecommerce_livingston
             divEstadisticas.Visible = false;
             filtrosUsuarios.Visible = false;
         }
+
+        #endregion
+
+
+        #region ESTADISTICAS
+
+        protected void CargarListaPanelAdmin()
+        {
+            try
+            {
+                NegocioPedido = new NegocioPedido();
+                
+                lblCantPedidos.Text = NegocioPedido.CantidadPedidos().ToString();
+                lblRecaudacionPedidos.Text = string.Format("{0:C2}", NegocioPedido.RecaudacionTotal());
+                lblRecaudacionProm.Text = string.Format("{0:C2}", NegocioPedido.RecaudacionPromedio());
+                lblPedidosCompletados.Text = NegocioPedido.PedidosCompletados().ToString();
+                lblPedidosPendientes.Text = NegocioPedido.PedidosPendientes().ToString();
+                lblCantidadUsuarios.Text = NegocioPedido.CantidadUsuarios().ToString();
+                lblArtRegistrados.Text = NegocioPedido.CantidadArticulos().ToString();
+                lblCantMarcas.Text = NegocioPedido.CantidadMarcas().ToString();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+        }
+
+
 
         #endregion
 
