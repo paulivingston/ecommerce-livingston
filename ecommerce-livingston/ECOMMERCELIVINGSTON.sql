@@ -78,7 +78,7 @@ CREATE TABLE USUARIOS(
 	Mail VARCHAR(30) NOT NULL,
 	Clave VARCHAR(30) NOT NULL,
 	Direccion VARCHAR(100) NOT NULL,
-	Nivel CHAR NOT NULL, -- 0 admin 1 empleado 2 cliente �?
+	Nivel CHAR NOT NULL, -- A admin E empleado C cliente 
 	ImagenUrl VARCHAR (MAX) NOT NULL,
 	Activo BIT NOT NULL DEFAULT 1
 )
@@ -841,5 +841,17 @@ Color del Armazón: Negro
 Color y Tipo del Lente: verde oscuro
 Material: Acetato
 Estilo: Envolvente ovalado',5,1,'https://www.masvision.com.ar/cdn/shop/products/MARILYN23AGALERIA-WEB-SBLK-940_871x428.jpg?v=1674065465',46000,1,50)
+
+INSERT INTO [dbo].[IMAGENES] ([IdArticulo],[ImagenUrl]) VALUES (1,'https://www.masvision.com.ar/cdn/shop/products/MARILYN23GALERIA-WEB-SBLK-940_871x428.jpg?v=1674065467')
+INSERT INTO [dbo].[IMAGENES] ([IdArticulo],[ImagenUrl]) VALUES (1,'https://www.masvision.com.ar/cdn/shop/products/MARILYN23AGALERIA-WEB-SBLK-940_871x428.jpg?v=1674065465')
+INSERT INTO [dbo].[IMAGENES] ([IdArticulo],[ImagenUrl]) VALUES (2,'https://www.masvision.com.ar/cdn/shop/files/ArvinMDBLUREVOBLUEF_870x580.jpg?v=1683207183')
+INSERT INTO [dbo].[IMAGENES] ([IdArticulo],[ImagenUrl]) VALUES (2,'https://www.masvision.com.ar/cdn/shop/files/ArvinMDBLUREVOBLUEF_870x580.jpg?v=1683207183')
+INSERT INTO [dbo].[IMAGENES] ([IdArticulo],[ImagenUrl]) VALUES (5,'https://www.masvision.com.ar/cdn/shop/files/ArvinMDBLUREVOBLUEF_870x580.jpg?v=1683207183')
+INSERT INTO [dbo].[IMAGENES] ([IdArticulo],[ImagenUrl]) VALUES (7,'https://www.masvision.com.ar/cdn/shop/files/ArvinMDBLUREVOBLUEF_870x580.jpg?v=1683207183')
+INSERT INTO [dbo].[IMAGENES] ([IdArticulo],[ImagenUrl]) VALUES (3,'https://www.masvision.com.ar/cdn/shop/products/MARILYN23GALERIA-WEB-SBLK-940_871x428.jpg?v=1674065467')
+INSERT INTO [dbo].[IMAGENES] ([IdArticulo],[ImagenUrl]) VALUES (4,'https://www.masvision.com.ar/cdn/shop/products/MARILYN23GALERIA-WEB-SBLK-940_871x428.jpg?v=1674065467')
+INSERT INTO [dbo].[IMAGENES] ([IdArticulo],[ImagenUrl]) VALUES (5,'https://www.masvision.com.ar/cdn/shop/products/MARILYN23GALERIA-WEB-SBLK-940_871x428.jpg?v=1674065467')
+
+
 
 ------------FIN DUMMY DATA------------

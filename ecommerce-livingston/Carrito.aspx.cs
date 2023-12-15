@@ -121,11 +121,11 @@ namespace ecommerce_livingston
             }
         }
 
-        protected void btnEliminar_Click(object sender, ImageClickEventArgs e)
+        protected void btnEliminar_Click(object sender, EventArgs e)
         {
             try
             {
-                int id = int.Parse(((ImageButton)sender).CommandArgument);
+                int id = int.Parse(((Button)sender).CommandArgument);
                 items = Session["listaCarrito"] as NegocioItemCarrito;
 
                 items.EliminarItem(id);
@@ -144,11 +144,11 @@ namespace ecommerce_livingston
             }
         }
 
-        protected void btnSumar_Click(object sender, ImageClickEventArgs e)
+        protected void btnSumar_Click(object sender, EventArgs e)
         {
             try
             {
-                int id = int.Parse(((ImageButton)sender).CommandArgument);
+                int id = int.Parse(((Button)sender).CommandArgument);
                 items = Session["listaCarrito"] as NegocioItemCarrito;
                 ItemCarrito itemMatch = items.Items.Find(itm => itm.Id == id);
 
@@ -169,11 +169,11 @@ namespace ecommerce_livingston
             }
         }
 
-        protected void btnRestar_Click(object sender, ImageClickEventArgs e)
+        protected void btnRestar_Click(object sender, EventArgs e)
         {
             try
             {
-                int id = int.Parse(((ImageButton)sender).CommandArgument);
+                int id = int.Parse(((Button)sender).CommandArgument);
                 items = Session["listaCarrito"] as NegocioItemCarrito;
                 ItemCarrito itemMatch = items.Items.Find(itm => itm.Id == id);
 
@@ -198,7 +198,7 @@ namespace ecommerce_livingston
         {
             try
             {
-                int id = int.Parse(((ImageButton)sender).CommandArgument);
+                int id = int.Parse(((Button)sender).CommandArgument);
                 Response.Redirect("Detalle.aspx?idProd=" + id, false);
             }
             catch (Exception ex)

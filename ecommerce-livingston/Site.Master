@@ -54,7 +54,7 @@
                         <li class="nav-item me-3"><a type="button" class="nav-link active position-relative" aria-current="page" id="btnIrAdmin" href="Admin.aspx" runat="server" visible="false">Admin</a></li>
                         <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Nosotros">Nosotros</a></li>
                         <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Productos">Productos</a></li>
-                        <li class="nav-item me-3"><a type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalBusqueda">🔍</a></li>
+                        <li class="nav-item me-3"><a type="button" class="btn fs-5" data-bs-toggle="modal" data-bs-target="#modalBusqueda">🔍</a></li>
                         <asp:UpdatePanel runat="server">
                             <ContentTemplate>
                                 <li class="nav-item ms-2 me-2">
@@ -73,7 +73,7 @@
                         </asp:UpdatePanel>
                         <li class="nav-item me-2 ">
                             <button id="btnLoggin" type="button" class="btn fs-5" data-bs-toggle="modal" data-bs-target="#modalLogin" runat="server">
-                                <i class="bi bi-box-arrow-in-right fw-bold">Login</i>
+                                Login
                             </button>
                             <asp:Button Text="Cerrar Sesion" CssClass="btn fs-5 bi bi-box-arrow-in-right" ID="btnSignOut" OnClick="btnSignOut_Click" runat="server" />
                         </li>
@@ -86,7 +86,7 @@
         <div class="modal fade" id="modalLogin" tabindex="-1" aria-labelledby="modalLoginLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content bg-body-secondary">
-                    <div class="modal-header bg-primary text-light">
+                    <div class="modal-header" style="background-color: #cec3e2;">
                         <h1 class="modal-title fs-4 fw-bold" id="modalLoginLabel">Inicio de sesión</h1>
                         <button id="btnCerrarModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" runat="server" onServerClick="btnCerrarModal_Click"></button>
                     </div>

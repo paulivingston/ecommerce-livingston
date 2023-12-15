@@ -40,7 +40,7 @@
                                     <p class="card-text">Marca: <%= item.Marca%></p>
                                     <p class="card-text">Categoria: <%= item.Categoria%></p>
                                     <p class="card-text text-primary fs-4 mt-4">$ <%=item.Precio%></p>
-                                    <a href="Productos.aspx" class="btn btn-warning "><i class="bi bi-cart-plus-fill">Volver</i></a>
+                                    <a href="Productos.aspx" class="btn btn-info "><i class="bi bi-cart-plus-fill">Volver</i></a>
                                 </div>
                                 <%}
                             }%>

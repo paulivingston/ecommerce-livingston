@@ -55,7 +55,7 @@ namespace ecommerce_livingston
                     usuario.Clave = txtPassword.Text;
                     usuario.Direccion = txtDomicilio.Text;
                     usuario.Nivel = "C";
-                    usuario.UrlImgUsuario = "img/usuarios/default.png";
+                    usuario.UrlImgUsuario = "img/avatar.png";
                     usuario.Activo = true;
 
                     //creo usuario

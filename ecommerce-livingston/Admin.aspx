@@ -880,7 +880,7 @@
                                         <div class="col-4 mt-3">
                                             <asp:UpdatePanel runat="server">
                                                 <ContentTemplate>
-                                                    <asp:Image ID="imgNuevoArt" runat="server" ImageUrl="~/recursos/img/agregar-img.png" Width="200px" CssClass="mt-3 ms-5" />
+                                                    <asp:Image ID="imgNuevoArt" runat="server" ImageUrl="~/Content/img/agregar-img.png" Width="200px" CssClass="mt-3 ms-5" />
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
                                         </div>
@@ -1070,7 +1070,7 @@
                                     <div class="col-4 mt-3">
                                         <asp:UpdatePanel runat="server">
                                             <ContentTemplate>
-                                                <asp:Image ID="imgNuevaCate" runat="server" ImageUrl="~/recursos/img/agregar-img.png" Width="200px" CssClass="mt-3 ms-5" />
+                                                <asp:Image ID="imgNuevaCate" runat="server" ImageUrl="~/Content/img/agregar-img.png" Width="200px" CssClass="mt-3 ms-5" />
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
                                     </div>
