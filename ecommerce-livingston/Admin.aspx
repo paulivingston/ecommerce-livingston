@@ -6,51 +6,51 @@
         <div class="row flex-nowrap">
             
             <!-- menu admin -->
-             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0" style="background-color: #cec3e2;">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none"></a>
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start mt-5" id="menu">
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start mt-5 text-black" id="menu">
                         <li class="nav-item mt-5">
-                            <a href="Admin.aspx" class="nav-link align-middle px-0">
-                                <i class="fs-3 bi-house text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Inicio</span>
+                            <a href="Admin.aspx" class="nav-link align-middle px-0 text-black">
+                                <i class="fs-3 bi-house text-black"></i><span class="ms-1 d-none d-sm-inline fs-5 ms-2">Inicio</span>
                             </a>
                         </li>
                         <li> <!-- pedidos -->
-                            <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                                <i class="fs-3 bi-table text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Pedidos</span></a>
+                            <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-black">
+                                <i class="fs-3 bi-table text-warning"></i><span class="ms-1 d-none d-sm-inline fs-5 ms-2">Pedidos</span></a>
                             <ul class="collapse nav flex-column ms-1 " id="submenu2" data-bs-parent="#menu">
                                 <li class="w-100 ">
-                                    <asp:Button ID="btnPedidosTodos" Text="Todos los Pedidos" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnPedidosTodos_Click" runat="server" />
+                                    <asp:Button ID="btnPedidosTodos" Text="Todos los Pedidos" CssClass="nav-link px-0 d-none d-sm-inline text-black ms-4" OnClick="btnPedidosTodos_Click" runat="server" />
                                 </li>
                             </ul>
                         </li>
                         <li> <!-- articulos -->
-                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                                <i class="fs-3 bi-grid text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Artículos</span> </a>
-                            <ul class="collapse nav flex-column ms-1 " id="submenu3" data-bs-parent="#menu">
+                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-black">
+                                <i class="fs-3 bi-grid text-warning"></i><span class="ms-1 d-none d-sm-inline fs-5 ms-2">Artículos</span> </a>
+                            <ul class="collapse nav flex-column ms-1 text-black" id="submenu3" data-bs-parent="#menu">
                                 <li class="w-100 ">
-                                    <asp:Button ID="btnArticulosTodos" Text="Todos los Articulos" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnArticulosTodos_Click" runat="server" />
+                                    <asp:Button ID="btnArticulosTodos" Text="Todos los Articulos" CssClass="nav-link px-0 d-none d-sm-inline ms-4 text-black" OnClick="btnArticulosTodos_Click" runat="server" />
                                 </li>
                                 <li class="w-100">
-                                    <asp:Button ID="btnNuevoArticulo" Text="Nuevo Articulo" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnNuevoArticulo_Click" runat="server" />
+                                    <asp:Button ID="btnNuevoArticulo" Text="Nuevo Articulo" CssClass="nav-link px-0 d-none d-sm-inline ms-4 text-black" OnClick="btnNuevoArticulo_Click" runat="server" />
                                 </li>
                                 <li>
-                                    <asp:Button ID="btnMarcas" Text="Marcas" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnMarcas_Click" runat="server" />
+                                    <asp:Button ID="btnMarcas" Text="Marcas" CssClass="nav-link px-0 d-none d-sm-inline ms-4 text-black" OnClick="btnMarcas_Click" runat="server" />
                                 </li>
                                 <li>
-                                    <asp:Button ID="btnCategorias" Text="Categorias" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnCategorias_Click" runat="server" />
+                                    <asp:Button ID="btnCategorias" Text="Categorias" CssClass="nav-link px-0 d-none d-sm-inline ms-4 text-black" OnClick="btnCategorias_Click" runat="server" />
                                 </li>
                             </ul>
                         </li> <!-- usuarios -->
                         <li>
-                            <a href="#submenu4" data-bs-toggle="collapse" class="nav-link px-0 align-middle">
-                                <i class="fs-3 bi-people text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Usuarios</span> </a>
+                            <a href="#submenu4" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-black">
+                                <i class="fs-3 bi-people text-warning"></i><span class="ms-1 d-none d-sm-inline fs-5 ms-2">Usuarios</span> </a>
                             <ul class="collapse nav flex-column ms-1 " id="submenu4" data-bs-parent="#menu">
                                 <li class="w-100 ">
-                                    <asp:Button ID="btnUsuariosTodos" Text="Todos los Usuarios" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnUsuariosTodos_Click" runat="server" />
+                                    <asp:Button ID="btnUsuariosTodos" Text="Todos los Usuarios" CssClass="nav-link px-0 d-none d-sm-inline ms-4 text-black" OnClick="btnUsuariosTodos_Click" runat="server" />
                                 </li>
                                 <li>
-                                    <asp:Button Text="Crear Nuevo Usuario" ID="btnAgregarNuevoUsuario" OnClick="btnAgregarNuevoUsuario_Click" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" runat="server" />
+                                    <asp:Button Text="Crear Nuevo Usuario" ID="btnAgregarNuevoUsuario" OnClick="btnAgregarNuevoUsuario_Click" CssClass="nav-link px-0 d-none d-sm-inline text-black ms-4" runat="server" />
                                 </li>
                             </ul>
                         </li>
@@ -58,26 +58,26 @@
                 </div>
             </div>
 
-            <div class="col-md-8 mt-5">
+            <div class="col-md-9 mt-5" style="margin-left:40px">
                 <asp:UpdatePanel runat="server">
                     <ContentTemplate>
 
                         <!-- estadisticas -->
                         <div class="container-fluid p-0" style="margin-top:100px;" runat="server" id="divEstadisticas">
-                            <h1 class="h3 rounded-3 mb-5 pt-3 pb-3 mt-5 fs-1 text-center text-bg-dark text-light" ><strong >Estadísticas generales</strong></h1>
+                            <h1 class="h3 rounded-3 mb-5 pt-3 pb-3 mt-5 fs-1 text-center text-bg-dark text-light" ><strong >Estadísticas</strong></h1>
                             <div class="row">
                                 <div class="col-12 d-flex mt-5" >
                                     <div class="w-100">
                                         <div class="row"> <!-- pedidos -->
                                             <div class="col-3"> 
-                                                <div class="card col bg-primary text-light mb-5">
+                                                <div class="card col bg-secondary text-light mb-5">
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col mt-0">
                                                                 <h5 class="card-title fw-bold">Pedidos realizados</h5>
                                                             </div>
                                                             <div class="col-auto">
-                                                                <div class="stat text-primary">
+                                                                <div class="stat text-secondary">
                                                                     <i class="align-middle" data-feather="truck"></i>
                                                                 </div>
                                                             </div>
@@ -87,14 +87,14 @@
                                                 </div>
                                             </div>
                                             <div class="col-3"> 
-                                                <div class="card col bg-primary text-light mb-5">
+                                                <div class="card col bg-secondary text-light mb-5">
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col mt-0">
                                                                 <h5 class="card-title fw-bold">Pedidos completados</h5>
                                                             </div>
                                                             <div class="col-auto">
-                                                                <div class="stat text-primary">
+                                                                <div class="stat text-secondary">
                                                                     <i class="align-middle" data-feather="users"></i>
                                                                 </div>
                                                             </div>
@@ -104,14 +104,14 @@
                                                 </div>
                                             </div>
                                             <div class="col-3">
-                                                <div class="card col bg-primary text-light mb-5">
+                                                <div class="card col bg-secondary text-light mb-5">
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col mt-0">
                                                                 <h5 class="card-title fw-bold">Pedidos pendientes</h5>
                                                             </div>
                                                             <div class="col-auto">
-                                                                <div class="stat text-primary">
+                                                                <div class="stat text-secondary">
                                                                     <i class="align-middle" data-feather="dollar-sign"></i>
                                                                 </div>
                                                             </div>
@@ -121,18 +121,18 @@
                                                 </div>
                                             </div>
                                             <div class="col-3"> <!-- recaudacion -->
-                                                <div class="card col bg-primary text-light mb-5">
+                                                <div class="card col bg-secondary text-light mb-5">
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col mt-0">
                                                                 <h5 class="card-title fw-bold">Recaudación total</h5>
                                                             </div>
                                                             <div class="col-auto">
-                                                                <div class="stat text-primary">
+                                                                <div class="stat text-secondary">
                                                                     <i class="align-middle" data-feather="shopping-cart"></i>
                                                                 </div>
                                                             </div>
-                                                            <asp:Label ID="lblRecaudacionPedidos" CssClass="fs-1 mt-1 mb-3" runat="server" />
+                                                            <asp:Label ID="lblRecaudacionPedidos" CssClass="fs-3 mt-1 mb-3" runat="server" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -143,31 +143,31 @@
                                 <div class="w-100 mb-5">
                                     <div class="row">
                                         <div class="col-3">
-                                            <div class="card col bg-primary text-light mb-5">
+                                            <div class="card col bg-secondary text-light mb-5">
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col mt-0">
                                                             <h5 class="card-title fw-bold">Recaudación promedio</h5>
                                                         </div>
                                                         <div class="col-auto">
-                                                            <div class="stat text-primary">
+                                                            <div class="stat text-secondary">
                                                                 <i class="align-middle" data-feather="truck"></i>
                                                             </div>
                                                         </div>
-                                                        <asp:Label ID="lblRecaudacionProm" CssClass="fs-1 mt-1 mb-3" runat="server" />
+                                                        <asp:Label ID="lblRecaudacionProm" CssClass="fs-3 mt-1 mb-3" runat="server" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-3"> <!-- usuarios -->
-                                            <div class="card col bg-primary text-light mb-5">
+                                            <div class="card col bg-secondary text-light mb-5">
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col mt-0">
                                                             <h5 class="card-title fw-bold">Usuarios registrados</h5>
                                                         </div>
                                                         <div class="col-auto">
-                                                            <div class="stat text-primary">
+                                                            <div class="stat text-secondary">
                                                                 <i class="align-middle" data-feather="users"></i>
                                                             </div>
                                                         </div>
@@ -177,14 +177,14 @@
                                             </div>
                                         </div>
                                         <div class="col-3"> <!-- articulos -->
-                                            <div class="card col bg-primary text-light mb-5">
+                                            <div class="card col bg-secondary text-light mb-5">
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col mt-0">
                                                             <h5 class="card-title fw-bold">Artículos registrados</h5>
                                                         </div>
                                                         <div class="col-auto">
-                                                            <div class="stat text-primary">
+                                                            <div class="stat text-secondary">
                                                                 <i class="align-middle" data-feather="dollar-sign"></i>
                                                             </div>
                                                         </div>
@@ -194,14 +194,14 @@
                                             </div>
                                         </div>
                                         <div class="col-3"> <!-- marcas -->
-                                            <div class="card col bg-primary text-light mb-5">
+                                            <div class="card col bg-secondary text-light mb-5">
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col mt-0">
                                                             <h5 class="card-title fw-bold">Marcas registradas</h5>
                                                         </div>
                                                         <div class="col-auto">
-                                                            <div class="stat text-primary">
+                                                            <div class="stat text-secondary">
                                                                 <i class="align-middle" data-feather="shopping-cart"></i>
                                                             </div>
                                                         </div>
@@ -739,7 +739,7 @@
                             </div>
 
                             <%-- lista --%>
-                            <div class="col-8">
+                            <div class="col-9">
                                 <asp:UpdatePanel runat="server">
                                     <ContentTemplate>
                                         <asp:GridView ID="dgvAdminArticulo" runat="server" CssClass="table table-striped mt-5 text-center" AutoGenerateColumns="false" OnPageIndexChanging="dgvAdmin_PageIndexChanging">
