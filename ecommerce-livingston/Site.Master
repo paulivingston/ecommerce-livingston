@@ -16,6 +16,7 @@
     <link href="eagle.ico" rel="icon" type="image/x-icon" />
     <link rel="stylesheet" href="/Content/styles.css">
     <link rel="stylesheet" href="/Content/slider.css"/>
+    <script src="Scripts/jquery-3.7.0.js"></script>
 
 </head>
 <body>
@@ -50,14 +51,10 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto d-flex">
+                        <li class="nav-item me-3"><a type="button" class="nav-link active position-relative" aria-current="page" id="btnIrAdmin" href="Admin.aspx" runat="server" visible="false">Admin</a></li>
                         <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Nosotros">Nosotros</a></li>
                         <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Productos">Productos</a></li>
-                        <li class="nav-item me-2 ">
-                            <a type="button" class="btn fs-5 position-relative" id="btnIrAdmin" href="Admin.aspx" runat="server" visible="false">👨‍💻</a> <!-- ir a admin -->
-                        </li>
-                        <li class="nav-item me-2 ">
-                            <button type="button" class="btn fs-5" data-bs-toggle="modal" data-bs-target="#modalBusqueda"><i class="bi bi-search fw-bold"> Buscar</i></button>
-                        </li>
+                        <li class="nav-item me-3"><a type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalBusqueda">Buscar</a></li>
                         <asp:UpdatePanel runat="server">
                             <ContentTemplate>
                                 <li class="nav-item ms-2 me-2">
@@ -192,6 +189,9 @@
             </footer>
         </div>
 
+        <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="scripts/bootstrap.min.js"></script>
         <script src="/Content/slider.js"></script>
 
     </form>

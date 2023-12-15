@@ -384,15 +384,6 @@ namespace ecommerce_livingston
         protected global::System.Web.UI.WebControls.DropDownList ddlIdUsuarioModificarPedido;
 
         /// <summary>
-        /// txtIdUsuarioModificarPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtIdUsuarioModificarPedido;
-
-        /// <summary>
         /// txtIdPedidoEditar control.
         /// </summary>
         /// <remarks>

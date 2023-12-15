@@ -10,10 +10,7 @@ using Negocio;
 using System.Web.UI.HtmlControls;
 using System.Data.SqlClient;
 
-//falta estadisticas
-//falta solucionar filtros tipo dropdown
-//falta marca y categoria en tabla de articulos
-//aplicar filtro articulo
+//falta validacion admin
 
 namespace ecommerce_livingston
 {
@@ -40,7 +37,16 @@ namespace ecommerce_livingston
         {
             try
             {
-                //falta validacion admin
+                //valido si es admin
+                NegocioUsuario = new NegocioUsuario();
+                Usuario admin = Session["usuarioActual"] as Usuario;
+
+                if (!NegocioUsuario.IsAdmin(admin))
+                {
+                    Mensajes.Mensajes.MensajePopUp(this,"No tiene las credenciales para entrar o No te encuentras logeado");
+                    Response.Redirect("Default.aspx", false);
+                    return;
+                }
 
                 CargarListaPanelAdmin();
             }
@@ -74,6 +80,7 @@ namespace ecommerce_livingston
             sectionAdminPedidosTodos.Visible = true;
             dgvAdminPedidos.Visible = true;
             sectionAdminPedidoIndividual.Visible = false;
+            seccionEditarPedidos.Visible = false;
         }
 
         protected void btnPedidosTodos_Click(object sender, EventArgs e)
@@ -339,7 +346,7 @@ namespace ecommerce_livingston
         private void CargarPedido(Pedido pedido)
         {
             ddlIdUsuarioModificarPedido.DataSource = new NegocioUsuario().ListarUsuarios();
-            ddlIdUsuarioModificarPedido.DataTextField = "Id" + ' ' + "Nombre" + ' ' + "Apellido";
+            ddlIdUsuarioModificarPedido.DataTextField = "Id";
             ddlIdUsuarioModificarPedido.DataValueField = "Id";
             ddlIdUsuarioModificarPedido.DataBind();
 
@@ -512,8 +519,8 @@ namespace ecommerce_livingston
                 //pedido
                 NegocioPedido = new NegocioPedido();
                 pedido = NegocioPedido.ListarPedidos(id);
-                dgvAdminPedido.DataSource = pedido;
-                dgvAdminPedido.DataBind();
+                //dgvAdminPedido.DataSource = pedido;
+                //dgvAdminPedido.DataBind();
 
                 //articulos del pedido
                 Session.Add("PedidoArticulosListaEdit", NegocioPedido.ListarArticulosPedido(id));
@@ -680,12 +687,6 @@ namespace ecommerce_livingston
                 {
                     lblErrorPedidos.Visible = true;
                     lblErrorPedidosText.Text = "Id pedido no puede estar vacio";
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(txtIdUsuarioModificarPedido.Text))
-                {
-                    lblErrorPedidos.Visible = true;
-                    lblErrorPedidosText.Text = "Id usuario no puede estar vacio";
                     return;
                 }
                 if (string.IsNullOrWhiteSpace(txtEstadoModificarPedido.Text))
@@ -917,9 +918,12 @@ namespace ecommerce_livingston
                 listaArticulos = (List<Articulo>)Session["listaPrincipal"];
                 if (listaArticulos == null) return;
 
+                string cat = ddlFiltroCategoria.SelectedValue;
+                string mrc = ddlFiltroMarca.SelectedValue;
+
                 listaFiltrada = listaArticulos.FindAll(x =>
-                    x.Categoria.Descripcion.Contains(ddlFiltroCategoria.Text)
-                    && x.Marca.Descripcion.Contains(ddlFiltroMarca.Text));
+                    x.Categoria.Id.ToString() == cat
+                    && x.Marca.Id.ToString() == mrc);
 
                 Session["listaFiltrada"] = listaFiltrada;
                 dgvAdminArticulo.DataSource = listaFiltrada;

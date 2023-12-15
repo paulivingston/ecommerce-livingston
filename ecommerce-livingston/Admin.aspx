@@ -226,7 +226,7 @@
                             
                             <%-- filtros --%>
                             <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" runat="server"><strong>Administración de Pedidos</strong></h1>
-                            <div class="row d-flex justify-content-center align-items-center bg-warning pb-2 pt-1" runat="server">
+                            <div class="row d-flex justify-content-center align-items-center bg-info pb-2 pt-1" runat="server">
                                 <div class="col-2">
                                     <h2>Filtros:</h2>
                                 </div>
@@ -258,7 +258,7 @@
                                                         <asp:Button OnClick="btnEstadosPedidosFiltros_Click" CssClass="btn" Text="Iniciado" CommandName="btnIniciado" runat="server" />
                                                     </li>
                                                     <li>
-                                                        <asp:Button OnClick="btnEstadosPedidosFiltros_Click" CssClass="btn" Text="Terminado" CommandName="btnTerminado" runat="server" />
+                                                        <asp:Button OnClick="btnEstadosPedidosFiltros_Click" CssClass="btn" Text="Finalizado" CommandName="btnTerminado" runat="server" />
                                                     </li>
                                                     <li>
                                                         <asp:Button OnClick="btnEstadosPedidosFiltros_Click" CssClass="btn" Text="Cancelado" CommandName="btnCancelado" runat="server" />
@@ -299,7 +299,7 @@
                             </div>
 
                             <%-- tabla --%>
-                            <asp:GridView ID="dgvAdminPedidos" runat="server" CssClass="table table-striped table-bordered mt-5 text-center" AutoGenerateColumns="true">
+                            <asp:GridView ID="dgvAdminPedidos" runat="server" CssClass="table table-striped table-bordered mt-5 text-center" AutoGenerateColumns="false">
                                 <Columns>
                                 <asp:TemplateField HeaderText="ID Pedido">
                                     <ItemTemplate>
@@ -348,17 +348,17 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Cancelar">
                                     <ItemTemplate>
-                                        <asp:Button Text="Cancelar" CssClass="btn btn-outline-danger mt-3" ID="btnCancelarPedido" CommandName="Cancelar" CommandArgument='<%#Eval("IdPedido") %>' OnClick="btnCancelarTerminarPedido" runat="server" OnClientClick="return confirm('¿Desea cancelar el pedido seleccionado?');" />
+                                        <asp:Button Text="❌" CssClass="btn btn-outline-danger mt-3" ID="btnCancelarPedido" CommandName="Cancelar" CommandArgument='<%#Eval("IdPedido") %>' OnClick="btnCancelarTerminarPedido" runat="server" OnClientClick="return confirm('¿Desea cancelar el pedido seleccionado?');" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Terminar">
                                     <ItemTemplate>
-                                        <asp:Button Text="Terminar" CssClass="btn btn-outline-success mt-3" ID="btnTerminarPedido" CommandName="Finalizar" CommandArgument='<%#Eval("IdPedido") %>' OnClick="btnCancelarTerminarPedido" runat="server" OnClientClick="return confirm('¿Desea finalizar el pedido seleccionado?');"/>
+                                        <asp:Button Text="✔" CssClass="btn btn-outline-success mt-3" ID="btnTerminarPedido" CommandName="Finalizar" CommandArgument='<%#Eval("IdPedido") %>' OnClick="btnCancelarTerminarPedido" runat="server" OnClientClick="return confirm('¿Desea finalizar el pedido seleccionado?');"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Editar">
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="ibtModificarPedido" CssClass="mt-3" runat="server" CommandArgument='<%#Eval("IdPedido") %>' CommandName="editar_btn" OnClick="ibtModificarPedido_Click" Height="29px" ImageUrl="~/Content/img/editar.png" Width="29px" />
+                                        <asp:Button Text="✏" CssClass="btn btn-outline-info mt-3" ID="ibtModificarPedido" CommandName="editar_btn" CommandArgument='<%#Eval("IdPedido") %>' OnClick="ibtModificarPedido_Click" runat="server"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -435,7 +435,7 @@
                                                <div class="accordion-body text-center">
                                                    <div class="row gy-3 justify-content-center">
                                                         <div class="col-6 mt-5">
-                                                            <h4><asp:Label runat="server" Text="Articulos por Nombre" CssClass="badge rounded-pill text-bg-warning mt-3"></asp:Label>
+                                                            <h4><asp:Label runat="server" Text="Articulos por Nombre" CssClass="badge rounded-pill text-bg-info mt-3"></asp:Label>
                                                             <asp:DropDownList runat="server" ID="ddlAgregarArticuloPedido" CssClass="form-control m-3"></asp:DropDownList>
                                                             <asp:Button runat="server" Text="Agregar" ID="btnAgregarArticuloPedido" CssClass="m-3 btn btn-primary btn-lg m-3" OnClick="btnAgregarArticuloPedido_Click"/>
                                                         </div>
@@ -461,7 +461,7 @@
                                                                  <asp:TextBox runat="server" ID="txtBuscarArticuloPorIDPedido" TextMode="Search" CssClass="form-control"/>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                 <asp:Button Text="Buscar" runat="server" ID="btnBuscarArticuloPorIDPedido" class="w-100 btn btn-warning btn-lg"
+                                                                 <asp:Button Text="Buscar" runat="server" ID="btnBuscarArticuloPorIDPedido" class="w-100 btn btn-info btn-lg"
                                                                      OnClick="btnBuscarArticuloPorIDPedido_Click"/>
                                                             </div>
                                                             <hr class="my-4">
@@ -577,7 +577,7 @@
                             <ContentTemplate>
                                   <div class="container text-center">                                      
                                     <div class="row d-flex justify-content-center aling-items-center">
-                                          <div class="col-4 align-self-center bg-warning border rounded-3 p-3">
+                                          <div class="col-4 align-self-center bg-info border rounded-3 p-3">
                                                 <h4>Nuevo Total: 
                                                     <span class="badge bg-secondary">
                                                         <asp:TextBox ID="txtNuevoTotal" CssClass="form-control" Visible="false" ReadOnly="true" runat="server" />
@@ -587,16 +587,15 @@
                                     </div>
                                   </div>
                                     <div class="row d-flex justify-content-center align-items-center">
-                                        <div class="card rounded-4 col-10 bg-warning ms-5" style="margin-top: 100px; margin-bottom: 100px;" id="Div1" runat="server">
+                                        <div class="card rounded-4 col-10 bg-info ms-5" style="margin-top: 100px; margin-bottom: 100px;" id="Div1" runat="server">
                                             <div class=" card-header text-center">
                                                 <h1 id="lblModificarPedido" runat="server"> Editar Pedido </h1>
-                                            </div>
+                                            </div>  
                                             <div class="row p-2">
                                                 <div class="col-6 mt-3">
                                                     <label for="txtIdUsuarioModificarPedido" class="form-label">Numero de Usuario<span class="text-danger">*</span></label>
                                                     <asp:DropDownList runat="server" ID="ddlIdUsuarioModificarPedido" placeholder="ID Usuario" CssClass="form-control m-3"></asp:DropDownList>
-                                                    <asp:TextBox CssClass="form-control" ID="txtIdUsuarioModificarPedido" placeholder="ID Usuario" runat="server"/>
-                                                    <asp:TextBox ID="txtIdPedidoEditar" Visible="false" runat="server"/>
+                                                    <asp:TextBox class="position-relative" ID="txtIdPedidoEditar" Visible="false" runat="server"/>
                                                 </div>
                                                 <div class="col-6 mt-3">
                                                     <label for="txtEstadoModificarPedido" class="form-label">Estado <span class="text-danger">*</span></label>
@@ -665,7 +664,6 @@
                         <div class="row">
                             <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" id="lblAdministracionArticulos"><strong>Administración de Articulos</strong></h1>
                             <div id="FiltrosArticulos" class="col-3 p-5" >
-                                <h5>Filtro automático</h5>
                                 <div class="dropend">
                                     <button class="btn dropdown-toggle " type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Marcas
@@ -734,7 +732,6 @@
                                     </ul>
                                 </div>
 
-                                <h5>Filtro Manual</h5>
                                 <asp:DropDownList ID="ddlFiltroCategoria" CssClass="form-select h-1 mb-4" runat="server" AutoPostBack="false"></asp:DropDownList>
                                 <asp:DropDownList ID="ddlFiltroMarca" CssClass="form-select h-1 mb-4" runat="server" AutoPostBack="false"></asp:DropDownList>
                                 <asp:Button CssClass="btn btn-primary btn-sm mb-5" Text="Aplicar" runat="server" ID="btnFiltro" OnClick="btnFiltro_Click" />
@@ -745,7 +742,7 @@
                             <div class="col-8">
                                 <asp:UpdatePanel runat="server">
                                     <ContentTemplate>
-                                        <asp:GridView ID="dgvAdminArticulo" runat="server" CssClass="table table-striped mt-5 text-center" AutoGenerateColumns="true" OnPageIndexChanging="dgvAdmin_PageIndexChanging">
+                                        <asp:GridView ID="dgvAdminArticulo" runat="server" CssClass="table table-striped mt-5 text-center" AutoGenerateColumns="false" OnPageIndexChanging="dgvAdmin_PageIndexChanging">
                                             <PagerSettings Mode="NumericFirstLast" />
                                             <Columns>
                                                 <asp:TemplateField HeaderText="Imagen">
@@ -765,12 +762,12 @@
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Marca">
                                                     <ItemTemplate>
-                                                        <asp:Label runat="server" Text='<%# Eval("Marca") %>'></asp:Label>
+                                                        <asp:Label runat="server" Text='<%# Eval("Marca.Descripcion") %>'></asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Categoría">
                                                     <ItemTemplate>
-                                                        <asp:Label runat="server" Text='<%# Eval("Categoria") %>'></asp:Label>
+                                                        <asp:Label runat="server" Text='<%# Eval("Categoria.Descripcion") %>'></asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField HeaderText="Precio">
@@ -783,7 +780,7 @@
                                                     <ItemTemplate>
                                                         <asp:Button Text="ALTA" ID="btnDarAltaArticulo" CssClass="btn btn-outline-success mt-3" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="ALTA" OnClick="btnCambiarEstadoArticulo_Click" />
                                                         <asp:Button Text="BAJA" ID="btnDarBajaArticulo" CssClass="btn btn-outline-danger mt-3" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="BAJA" OnClick="btnCambiarEstadoArticulo_Click" />
-                                                        <asp:Button Text="EDITAR" ID="btnEditarArticulo" CssClass="btn btn-outline-secondary mt-3" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="editar_btn" OnClick="btnEditarArticulo_Click" />
+                                                        <asp:Button Text="✏" ID="btnEditarArticulo" CssClass="btn btn-outline-secondary mt-3" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="editar_btn" OnClick="btnEditarArticulo_Click" />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                             </Columns>
@@ -839,7 +836,7 @@
 
                         <%-- panel crear o modificar articulo --%>
                         <div class="row d-flex justify-content-center align-items-center">
-                            <div class="card rounded-4 col-10 bg-warning ms-5" style="margin-top: 100px; margin-bottom: 100px;" id="sectionNuevoArticulo" visible="false" runat="server">
+                            <div class="card rounded-4 col-10 bg-info ms-5" style="margin-top: 100px; margin-bottom: 100px;" id="sectionNuevoArticulo" visible="false" runat="server">
                                 <div class=" card-header text-center">
                                     <h1 id="tituloEditarArticulo" runat="server">Editar Artículo</h1>
                                     <h1 id="tituloNuevoArticulo" runat="server">Nuevo Artículo</h1>
@@ -958,7 +955,7 @@
                                             <div class="col-12 card-footer text-center bg-primary">
                                                 <i class="bi bi-pencil-fill fs-5"></i>
                                                 <asp:Button runat="server" ID="btnEditarMarca" Text="Editar" Font-Bold="true" Visible="true" CssClass="btn btn-primary" OnClick="btnEditarMarca_Click"/>
-                                                <asp:Button runat="server" ID="btnGuardarMarca" Text="Guardar" Font-Bold="true" Visible="false" CssClass="btn btn-warning" OnClick="btnGuardarMarca_Click" />
+                                                <asp:Button runat="server" ID="btnGuardarMarca" Text="Guardar" Font-Bold="true" Visible="false" CssClass="btn btn-success" OnClick="btnGuardarMarca_Click" />
                                             </div>
                                         </div>
                                     </div>
@@ -1045,7 +1042,7 @@
                                             <div class="col-12 card-footer text-center bg-primary">
                                                 <i class="bi bi-pencil-fill fs-5"></i>
                                                 <asp:Button runat="server" ID="btnEditarCategoria" Text="Editar" Font-Bold="true" Visible="true" CssClass="btn btn-primary" OnClick="btnEditarCategoria_Click"/>
-                                                <asp:Button runat="server" ID="btnGuardarCategoria" Text="Guardar" Font-Bold="true" Visible="false" CssClass="btn btn-warning" OnClick="btnGuardarCategoria_Click" />
+                                                <asp:Button runat="server" ID="btnGuardarCategoria" Text="Guardar" Font-Bold="true" Visible="false" CssClass="btn btn-success" OnClick="btnGuardarCategoria_Click" />
                                             </div>
                                         </div>
                                     </div>
@@ -1098,7 +1095,7 @@
 
                         <!-- filtros -->
                         <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" id="lblAdministracionUsuarios" runat="server"><strong>Administración de Usuarios</strong></h1>
-                        <div class="row d-flex justify-content-center align-items-center bg-warning pb-2 pt-1"  id="filtrosUsuarios" runat="server">
+                        <div class="row d-flex justify-content-center align-items-center bg-info pb-2 pt-1"  id="filtrosUsuarios" runat="server">
                             <div class="col-2">
                                 <h2>Filtros:</h2>
                             </div>
@@ -1150,7 +1147,7 @@
                             </div>
                         </div>
                         <!-- tabla -->
-                        <asp:GridView ID="dgvAdminUsuario" runat="server" CssClass="table table-striped mt-5 " AutoGenerateColumns="true">
+                        <asp:GridView ID="dgvAdminUsuario" runat="server" CssClass="table table-striped mt-5 " AutoGenerateColumns="false">
                             <Columns>
                                 <asp:TemplateField HeaderText="ID">
                                     <ItemTemplate>
@@ -1182,7 +1179,7 @@
                                 <asp:BoundField HeaderText="Nivel" DataField="NivelUpper" />
                                 <asp:TemplateField HeaderText="Editar">
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="ibtEditarUsuario" CssClass="mt-3" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="editar_btn" OnClick="ibtEditarUsuario_Click" Height="29px" ImageUrl="~/Content/img/editar.png" Width="29px" />
+                                        <asp:Button Text="✏" CssClass="btn btn-outline-info mt-3" ID="ibtEditarUsuario" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="editar_btn" OnClick="ibtEditarUsuario_Click"/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Cambiar Activo">
@@ -1202,7 +1199,7 @@
                                     <div class="col col-lg-10 mb-4 mb-lg-0 ">
                                         <div class="card mb-3" style="border-radius: .5rem;">
                                             <div class="row g-0">
-                                                <div class="col-md-4  text-center bg-warning text-white"
+                                                <div class="col-md-4  text-center bg-info text-white"
                                                     style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
                                                     <asp:Image ID="userImg" runat="server" ImageUrl="~/Content/img/avatar.png" Width="120px" CssClass="img-fluid my-5" />
                                                     <h6>
