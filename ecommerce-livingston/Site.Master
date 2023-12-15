@@ -54,7 +54,7 @@
                         <li class="nav-item me-3"><a type="button" class="nav-link active position-relative" aria-current="page" id="btnIrAdmin" href="Admin.aspx" runat="server" visible="false">Admin</a></li>
                         <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Nosotros">Nosotros</a></li>
                         <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Productos">Productos</a></li>
-                        <li class="nav-item me-3"><a type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalBusqueda">Buscar</a></li>
+                        <li class="nav-item me-3"><a type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalBusqueda">🔍</a></li>
                         <asp:UpdatePanel runat="server">
                             <ContentTemplate>
                                 <li class="nav-item ms-2 me-2">
@@ -126,8 +126,8 @@
         <div class="modal fade" id="modalBusqueda" tabindex="-1" aria-labelledby="modalBusquedaLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered ">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="modalBusquedaLabel"><i class="bi bi-search"> Busqueda de artículos</i></h1>
+                    <div class="modal-header" style="background-color: #cec3e2;">
+                        <h1 class="modal-title" id="modalBusquedaLabel">Busqueda de artículos</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">

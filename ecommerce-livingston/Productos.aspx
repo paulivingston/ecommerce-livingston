@@ -3,7 +3,6 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="container mt-5 pt-5 min-vh-100" >
-        <h4 class="mb-5 text-center fs-3 text-bg-dark">Catalogo</h4>
         <div class="row g-0">
 
             <div class="col-md-3 bg-light border mb-3 p-1">
