@@ -29,17 +29,16 @@
                                 <i class="fs-3 bi-grid text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Artículos</span> </a>
                             <ul class="collapse nav flex-column ms-1 " id="submenu3" data-bs-parent="#menu">
                                 <li class="w-100 ">
-                                    
-                                    <a href="Admin.aspx?id=3" class="nav-link px-0"><span class="d-none d-sm-inline text-light ms-4">Marcas</span></a>
+                                    <asp:Button ID="btnArticulosTodos" Text="Todos los Articulos" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnArticulosTodos_Click" runat="server" />
                                 </li>
                                 <li class="w-100">
-                                    <a href="Admin.aspx?id=4" class="nav-link px-0"><span class="d-none d-sm-inline text-light ms-4">Categorias</span></a>
+                                    <asp:Button ID="btnNuevoArticulo" Text="Nuevo Articulo" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnNuevoArticulo_Click" runat="server" />
                                 </li>
                                 <li>
-                                    <a href="Admin.aspx?id=5" class="nav-link px-0"><span class="d-none d-sm-inline text-light ms-4">Todos los artículos</span></a>
+                                    <asp:Button ID="btnMarcas" Text="Marcas" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnMarcas_Click" runat="server" />
                                 </li>
                                 <li>
-                                    <a href="Admin.aspx?id=7" class="nav-link px-0"><span class="d-none d-sm-inline text-light ms-4">Nuevo artículo</span></a>
+                                    <asp:Button ID="btnCategorias" Text="Categorias" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnCategorias_Click" runat="server" />
                                 </li>
                             </ul>
                         </li> <!-- usuarios -->
@@ -48,7 +47,7 @@
                                 <i class="fs-3 bi-people text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Usuarios</span> </a>
                             <ul class="collapse nav flex-column ms-1 " id="submenu4" data-bs-parent="#menu">
                                 <li class="w-100 ">
-                                    <asp:Button ID="btnUsuariosTodos" Text="Todos" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnUsuariosTodos_Click" runat="server" />
+                                    <asp:Button ID="btnUsuariosTodos" Text="Todos los Usuarios" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnUsuariosTodos_Click" runat="server" />
                                 </li>
                                 <li>
                                     <asp:Button Text="Crear Nuevo Usuario" ID="btnAgregarNuevoUsuario" OnClick="btnAgregarNuevoUsuario_Click" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" runat="server" />
@@ -391,7 +390,7 @@
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Editar">
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="ibtModificarPedido" CssClass="mt-3" runat="server" CommandArgument='<%#Eval("IdPedido") %>' CommandName="editar_btn" OnClick="ibtModificarPedido_Click" Height="29px" ImageUrl="~/recursos/img/editar.png" Width="29px" />
+                                        <asp:ImageButton ID="ibtModificarPedido" CssClass="mt-3" runat="server" CommandArgument='<%#Eval("IdPedido") %>' CommandName="editar_btn" OnClick="ibtModificarPedido_Click" Height="29px" ImageUrl="~/Content/img/editar.png" Width="29px" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -579,19 +578,19 @@
 
                                         <asp:TemplateField HeaderText="Agregar">
                                             <ItemTemplate>
-                                                <asp:ImageButton ID="btnAgregarArtPedido" ImageUrl="~/recursos/img/agregar.png" CommandArgument='<%#Eval("Id")%>' OnClick="btnAgregarArtPedido_Click" Height="19" Width="20" runat="server"/>
+                                                <asp:ImageButton ID="btnAgregarArtPedido" ImageUrl="~/Content/img/agregar.png" CommandArgument='<%#Eval("Id")%>' OnClick="btnAgregarArtPedido_Click" Height="19" Width="20" runat="server"/>
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
                                         <asp:TemplateField HeaderText="Quitar">
                                             <ItemTemplate>
-                                                <asp:ImageButton ID="btnRestarArtPedido" ImageUrl="~/recursos/img/minimizar.png" CommandArgument='<%#Eval("Id")%>' Height="19" Width="20" OnClick="btnRestarArtPedido_Click" runat="server"/>
+                                                <asp:ImageButton ID="btnRestarArtPedido" ImageUrl="~/Content/img/minimizar.png" CommandArgument='<%#Eval("Id")%>' Height="19" Width="20" OnClick="btnRestarArtPedido_Click" runat="server"/>
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
                                         <asp:TemplateField HeaderText="Eliminar">
                                             <ItemTemplate>
-                                                <asp:ImageButton ID="btnEliminarArtPedido" ImageUrl="~/recursos/img/eliminar.png" CommandArgument='<%#Eval("Id")%>' OnClick="btnEliminarArtPedido_Click" Height="40" Width="40" runat="server"/>
+                                                <asp:ImageButton ID="btnEliminarArtPedido" ImageUrl="~/Content/img/eliminar.png" CommandArgument='<%#Eval("Id")%>' OnClick="btnEliminarArtPedido_Click" Height="40" Width="40" runat="server"/>
                                             </ItemTemplate>
                                         </asp:TemplateField>
 
@@ -686,6 +685,110 @@
                         </asp:Panel>
 
 
+
+                        <%-- SUBMENU ARTICULOS --%>
+
+                        
+                        <%-- panel articulos --%>
+
+
+
+                        <%-- panel crear o modificar articulo --%>
+
+
+
+                        <%-- panel marcas --%>
+
+                        <asp:Panel ID="panelAdminMarcas" runat="server" Visible="false">
+
+                        <div class="row">
+                            <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" id="titleMarcas" runat="server"><strong>Administración de Marcas</strong></h1>
+                            <div class="col-10 mt-5" id="sectionAgregarMarca" runat="server">
+                                <asp:Button ID="btnAgregarMarca" Text="Agregar nueva Marca" CssClass="fs-5 m-3 btn btn-warning btn-lg m-3" runat="server" OnClick="btnAgregarMarca_Click" />
+                            </div>
+                            <asp:Repeater ID="dgvAdminMarca" runat="server">
+                                <ItemTemplate>
+                                    <div class="col-3 mt-2 mb-3 text-center">
+                                        <div class="card h-100 m-3 bg-light border-primary " runat="server" id="cardMarca">
+                                            <div class="card-header">
+                                                <asp:Label runat="server" ID="lblIdMarca" Text='<%# Eval("Id") %>' CssClass="mt-3"></asp:Label>
+                                            </div>
+                                            <div class="d-flex justify-content-center align-items-center mt-5">
+                                                <asp:UpdatePanel runat="server">
+                                                    <ContentTemplate>
+                                                        <asp:Image ID="imgMarca" runat="server" ImageUrl='<%#Eval("ImagenUrl") %>' onerror="this.src='./Recursos/image-not-found.png'" Width="170px" Height="170px" CssClass="ml-2" />
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title">
+                                                    <asp:Label runat="server" ID="lblMarca" Text='<%# Eval("Descripcion") %>'></asp:Label>
+                                                    <asp:TextBox runat="server" ID="txtMarca" Visible="false" CssClass="form-control"></asp:TextBox>
+                                                </h5>
+                                                <p class="card-text">
+                                                    <asp:Label ID="lblCambiarImgMarca" Text="URL Imágen" runat="server" Visible="false" CssClass="mt-5" />
+                                                    <asp:Label runat="server" ID="lblUrlMarca" Text='<%# Eval("ImagenUrl") %>' CssClass="mt-3" Visible="false"></asp:Label>
+                                                    <asp:TextBox runat="server" ID="tbUrlImgMarca" AutoPostBack="true" Visible="false" CssClass="form-control mt-3" OnTextChanged="tbUrlImgMarca_TextChanged"></asp:TextBox>
+                                                </p>
+                                            </div>
+                                            <div class="col-12 bg-danger text-center">
+                                                <i class="bi bi-trash-fill fs-5"></i>
+                                                <asp:Button runat="server" ID="btnEliminarMarca" Text="Eliminar" Font-Bold="true" CssClass="btn" OnClick="btnEliminarMarca_Click" OnClientClick="return confirm('¿Estás seguro de que deseas eliminar esta marca?');"/>
+                                            </div>
+                                            <div class="col-12 card-footer text-center bg-primary">
+                                                <i class="bi bi-pencil-fill fs-5"></i>
+                                                <asp:Button runat="server" ID="btnEditarMarca" Text="Editar" Font-Bold="true" Visible="true" CssClass="btn btn-primary" OnClick="btnEditarMarca_Click"/>
+                                                <asp:Button runat="server" ID="btnGuardarMarca" Text="Guardar" Font-Bold="true" Visible="false" CssClass="btn btn-warning" OnClick="btnGuardarMarca_Click" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </div>
+                        
+                        </asp:Panel>
+
+                        <%-- registrar nueva marca--%>
+                        <div class="row d-flex justify-content-center align-items-center vh-100">
+                            <div class="card rounded-4 col-8 bg-light ms-5" style="margin-top: 100px; margin-bottom: 100px;" id="sectionNuevaMarca" visible="false" runat="server">
+                                <div class=" card-header text-center">
+                                    <h1> Agregar Marca </h1>
+                                </div>
+                                <div class="row p-2">
+                                    <div class="col-6 mt-3">
+                                        <label for="Nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control" ID="tbNombreMarca" runat="server" />
+                                    </div>
+                                    <div class="col-8 mt-3">
+                                        <label for="img" class="form-label">URL imágen <span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control" ID="tbUrlImgNuevaMarca" runat="server" AutoPostBack="true" OnTextChanged="tbUrlImgNuevaMarca_TextChanged" />
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <asp:UpdatePanel runat="server">
+                                            <ContentTemplate>
+                                                <asp:Image ID="imgNuevaMarca" runat="server" ImageUrl="~/Content/img/agregar-img.png" Width="200px" CssClass="mt-3 ms-5" />
+                                            </ContentTemplate>
+                                        </asp:UpdatePanel>
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <asp:Button Text="Guardar Marca" ID="Button1" CssClass="btn btn-light mb-3 ps-5 pe-5 fs-4" runat="server" OnClick="btnGuardarNewMarca_Click" />
+                                        </div>
+                                        <div class="d-flex justify-content-start align-items-start">
+                                            <asp:LinkButton Text="Volver a Marcas" CssClass="link-body-emphasis m-3" ID="btnVolverMarca" OnClick="btnVolverMarca_Click" runat="server" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+
+
+                        <%-- panel categorias --%>
+
+
                         <!-- SUBMENU USUARIOS -->
 
                          <%-- panel filtros y todos los pedidos --%>
@@ -777,7 +880,7 @@
                                 <asp:BoundField HeaderText="Nivel" DataField="NivelUpper" />
                                 <asp:TemplateField HeaderText="Editar">
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="ibtEditarUsuario" CssClass="mt-3" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="editar_btn" OnClick="ibtEditarUsuario_Click" Height="29px" ImageUrl="~/recursos/img/editar.png" Width="29px" />
+                                        <asp:ImageButton ID="ibtEditarUsuario" CssClass="mt-3" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="editar_btn" OnClick="ibtEditarUsuario_Click" Height="29px" ImageUrl="~/Content/img/editar.png" Width="29px" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Cambiar Activo">
@@ -790,7 +893,7 @@
                         </asp:GridView>
                         </asp:Panel>
 
-                        <%-- panel agregar o modificar usuarios --%>
+                        <%-- panel agregar o modificar usuario --%>
                         <asp:UpdatePanel ID="updatePanelModificarUsuario" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
                                 <div class="row d-flex justify-content-center align-items-center vh-100" runat="server" id="sectionModificarUsuario" visible="false">
@@ -799,7 +902,7 @@
                                             <div class="row g-0">
                                                 <div class="col-md-4  text-center bg-warning text-white"
                                                     style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                                                    <asp:Image ID="userImg" runat="server" ImageUrl="~/recursos/img/avatar.png" Width="120px" CssClass="img-fluid my-5" />
+                                                    <asp:Image ID="userImg" runat="server" ImageUrl="~/Content/img/avatar.png" Width="120px" CssClass="img-fluid my-5" />
                                                     <h6>
                                                         <strong class="fs-5 text-dark">ID Usuario
                                                             <asp:Label runat="server" ID="txtId" />
@@ -867,6 +970,10 @@
                                 </div>
                             </ContentTemplate>
                         </asp:UpdatePanel>
+
+
+
+
 
                     </ContentTemplate>
                 </asp:UpdatePanel>

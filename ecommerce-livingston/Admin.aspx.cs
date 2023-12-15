@@ -7,6 +7,11 @@ using System.Web.UI.WebControls;
 using Dominio;
 using Mensajes;
 using Negocio;
+using System.Web.UI.HtmlControls;
+using System.Data.SqlClient;
+
+
+//falta solucionar filtros tipo dropdown
 
 namespace ecommerce_livingston
 {
@@ -21,6 +26,9 @@ namespace ecommerce_livingston
         Usuario usuario;
         NegocioArticulo NegocioArticulo;
         Articulo articulo;
+        NegocioMarca NegocioMarca;
+        List<Marca> Marcas;
+        Marca marca;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -47,11 +55,14 @@ namespace ecommerce_livingston
             dgvAdminPedidos.DataBind();
 
             divEstadisticas.Visible = false;
+            sectionAdminUsuarios.Visible = false;
+            sectionModificarUsuario.Visible = false;
+            panelAdminMarcas.Visible = false;
+            sectionNuevaMarca.Visible = false;
+
             sectionAdminPedidos.Visible = true;
             sectionAdminPedidosTodos.Visible = true;
             dgvAdminPedidos.Visible = true;
-            sectionAdminUsuarios.Visible = false;
-            sectionModificarUsuario.Visible = false;
             sectionAdminPedidoIndividual.Visible = false;
         }
 
@@ -60,9 +71,55 @@ namespace ecommerce_livingston
             CargarPedidos();
         }
 
-
         //articulos
 
+        private void CargarArticulos()
+        {
+            
+        }
+
+        private void CargarNuevoArticulo()
+        {
+
+        }
+        private void CargarMarcas()
+        {
+            NegocioMarca = new NegocioMarca();
+            Marcas = NegocioMarca.ListarMarcas();
+            dgvAdminMarca.DataSource = Marcas;
+            dgvAdminMarca.DataBind();
+
+            divEstadisticas.Visible = false;
+            sectionAdminPedidos.Visible = false;
+            sectionAdminPedidoIndividual.Visible = false;
+            sectionAdminUsuarios.Visible = false;
+            sectionModificarUsuario.Visible = false;
+
+            panelAdminMarcas.Visible = true;
+            sectionNuevaMarca.Visible = false;
+        }
+        private void CargarCategorias()
+        {
+
+        }
+
+
+        protected void btnArticulosTodos_Click(object sender, EventArgs e)
+        {
+            CargarArticulos();
+        }
+        protected void btnNuevoArticulo_Click(object sender, EventArgs e)
+        {
+            CargarNuevoArticulo();
+        }
+        protected void btnMarcas_Click(object sender, EventArgs e)
+        {
+            CargarMarcas();
+        }
+        protected void btnCategorias_Click(object sender, EventArgs e)
+        {
+            CargarCategorias();
+        }
 
 
         //usuarios
@@ -75,11 +132,16 @@ namespace ecommerce_livingston
 
             divEstadisticas.Visible = false;
             sectionAdminPedidos.Visible = false;
+            sectionAdminPedidoIndividual.Visible = false;
+            panelAdminMarcas.Visible = false;
+            sectionNuevaMarca.Visible = false;
+
             sectionAdminUsuarios.Visible=true;
             lblAdministracionUsuarios.Visible = true;
             filtrosUsuarios.Visible = true;
             sectionModificarUsuario.Visible = false;
-            sectionAdminPedidoIndividual.Visible = false;
+            
+
         }
 
         protected void btnUsuariosTodos_Click(object sender, EventArgs e)
@@ -607,6 +669,158 @@ namespace ecommerce_livingston
             }
         }
         */
+
+
+        #endregion
+
+
+        #region SUBMENU MARCAS
+
+        protected void btnAgregarMarca_Click(object sender, EventArgs e)
+        {
+            panelAdminMarcas.Visible = false;
+            sectionNuevaMarca.Visible = true;
+        }
+
+        protected void btnEliminarMarca_Click(object sender, EventArgs e)
+        {
+            //busco card
+            NegocioMarca = new NegocioMarca();
+            Button btn = (Button)sender;
+            RepeaterItem repeaterItem = (RepeaterItem)btn.NamingContainer;
+            var card = (HtmlGenericControl)repeaterItem.FindControl("cardMarca");
+            
+            //obtengo id y elimino
+            var lblId = (Label)card.FindControl("lblIdMarca");
+            NegocioMarca.EliminarMarca(Convert.ToInt32(lblId.Text));
+
+            //vuelvo a cargar
+            CargarMarcas();
+        }
+
+        protected void btnEditarMarca_Click(object sender, EventArgs e)
+        {
+            //busco card
+            NegocioMarca = new NegocioMarca();
+            Button btn = (Button)sender;
+            RepeaterItem repeaterItem = (RepeaterItem)btn.NamingContainer;
+            var card = (HtmlGenericControl)repeaterItem.FindControl("cardMarca");
+            
+            //obtengo datos
+            var lblMarca = (Label)card.FindControl("lblMarca");
+            var txtMarca = (TextBox)card.FindControl("txtMarca");
+            var lblUrlMarca = (Label)card.FindControl("lblUrlMarca");
+            var tbUrlImgMarca = (TextBox)card.FindControl("tbUrlImgMarca");
+
+            //asigno el valor a los textbox
+            txtMarca.Text = lblMarca.Text;
+            tbUrlImgMarca.Text = lblUrlMarca.Text;
+
+            //cambio vistas
+            lblMarca.Visible = false;
+            txtMarca.Visible = true;
+            lblUrlMarca.Visible = false;
+            tbUrlImgMarca.Visible = true;
+
+            var btnGuardarMarca = (Button)card.FindControl("btnGuardarMarca");
+            btnGuardarMarca.Visible = true;
+            var btnEditarMarca = (Button)card.FindControl("btnEditarMarca");
+            btnEditarMarca.Visible = false;
+        }
+
+        protected void btnGuardarMarca_Click(object sender, EventArgs e)
+        {
+            //busco card
+            NegocioMarca = new NegocioMarca();
+            Button btn = (Button)sender;
+            RepeaterItem repeaterItem = (RepeaterItem)btn.NamingContainer;
+            var card = (HtmlGenericControl)repeaterItem.FindControl("cardMarca");
+
+            //obtengo datos
+            var lblIdMarca = (Label)card.FindControl("lblIdMarca");
+            var lblMarca = (Label)card.FindControl("lblMarca");
+            var txtMarca = (TextBox)card.FindControl("txtMarca");
+            var lblUrlMarca = (Label)card.FindControl("lblUrlMarca");
+            var tbUrlImgMarca = (TextBox)card.FindControl("tbUrlImgMarca");
+
+            
+            if (string.IsNullOrWhiteSpace(lblIdMarca.Text) || string.IsNullOrWhiteSpace(txtMarca.Text) || string.IsNullOrWhiteSpace(tbUrlImgMarca.Text))
+            {
+                Mensajes.Mensajes.MensajePopUp(this, "Faltan completar campos");
+                return;
+            }
+            else
+            {
+                //guardo
+                marca = new Marca();
+                NegocioMarca = new NegocioMarca();
+
+                marca.Id = int.Parse(lblIdMarca.Text);
+                marca.Descripcion = txtMarca.Text;
+                marca.ImagenUrl = tbUrlImgMarca.Text;
+
+                //modifico
+                NegocioMarca.ModificarMarca(marca);
+                Mensajes.Mensajes.MensajePopUp(this, "Marca modificada con exito!");
+            }
+            //asigno el valor a los label
+            lblMarca.Text = txtMarca.Text;
+            lblUrlMarca.Text = tbUrlImgMarca.Text;
+
+            //cambio vistas
+            lblMarca.Visible = true;
+            txtMarca.Visible = false;
+            lblUrlMarca.Visible = false;
+            tbUrlImgMarca.Visible = false;
+
+            var btnGuardarMarca = (Button)card.FindControl("btnGuardarMarca");
+            btnGuardarMarca.Visible = false;
+            var btnEditarMarca = (Button)card.FindControl("btnEditarMarca");
+            btnEditarMarca.Visible = true;
+        }
+
+        protected void tbUrlImgNuevaMarca_TextChanged(object sender, EventArgs e)
+        {
+            imgNuevaMarca.ImageUrl = tbUrlImgNuevaMarca.Text;
+        }
+
+        protected void btnGuardarNewMarca_Click(object sender, EventArgs e)
+        {
+            marca = new Marca();
+            NegocioMarca = new NegocioMarca();
+
+            if (string.IsNullOrWhiteSpace(tbNombreMarca.Text) || string.IsNullOrWhiteSpace(tbUrlImgNuevaMarca.Text))
+            {
+                Mensajes.Mensajes.MensajePopUp(this, "Faltan completar campos");
+                return;
+            }
+            else
+            {
+                marca.Descripcion = tbNombreMarca.Text;
+                marca.ImagenUrl = tbUrlImgNuevaMarca.Text;
+
+                NegocioMarca.CrearMarca(marca);
+                Mensajes.Mensajes.MensajePopUp(this, "Nueva marca registrada con exito!");
+
+                CargarMarcas();
+            }
+        }
+
+        protected void btnVolverMarca_Click(object sender, EventArgs e)
+        {
+            CargarMarcas();
+        }
+
+        protected void tbUrlImgMarca_TextChanged(object sender, EventArgs e)
+        {
+            TextBox tbUrlImgMarca = (TextBox)sender;
+            RepeaterItem repeaterItem = (RepeaterItem)tbUrlImgMarca.NamingContainer;
+            System.Web.UI.WebControls.Image imgMarca = (Image)repeaterItem.FindControl("imgMarca");
+            imgMarca.ImageUrl = tbUrlImgMarca.Text;
+        }
+        
+
+
 
 
         #endregion

@@ -46,7 +46,6 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_CrearCategoria");
-                datos.SetParameter("@Id", categoria.Id);
                 datos.SetParameter("@descripcion", categoria.Descripcion);
                 datos.SetParameter("@ImagenUrl", categoria.ImagenUrl);
 

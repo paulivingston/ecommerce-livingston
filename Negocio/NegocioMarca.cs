@@ -40,18 +40,16 @@ namespace Negocio
             }
         }
 
-        public Marca CrearMarca(Marca marca)
+        public void CrearMarca(Marca marca)
         {
             datos = new DatabaseAccess();
             try
             {
                 datos.SetProcedure("sp_CrearMarca");
-                datos.SetParameter("@Id", marca.Id);
                 datos.SetParameter("@descripcion", marca.Descripcion);
                 datos.SetParameter("@ImagenUrl", marca.ImagenUrl);
 
                 datos.ExecuteNonQuery();
-                return marca;
             }
             catch (Exception ex)
             {
@@ -104,5 +102,30 @@ namespace Negocio
                 datos.CloseConnection();
             }
         }
+
+        public bool ComprobarIdMarca(int id)
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_ComprobarIdMarca");
+                datos.SetParameter("@id", id);
+
+                datos.ReadData();
+
+                if (datos.Reader["Id"] != DBNull.Value || (int)datos.Reader["Id"] != 0) return true;
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+        
+
     }
 }
