@@ -29,6 +29,7 @@
                                 <i class="fs-3 bi-grid text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Artículos</span> </a>
                             <ul class="collapse nav flex-column ms-1 " id="submenu3" data-bs-parent="#menu">
                                 <li class="w-100 ">
+                                    
                                     <a href="Admin.aspx?id=3" class="nav-link px-0"><span class="d-none d-sm-inline text-light ms-4">Marcas</span></a>
                                 </li>
                                 <li class="w-100">
@@ -47,7 +48,7 @@
                                 <i class="fs-3 bi-people text-warning"></i><span class="ms-1 d-none d-sm-inline text-light fs-5 ms-2">Usuarios</span> </a>
                             <ul class="collapse nav flex-column ms-1 " id="submenu4" data-bs-parent="#menu">
                                 <li class="w-100 ">
-                                    <a href="Admin.aspx?id=6" class="nav-link px-0"><span class="d-none d-sm-inline text-light ms-4">Todos</span></a>
+                                    <asp:Button ID="btnUsuariosTodos" Text="Todos" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" OnClick="btnUsuariosTodos_Click" runat="server" />
                                 </li>
                                 <li>
                                     <asp:Button Text="Crear Nuevo Usuario" ID="btnAgregarNuevoUsuario" OnClick="btnAgregarNuevoUsuario_Click" CssClass="nav-link px-0 d-none d-sm-inline text-light ms-4" runat="server" />
@@ -248,11 +249,13 @@
                         </div>
                          
 
+                        
+                        <%-- SUBMENU PEDIDOS --%>
 
-                        <%-- submenu pedidos --%>
+                        <asp:Panel ID="sectionAdminPedidos" runat="server" Visible="false">
 
                         <%-- panel filtros y todos los pedidos --%>
-                        <asp:Panel ID="sectionAdminPedidos" runat="server" Visible="false">
+                        <asp:Panel ID="sectionAdminPedidosTodos" runat="server" Visible="false">
                             
                             <%-- filtros --%>
                             <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" runat="server"><strong>Administración de Pedidos</strong></h1>
@@ -329,7 +332,7 @@
                             </div>
 
                             <%-- tabla --%>
-                            <asp:GridView ID="dgvAdminPedidos" runat="server" CssClass="table table-striped table-bordered mt-5 text-center" AutoGenerateColumns="False">
+                            <asp:GridView ID="dgvAdminPedidos" runat="server" CssClass="table table-striped table-bordered mt-5 text-center" AutoGenerateColumns="true">
                                 <Columns>
                                 <asp:TemplateField HeaderText="ID Pedido">
                                     <ItemTemplate>
@@ -546,7 +549,6 @@
                             </div>
                         </asp:Panel>
 
-
                         <%-- panel articulos por pedido --%>
                         <asp:UpdatePanel runat="server">
                             <ContentTemplate>
@@ -603,7 +605,6 @@
                             </ContentTemplate>
                         </asp:UpdatePanel>
                         
-
                         <%-- panel editar pedidos --%>
                         <asp:UpdatePanel ID="seccionEditarPedidos" Visible="false" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
@@ -682,26 +683,34 @@
                             </ContentTemplate>
                         </asp:UpdatePanel>
                         
+                        </asp:Panel>
 
 
+                        <!-- SUBMENU USUARIOS -->
 
+                         <%-- panel filtros y todos los pedidos --%>
+                        <asp:Panel ID="sectionAdminUsuarios" runat="server" Visible="false">
 
-
-
-                        <!-- submenu usuarios -->
-                        <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" id="lblAdministracionUsuarios" visible="false" runat="server"><strong>Administración de Usuarios</strong></h1>
-                        <div class="row d-flex justify-content-center align-items-center bg-warning pb-2 pt-1"  id="filtrosUsuarios" visible="false" runat="server">
+                        <!-- filtros -->
+                        <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" id="lblAdministracionUsuarios" runat="server"><strong>Administración de Usuarios</strong></h1>
+                        <div class="row d-flex justify-content-center align-items-center bg-warning pb-2 pt-1"  id="filtrosUsuarios" runat="server">
                             <div class="col-2">
                                 <h2>Filtros:</h2>
                             </div>
                             <div class="col-2">
                                 <div class="dropend">
-                                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Estado</button>
+                                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Estado
+                                    </button>
                                     <ul class="dropdown-menu">
                                         <asp:UpdatePanel runat="server">
                                             <ContentTemplate>
-                                                <li><asp:Button CssClass="btn" Text="ACTIVO" CommandName="ACTIVO" OnClick="btnFiltrarEstadoUsuarios_Click" runat="server" /></li>
-                                                <li><asp:Button CssClass="btn" Text="INACTIVO" CommandName="INACTIVO" OnClick="btnFiltrarEstadoUsuarios_Click" runat="server" /></li>
+                                                <li>
+                                                    <asp:Button CssClass="btn" Text="ACTIVO" CommandName="ACTIVO" OnClick="btnFiltrarEstadoUsuarios_Click" runat="server" />
+                                                </li>
+                                                <li>
+                                                    <asp:Button CssClass="btn" Text="INACTIVO" CommandName="INACTIVO" OnClick="btnFiltrarEstadoUsuarios_Click" runat="server" />
+                                                </li>
                                                 </ItemTemplate>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
@@ -735,21 +744,148 @@
                                 </div>
                             </div>
                         </div>
-                        <asp:GridView ID="dgvAdminUsuario" runat="server" CssClass="table table-striped mt-5 " AutoGenerateColumns="False">
-                           
+                        <!-- tabla -->
+                        <asp:GridView ID="dgvAdminUsuario" runat="server" CssClass="table table-striped mt-5 " AutoGenerateColumns="true">
+                            <Columns>
+                                <asp:TemplateField HeaderText="ID">
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# Eval("Id") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Nombre">
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# Eval("Nombre") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Apellido">
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# Eval("Apellido") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="DNI">
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# Eval("DNI") %>' CssClass="mt-3"></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Mail">
+                                    <ItemTemplate>
+                                        <asp:Label runat="server" Text='<%# Eval("Mail") %>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:BoundField HeaderText="Direccion" DataField="Direccion" />
+                                <asp:BoundField HeaderText="Activo" DataField="MostrarActivo" />
+                                <asp:BoundField HeaderText="Nivel" DataField="NivelUpper" />
+                                <asp:TemplateField HeaderText="Editar">
+                                    <ItemTemplate>
+                                        <asp:ImageButton ID="ibtEditarUsuario" CssClass="mt-3" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="editar_btn" OnClick="ibtEditarUsuario_Click" Height="29px" ImageUrl="~/recursos/img/editar.png" Width="29px" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Cambiar Activo">
+                                    <ItemTemplate>
+                                        <asp:Button Text="Baja" CssClass="btn btn-danger" CommandName="BAJA" OnClick="btnCambiarEstadoUsuario_Click" CommandArgument='<%#Eval("Id") %>' runat="server" />
+                                        <asp:Button Text="Alta" CssClass="btn btn-info" CommandName="ALTA" OnClick="btnCambiarEstadoUsuario_Click" CommandArgument='<%#Eval("Id") %>' runat="server" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
                         </asp:GridView>
-                        
-                        <!-- agregar controles usuarios -->
+                        </asp:Panel>
+
+                        <%-- panel agregar o modificar usuarios --%>
                         <asp:UpdatePanel ID="updatePanelModificarUsuario" runat="server" UpdateMode="Conditional">
                             <ContentTemplate>
-
+                                <!-- Card Usuarios -->
+                                <div class="row d-flex justify-content-center align-items-center vh-100" runat="server" id="sectionModificarUsuario" visible="false">
+                                    <div class="col col-lg-10 mb-4 mb-lg-0 ">
+                                        <div class="card mb-3" style="border-radius: .5rem;">
+                                            <div class="row g-0">
+                                                <!-- Columna de Imagen -->
+                                                <div class="col-md-4  text-center bg-warning text-white"
+                                                    style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                                                    <asp:Image ID="userImg" runat="server" ImageUrl="~/recursos/img/avatar.png" Width="120px" CssClass="img-fluid my-5" />
+                                                    <h6>
+                                                        <!-- ID Usuario -->
+                                                        <strong class="fs-5 text-dark">ID Usuario
+                                                                    <asp:Label runat="server" ID="txtId" />
+                                                        </strong>
+                                                    </h6>
+                                                </div>
+                                                <!-- Columna de Inputs -->
+                                                <div class="col-md-8">
+                                                    <div class="card-body p-4">
+                                                        <h6>Información del usuario</h6>
+                                                        <hr class="mt-0 mb-4">
+                                                        <div class="row pt-1">
+                                                            <!-- Nombre -->
+                                                            <div class="col-6 mb-3">
+                                                                <h6>Nombre/s</h6>
+                                                                <asp:TextBox type="text" runat="server" ID="txtNombre" CssClass="text-muted form-control" required pattern="[A-Za-z]+"/>
+                                                            </div>
+                                                            <!-- Apellido -->
+                                                            <div class="col-6 mb-3">
+                                                                <h6>Apellido/s</h6>
+                                                                <asp:TextBox type="text" runat="server" ID="txtApellido" CssClass="text-muted form-control" required pattern="^[A-Za-z\\s]+$"/>
+                                                            </div>
+                                                            <!-- MAIL -->
+                                                            <div class="col-6 mb-3">
+                                                                <h6>Email</h6>
+                                                                <asp:TextBox type="email" runat="server" ID="txtEmail" CssClass="text-muted form-control" required pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"/>
+                                                            </div>
+                                                            <!-- DNI -->
+                                                            <div class="col-6 mb-3">
+                                                                <h6>Nro. Documento</h6>
+                                                                <asp:TextBox type="number" runat="server" ID="txtDni" CssClass="text-muted form-control" required pattern="^\d+$"/>
+                                                            </div>
+                                                            <h6>Contacto</h6>
+                                                            <hr class="mt-0 mb-4">
+                                                            <div class="row pt-1">
+                                                                <!-- PASS -->
+                                                                <div class="col-6 mb-3">
+                                                                    <h6>Contraseña</h6>
+                                                                    <asp:TextBox runat="server" ID="txtClave" CssClass="text-muted form-control" required/>
+                                                                    <%--patron para solo aceptar claves con un mayus, numeros y minusculas    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"    --%>
+                                                                </div>
+                                                                <!-- DIR -->
+                                                                <div class="col-6 mb-3">
+                                                                    <h6>Dirección</h6>
+                                                                    <asp:TextBox type="text" runat="server" ID="txtDomicilio" CssClass="text-muted form-control" required />
+                                                                </div>
+                                                                <!-- NIVEL -->
+                                                                <div class="col-6 mb-3">
+                                                                    <h6>Nivel de usuario</h6>
+                                                                    <asp:DropDownList ID="ddlTipoUsuario" runat="server" CssClass="form-select">
+                                                                        <asp:ListItem Text="C - Cliente" Value="C"></asp:ListItem>
+                                                                        <asp:ListItem Text="A - Administrador" Value="A"></asp:ListItem>
+                                                                        <asp:ListItem Text="E - Empleado" Value="E"></asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Botones -->
+                                                            <div class="row">
+                                                                <div class="d-flex justify-content-end">
+                                                                    <asp:Button Text="Dar de alta" runat="server" ID="btnAltaUsuario" CommandName="ALTA" OnClientClick="return confirm('¿Desea dar del alta al usuario seleccionado?');" OnClick="btnCambiarEstadoUsuario_Click" CssClass="btn btn-outline-success mt-3 me-3" />
+                                                                    <asp:Button Text="Dar de baja" runat="server" ID="btnBajaUsuario" CommandName="BAJA" OnClientClick="return confirm('¿Desea bar de baja al usuario seleccionado?');" OnClick="btnCambiarEstadoUsuario_Click" CssClass="btn btn-outline-danger mt-3 me-3" />
+                                                                    <asp:Button Text="Eliminar" runat="server" ID="btnEliminarUsuario" OnClientClick="return confirm('¿Desea eliminar definitivamente el usuario seleccionado?');" OnClick="btnEliminarUsuario_Click" CssClass="btn btn-danger mt-3 me-3" />
+                                                                    <asp:Button Text="Guardar Cambios" runat="server" ID="btnGuardarUsuario" OnClientClick="return confirm('¿Confirma modificación del usuario?');" OnClick="btnGuardarUsuario_Click" CssClass="btn btn-dark mt-3" />
+                                                                </div>
+                                                                <!-- Link Volver a Lista Usuarios (TEST) -->
+                                                                <div class="d-flex justify-content-center">
+                                                                    <asp:LinkButton Text="Volver a Lista Usuarios" CssClass="link-body-emphasis" ID="lnkVolverListaUsuarios" CommandName="btnVolverListaUsuarios" OnClick="lnkVolverListaUsuarios_Click" runat="server" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Fin Card Usuarios -->
                             </ContentTemplate>
                         </asp:UpdatePanel>
+                        <%-- Fin Modifciar/Agregar Usuario --%>
 
                     </ContentTemplate>
                 </asp:UpdatePanel>
-
-
 
             </div>
             <div class="col py-3"></div>

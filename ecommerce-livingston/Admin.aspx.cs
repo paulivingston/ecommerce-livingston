@@ -17,6 +17,7 @@ namespace ecommerce_livingston
         Pedido pedido;
         List<ItemCarrito> ArticulosPedido;
         NegocioUsuario NegocioUsuario;
+        List<Usuario> Usuarios;
         Usuario usuario;
         NegocioArticulo NegocioArticulo;
         Articulo articulo;
@@ -34,54 +35,12 @@ namespace ecommerce_livingston
             }
         }
 
-        
-        protected void btnPedidosTodos_Click(object sender, EventArgs e)
-        {
-            CargarPedidos();
-        }
-
-        /* protected void btnCrearNuevoPedidoMenu_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                sectionAdminPedidos.Visible = false;
-                divEstadisticas.Visible = false;
-
-                //cargo articulos
-                ddlAgregarArticuloPedido.DataSource = new NegocioArticulo().ListarArticulos();
-                ddlAgregarArticuloPedido.DataTextField = "Nombre";
-                ddlAgregarArticuloPedido.DataValueField = "Id";
-                ddlAgregarArticuloPedido.DataBind();
-
-                if (Session["PedidoArticulosListaEdit"] != null)
-                    Session.Remove("PedidoArticulosListaEdit");
-
-                accordionPedidoArticulos.Visible = true;
-
-                seccionEditarPedidos.Visible = true;
-                lblNuevoPedido.Visible = true;
-                lblModificarPedido.Visible = false;
-                btnEliminarArticulosPedido.Visible = false;
-
-                txtFechaModificarPedido.Text = DateTime.Now.ToString("yyyy-MM-dd");
-
-                //falta ocultar otros submenu
-            }
-            catch (Exception ex)
-            {
-                Session.Add("error", ex);
-                Response.Redirect("Error.aspx", false);
-            }
-        }
-        */
+        #region OPCIONES MENU
 
 
-        #region SUBMENU PEDIDOS
-        //submenu pedidos
-
+        //pedidos
         private void CargarPedidos()
         {
-
             NegocioPedido = new NegocioPedido();
             Pedidos = NegocioPedido.ListarPedidos();
             dgvAdminPedidos.DataSource = Pedidos;
@@ -89,8 +48,53 @@ namespace ecommerce_livingston
 
             divEstadisticas.Visible = false;
             sectionAdminPedidos.Visible = true;
+            sectionAdminPedidosTodos.Visible = true;
             dgvAdminPedidos.Visible = true;
+            sectionAdminUsuarios.Visible = false;
         }
+
+        protected void btnPedidosTodos_Click(object sender, EventArgs e)
+        {
+            CargarPedidos();
+        }
+
+
+        //articulos
+
+
+
+        //usuarios
+        private void CargarUsuarios()
+        {
+            NegocioUsuario = new NegocioUsuario();
+            Usuarios = NegocioUsuario.ListarUsuarios();
+            dgvAdminUsuario.DataSource = Usuarios;
+            dgvAdminUsuario.DataBind();
+
+            divEstadisticas.Visible = false;
+            sectionAdminPedidos.Visible = false;
+            sectionAdminUsuarios.Visible=true;
+            lblAdministracionUsuarios.Visible = true;
+            filtrosUsuarios.Visible = true;
+
+
+        }
+
+        protected void btnUsuariosTodos_Click(object sender, EventArgs e)
+        {
+            CargarUsuarios();
+        }
+
+        protected void btnAgregarNuevoUsuario_Click(object sender, EventArgs e)
+        {
+        }
+
+        #endregion
+
+
+        #region SUBMENU PEDIDOS
+        //submenu pedidos
+
 
         private void CargarPedido(Pedido pedido)
         {
@@ -289,7 +293,7 @@ namespace ecommerce_livingston
 
                 //cambio vistas
                 sectionAdminPedidoIndividual.Visible = true;
-                sectionAdminPedidos.Visible = false;
+                sectionAdminPedidosTodos.Visible = false;
                 dgvAdminPedido.Visible = true;
                 dgvArticulosPedido.Visible = true;
                 seccionEditarPedidos.Visible = true;
@@ -541,6 +545,43 @@ namespace ecommerce_livingston
             CargarPedidos();
         }
 
+
+        /* protected void btnCrearNuevoPedidoMenu_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                sectionAdminPedidosTodos.Visible = false;
+                divEstadisticas.Visible = false;
+
+                //cargo articulos
+                ddlAgregarArticuloPedido.DataSource = new NegocioArticulo().ListarArticulos();
+                ddlAgregarArticuloPedido.DataTextField = "Nombre";
+                ddlAgregarArticuloPedido.DataValueField = "Id";
+                ddlAgregarArticuloPedido.DataBind();
+
+                if (Session["PedidoArticulosListaEdit"] != null)
+                    Session.Remove("PedidoArticulosListaEdit");
+
+                accordionPedidoArticulos.Visible = true;
+
+                seccionEditarPedidos.Visible = true;
+                lblNuevoPedido.Visible = true;
+                lblModificarPedido.Visible = false;
+                btnEliminarArticulosPedido.Visible = false;
+
+                txtFechaModificarPedido.Text = DateTime.Now.ToString("yyyy-MM-dd");
+
+                //falta ocultar otros submenu
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+        }
+        */
+
+
         #endregion
 
 
@@ -548,24 +589,77 @@ namespace ecommerce_livingston
 
         //submenu usuarios
 
-        protected void btnAgregarNuevoUsuario_Click(object sender, EventArgs e)
-        {
-        }
 
+        protected void btnFiltrarEstadoUsuarios_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                NegocioUsuario = new NegocioUsuario();
+                Usuarios = NegocioUsuario.ListarUsuarios();
+
+                string estado = ((Button)sender).CommandName;
+                if (estado == "ACTIVO")
+                    Usuarios = Usuarios.Where(itm => itm.Activo).ToList();
+                else if (estado == "INACTIVO")
+                    Usuarios = Usuarios.Where(itm => !itm.Activo).ToList();
+
+                dgvAdminUsuario.DataSource = Usuarios;
+                dgvAdminUsuario.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+        }
 
         protected void btnFiltrarUsuarios_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                CargarUsuarios();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
         }
         protected void btnLimpiarFiltrosUsuarios_Click(object sender, EventArgs e)
         {
         }
 
-        protected void btnFiltrarEstadoUsuarios_Click(object sender, EventArgs e)
+        protected void ibtEditarUsuario_Click(object sender, EventArgs e)
+        {
+        }
+
+        protected void btnCambiarEstadoUsuario_Click(object sender, EventArgs e)
+        {
+            //ex alta baja usuario
+            //CommandName="BAJA"
+        }
+
+
+        protected void btnEliminarUsuario_Click(object sender, EventArgs e)
+        {
+        }
+
+        protected void btnGuardarUsuario_Click(object sender, EventArgs e)
         {
         }
 
 
+
+        protected void lnkVolverListaUsuarios_Click(object sender, EventArgs e)
+        {
+        }
+
+
+
+
+
+
+        
 
 
         #endregion
