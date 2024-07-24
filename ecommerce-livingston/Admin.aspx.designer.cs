@@ -276,69 +276,6 @@ namespace ecommerce_livingston
         protected global::System.Web.UI.WebControls.GridView dgvAdminPedido;
 
         /// <summary>
-        /// accordionPedidoArticulos control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl accordionPedidoArticulos;
-
-        /// <summary>
-        /// ddlAgregarArticuloPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAgregarArticuloPedido;
-
-        /// <summary>
-        /// btnAgregarArticuloPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregarArticuloPedido;
-
-        /// <summary>
-        /// txtBuscarArticuloPorIDPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBuscarArticuloPorIDPedido;
-
-        /// <summary>
-        /// btnBuscarArticuloPorIDPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBuscarArticuloPorIDPedido;
-
-        /// <summary>
-        /// dgvBuscarArticuloPorIDPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView dgvBuscarArticuloPorIDPedido;
-
-        /// <summary>
-        /// dgvArticulosPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView dgvArticulosPedido;
-
-        /// <summary>
         /// seccionEditarPedidos control.
         /// </summary>
         /// <remarks>
@@ -346,15 +283,6 @@ namespace ecommerce_livingston
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel seccionEditarPedidos;
-
-        /// <summary>
-        /// txtNuevoTotal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNuevoTotal;
 
         /// <summary>
         /// Div1 control.
@@ -372,25 +300,16 @@ namespace ecommerce_livingston
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblModificarPedido;
+        protected global::System.Web.UI.WebControls.Label lblModificarPedido;
 
         /// <summary>
-        /// ddlIdUsuarioModificarPedido control.
+        /// txtIdUsuarioModificarPedido control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlIdUsuarioModificarPedido;
-
-        /// <summary>
-        /// txtIdPedidoEditar control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtIdPedidoEditar;
+        protected global::System.Web.UI.WebControls.TextBox txtIdUsuarioModificarPedido;
 
         /// <summary>
         /// txtEstadoModificarPedido control.
@@ -447,49 +366,31 @@ namespace ecommerce_livingston
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblAlertUsuarioNoEncontrado;
 
         /// <summary>
-        /// btnConfirmarPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnConfirmarPedido;
-
-        /// <summary>
-        /// btnEliminarArticulosPedido control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnEliminarArticulosPedido;
-
-        /// <summary>
         /// btnVolverListaPedidos control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnVolverListaPedidos;
+        protected global::System.Web.UI.WebControls.Button btnVolverListaPedidos;
 
         /// <summary>
-        /// lblErrorPedidos control.
+        /// txtNuevoTotal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblErrorPedidos;
+        protected global::System.Web.UI.WebControls.Label txtNuevoTotal;
 
         /// <summary>
-        /// lblErrorPedidosText control.
+        /// dgvArticulosPedido control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblErrorPedidosText;
+        protected global::System.Web.UI.WebControls.GridView dgvArticulosPedido;
 
         /// <summary>
         /// sectionAdminArticulos control.
