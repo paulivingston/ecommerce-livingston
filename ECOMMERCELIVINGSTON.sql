@@ -117,6 +117,31 @@ BEGIN
 END 
 GO
 
+
+CREATE PROCEDURE sp_ListarArticulosActivos
+AS
+BEGIN
+	SELECT 
+		A.Id, 
+		A.Nombre, 
+		A.Descripcion, 
+		A.IdMarca, 
+		M.Descripcion AS 'Marca', 
+		A.IdCategoria, 
+		C.Descripcion AS 'Categoria', 
+		A.Precio,  
+		A.Stock, 
+		A.ImagenUrl 
+	FROM ARTICULOS AS A 
+	INNER JOIN MARCAS AS M 
+	ON A.IdMarca = M.Id 
+	INNER JOIN CATEGORIAS AS C 
+	ON A.IdCategoria = C.Id
+	WHERE A.Estado=1
+	AND A.Stock>0
+END 
+GO
+
 CREATE PROCEDURE [dbo].[sp_ListarArticulosPorID]
 @Id int
 AS
@@ -700,6 +725,37 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[sp_ModificarEstadoPedido] 
+@id int,
+@estado varchar(20)
+
+AS
+BEGIN
+	IF(@estado='FINALIZADO')
+		BEGIN
+			UPDATE PEDIDOS 
+			SET 
+				Estado = @estado, 
+				enviado=1
+			WHERE IdPedido = @id
+		END
+	ELSE IF (@estado='CANCELADO')
+		BEGIN
+			UPDATE PEDIDOS 
+			SET 
+				Estado = @estado
+			WHERE IdPedido = @id
+
+			UPDATE A
+			SET A.Stock=A.Stock+PA.Cantidad
+			FROM ARTICULOS A
+			INNER JOIN PEDIDO_ARTICULO PA
+			ON A.Id=PA.IdArticulo
+			WHERE PA.IdPedido=@id;
+		END
+END
+GO
+
 CREATE PROCEDURE [dbo].[sp_EliminarPedido]
 @id int
 AS
@@ -771,12 +827,22 @@ CREATE PROCEDURE [dbo].[sp_ListarArticulosPedidoPorID]
 @id int
 AS
 BEGIN
-	SELECT 
-		IdPedido, 
-		IdArticulo, 
-		Cantidad 
-	FROM PEDIDO_ARTICULO
-	WHERE IdPedido = @id
+SELECT 
+		PA.IdArticulo, 
+		A.Nombre, 
+		A.Descripcion, 
+		M.Descripcion AS 'Marca', 
+		C.Descripcion AS 'Categoria', 
+		PA.Cantidad,
+		A.Precio
+	FROM PEDIDO_ARTICULO AS PA
+	INNER JOIN ARTICULOS AS A 
+	ON PA.IdArticulo=A.Id
+	INNER JOIN MARCAS AS M 
+	ON A.IdMarca = M.Id 
+	INNER JOIN CATEGORIAS AS C 
+	ON A.IdCategoria = C.Id
+	WHERE PA.IdPedido = @id
 END
 GO
 
@@ -786,28 +852,42 @@ CREATE PROCEDURE [dbo].[sp_AgregarArticuloPedido]
 @Cantidad int
 AS
 BEGIN
-	INSERT INTO PEDIDO_ARTICULO 
-	VALUES (
-		@IdPedido, 
-		@IdArticulo, 
-		@Cantidad
-	)
+	IF (SELECT Stock FROM ARTICULOS WHERE ID=@IDArticulo) >= @Cantidad
+	BEGIN
+		UPDATE ARTICULOS
+		SET Stock=Stock-@Cantidad
+		WHERE Id=@IDArticulo;
+
+		INSERT INTO PEDIDO_ARTICULO 
+		VALUES (
+			@IdPedido, 
+			@IdArticulo, 
+			@Cantidad
+		)
+	END
+	ELSE
+	BEGIN
+		DELETE FROM PEDIDOS
+		WHERE IdPedido = @IdPedido;
+
+		SELECT 0;
+	END
 END
 GO
 
-CREATE PROCEDURE [dbo].[sp_EditarArticuloPedido]
-@IdPedido int,
-@IDArticulo int,
-@Cantidad int
-AS
-BEGIN
-	UPDATE PEDIDO_ARTICULO 
-	SET 
-		IdArticulo = @IdArticulo, 
-		Cantidad = @Cantidad 
-	WHERE IdPedido = @IdPedido
-END
-GO
+--CREATE PROCEDURE [dbo].[sp_EditarArticuloPedido]
+--@IdPedido int,
+--@IDArticulo int,
+--@Cantidad int
+--AS
+--BEGIN
+--	UPDATE PEDIDO_ARTICULO 
+--	SET 
+--		IdArticulo = @IdArticulo, 
+--		Cantidad = @Cantidad 
+--	WHERE IdPedido = @IdPedido
+--END
+--GO
 
 CREATE PROCEDURE [dbo].[sp_EliminarArticuloPedido]
 @IdPedido int
@@ -835,6 +915,8 @@ BEGIN
 	FROM PEDIDOS
 END
 GO
+
+
 
 
 
@@ -895,7 +977,7 @@ INSERT [dbo].[MARCAS] ([Id], [Descripcion], [ImagenUrl]) VALUES
 (1, N'Ray-Ban', N'https://www.masvision.com.ar/cdn/shop/files/marca_Ray-Ban_small.png?v=1697029603')
 ,(2, N'Vulk', N'https://www.masvision.com.ar/cdn/shop/files/marca_Vulk_small.png?v=1697029603')
 ,(3, N'Vogue', N'https://www.masvision.com.ar/cdn/shop/files/marca_Vogue_small.png?v=1697029603')
-,(8, N'Rusty', N'https://www.masvision.com.ar/cdn/shop/files/marca_Rusty_small.png?v=1697029603')
+,(4, N'Rusty', N'https://www.masvision.com.ar/cdn/shop/files/marca_Rusty_small.png?v=1697029603')
 
 
 INSERT [dbo].[USUARIOS] ([Nombre], [Apellido], [DNI], [Mail], [Clave], [Direccion], [Nivel], [ImagenUrl], [Activo]) VALUES 

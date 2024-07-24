@@ -16,6 +16,7 @@ namespace ecommerce_livingston
         Usuario usuario;
         NegocioItemCarrito items;
         NegocioPedido NegocioPedido;
+        Articulo articulo;
         public bool logged = false;
         protected decimal totalAcumulado = 0;
         public decimal TotalAcumulado
@@ -84,6 +85,7 @@ namespace ecommerce_livingston
                 Session.Add("countCarrito", 0);
 
             int count = (int)Session["countCarrito"];
+
             if (modo == "suma") { count++; }
             else if (modo == "resta") { if (count > 0) count--; }
             else if (modo == "eliminar" && count > 0)
@@ -191,15 +193,25 @@ namespace ecommerce_livingston
                 items = Session["listaCarrito"] as NegocioItemCarrito;
                 ItemCarrito itemMatch = items.Items.Find(itm => itm.Id == id);
 
-                if (itemMatch != null && itemMatch.Cantidad >= 0)
-                    items.ModificarCantidad(id, ++itemMatch.Cantidad);
+                List<Articulo> listaPrincipal = (List<Articulo>)Session["listaPrincipal"];
+                articulo = listaPrincipal.Find(art => art.Id == id);
 
-                dgvCarrito.DataSource = items.Items;
-                dgvCarrito.DataBind();
+                if(articulo.Stock>itemMatch.Cantidad) { 
+                    if (itemMatch != null && itemMatch.Cantidad >= 0)
+                        items.ModificarCantidad(id, ++itemMatch.Cantidad);
 
-                totalAcumulado = TotalCarrito(items.Items);
+                    dgvCarrito.DataSource = items.Items;
+                    dgvCarrito.DataBind();
 
-                CantidadCarrito("suma");
+                    totalAcumulado = TotalCarrito(items.Items);
+
+                    CantidadCarrito("suma");
+                } 
+                else
+                {
+                    Mensajes.Mensajes.MensajePopUp(this, "No disponemos de más unidades de este artículo");
+                    return;
+                }
             }
             catch (Exception ex)
             {
@@ -298,8 +310,6 @@ namespace ecommerce_livingston
                         {
                             NegocioPedido.CargarIdPedido(pedido.totalItems, resPedido);
                             resArticulos = NegocioPedido.AgregarArticuloPedido(pedido.totalItems);
-
-                            Session["listaCarrito"] = null;
                         }
 
                         if (resArticulos == pedido.totalItems.Count)
@@ -309,7 +319,9 @@ namespace ecommerce_livingston
                             emailService.ArmarCorreo(user.Mail, "Ojo de Aguila", newHtmlMsj(user));
                             emailService.EnviarCorreo();
 
-                            Session.Add("mensajeEnDefault", "Pedido Cargado Correctamente. Un email le llegará a su casilla de correo registrada.");
+                            Session["listaCarrito"] = null;
+
+                            Session.Add("mensajeEnDefault", "Pedido Cargado Correctamente. Le llegará un mail a su casilla de correo con la información del pedido.");
                             Response.Redirect("Default.aspx", false);
                         }
                         else

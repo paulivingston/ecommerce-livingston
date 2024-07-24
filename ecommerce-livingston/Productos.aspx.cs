@@ -13,6 +13,7 @@ namespace ecommerce_livingston
     {
         NegocioCategoria NegocioCategoria;
         NegocioMarca NegocioMarca;
+        NegocioItemCarrito items;
         Articulo articulo;
         ItemCarrito item;
         public int CountCarrito { get; set; } = 0;
@@ -23,7 +24,7 @@ namespace ecommerce_livingston
         {
             try
             {
-                if (IsPostBack == false)
+                if (!IsPostBack)
                 {
                     List<Articulo> listaArticulos;
                     cargarFiltros();
@@ -32,7 +33,7 @@ namespace ecommerce_livingston
                         Session.Add("listaCarrito", new NegocioItemCarrito());
 
                     if (Session["listaPrincipal"] == null)
-                        Session.Add("listaPrincipal", new NegocioArticulo().ListarArticulos());
+                        Session.Add("listaPrincipal", new NegocioArticulo().ListarArticulosActivos());
 
                     if (Session["listaFiltrada"] == null)
                         Session.Add("listaFiltrada", new List<Articulo>());
@@ -188,14 +189,22 @@ namespace ecommerce_livingston
             try
             {
                 int itemId = int.Parse((sender as Button).CommandArgument);
-                NegocioArticulo negocioArticulos = new NegocioArticulo();
                 item = new ItemCarrito();
 
                 List<Articulo> list = Session["listaPrincipal"] as List<Articulo>;
                 NegocioItemCarrito carrito = Session["listaCarrito"] as NegocioItemCarrito;
+                ItemCarrito itemMatch = carrito.Items.Find(itm => itm.Id == itemId);
 
-                articulo = list.Find(art => art.Id == itemId); 
-                if (articulo != null)
+                articulo = list.Find(art => art.Id == itemId);
+
+                int stock = 0;
+                if (itemMatch != null) {
+                    stock = articulo.Stock - itemMatch.Cantidad;
+                } else {
+                    stock = articulo.Stock;
+                }
+
+                if (articulo != null && stock>0)
                 {
                     item.Id = itemId;
                     item.Nombre = articulo.Nombre;
@@ -205,6 +214,11 @@ namespace ecommerce_livingston
                     carrito.AgregarItem(item);
 
                     Mensajes.Mensajes.MensajePopUp(this, "Articulo agregado el carrito");
+                }
+                else
+                {
+                    Mensajes.Mensajes.MensajePopUp(this, "No disponemos de más unidades de este artículo");
+                    return;
                 }
 
                 totalItemsCarrito();

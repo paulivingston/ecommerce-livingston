@@ -330,8 +330,12 @@ namespace Negocio
                 {
                     item = new ItemCarrito();
                     item.Id = (int)datos.Reader["IdArticulo"];
-                    item.IdPedido = (int)datos.Reader["IdPedido"];
+                    item.Nombre = datos.Reader["Nombre"].ToString();
                     item.Cantidad = (int)datos.Reader["Cantidad"];
+                    item.Precio = (decimal)datos.Reader["Precio"];
+                    item.Descripcion = datos.Reader["Descripcion"].ToString();
+                    item.Marca = datos.Reader["Marca"].ToString();
+                    item.Categoria = datos.Reader["Categoria"].ToString();
                     ArticulosPedido.Add(item);
                 }
                 return ArticulosPedido;
@@ -400,29 +404,29 @@ namespace Negocio
             }
         }
 
-        public int EditarArticuloPedido(ItemCarrito item)
-        {
-            datos = new DatabaseAccess();
-            try
-            {
-                datos.SetProcedure("sp_EditarArticuloPedido");
-                datos.SetParameter("@IdPedido", item.IdPedido);
-                datos.SetParameter("@IdArticulo", item.Id);
-                datos.SetParameter("@Cantidad", item.Cantidad);
+        //public int EditarArticuloPedido(ItemCarrito item)
+        //{
+        //    datos = new DatabaseAccess();
+        //    try
+        //    {
+        //        datos.SetProcedure("sp_EditarArticuloPedido");
+        //        datos.SetParameter("@IdPedido", item.IdPedido);
+        //        datos.SetParameter("@IdArticulo", item.Id);
+        //        datos.SetParameter("@Cantidad", item.Cantidad);
 
-                datos.ExecuteNonQuery();
+        //        datos.ExecuteNonQuery();
 
-                return 1;
-            }
-            catch
-            {
-                return 0;
-            }
-            finally
-            {
-                datos.CloseConnection();
-            }
-        }
+        //        return 1;
+        //    }
+        //    catch
+        //    {
+        //        return 0;
+        //    }
+        //    finally
+        //    {
+        //        datos.CloseConnection();
+        //    }
+        //}
 
         public int EliminarArticuloPedido(int idPed)
         {

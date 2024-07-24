@@ -70,7 +70,7 @@
          </div>
          
         <!-- marcas -->
-         <div class="container mt-5 container-inicio rounded">
+         <div class="container mt-5 container-inicio rounded pb-5 mb-4">
              <div class="row">
                  <div class="col">
                      <h1 class="mt-4 fw-bold text-dark">Las Mejores Marcas</h1>

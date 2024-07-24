@@ -61,6 +61,48 @@ namespace Negocio
             }
         }
 
+        public List<Articulo> ListarArticulosActivos()
+        {
+            datos = new DatabaseAccess();
+            Articulos = new List<Articulo>();
+            Articulo articulo;
+
+            try
+            {
+                datos.SetProcedure("sp_ListarArticulosActivos");
+                datos.ReadData();
+
+                while (datos.Reader.Read())
+                {
+                    articulo = new Articulo();
+                    articulo.Id = (int)datos.Reader["Id"];
+                    articulo.Nombre = datos.Reader["Nombre"].ToString();
+                    articulo.Descripcion = datos.Reader["Descripcion"].ToString();
+
+                    articulo.Marca.Id = (int)datos.Reader["IdMarca"];
+                    articulo.Marca.Descripcion = datos.Reader["Marca"].ToString();
+
+                    articulo.Categoria.Id = (int)datos.Reader["IdCategoria"];
+                    articulo.Categoria.Descripcion = datos.Reader["Categoria"].ToString();
+
+                    articulo.Precio = (decimal)datos.Reader["Precio"];
+                    articulo.Stock = (int)datos.Reader["Stock"];
+                    articulo.ImagenUrl = datos.Reader["ImagenUrl"].ToString();
+
+                    Articulos.Add(articulo);
+                }
+                return Articulos;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
         public Articulo ListarArticulos(int id)
         {
             datos = new DatabaseAccess();
