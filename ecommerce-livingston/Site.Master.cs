@@ -110,18 +110,27 @@ namespace ecommerce_livingston
                     user = negocioUsuario.ListarUsuarios(mail);
                     if (user != null && user.Clave==pass)
                     {
-                        Session.Add("usuarioActual", user);
-                        Session.Add("mensajeEnMaster", $"Bienvenido {user.Nombre}!");
-
-                        if (user.Nivel.ToUpperInvariant() == "A")
+                        Console.WriteLine(user.Activo);
+                        if (user.Activo == true)
                         {
-                            Response.Redirect("Admin.aspx", false);
-                            return;
-                        }
+                            Session.Add("usuarioActual", user);
+                            Session.Add("mensajeEnMaster", $"Bienvenido {user.Nombre}!");
 
-                        Response.Redirect(paginaActual, false);
-                        btnLoggin.Visible = false;
-                        btnSignOut.Visible = true;
+                            if (user.Nivel.ToUpperInvariant() == "A")
+                            {
+                                Response.Redirect("Admin.aspx", false);
+                                return;
+                            }
+
+                            Response.Redirect(paginaActual, false);
+                            btnLoggin.Visible = false;
+                            btnSignOut.Visible = true;
+                        }
+                        else
+                        {
+                            lblUsuarioNoExiste.Visible = true;
+                            lblRespuestaLoggin.Text = "Usuario inactivo";
+                        }
                     }
                     else if(user != null)
                     {
