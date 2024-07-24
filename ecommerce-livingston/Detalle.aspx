@@ -33,12 +33,13 @@
                         <%foreach (var item in listArt)
                             {
                                 if (item.Id == id)
+
                                 {%>
                                 <div class="card-body bg-warning-subtle">
                                     <h5 class="card-title fs-3"><%=item.Nombre%></h5>
                                     <p class="card-text"><%=item.Descripcion%></p>
-                                    <p class="card-text">Marca: <%= item.Marca%></p>
-                                    <p class="card-text">Categoria: <%= item.Categoria%></p>
+                                    <p class="card-text">Marca: <%= item.Marca.Descripcion%></p>
+                                    <p class="card-text">Categoria: <%= item.Categoria.Descripcion%></p>
                                     <p class="card-text text-primary fs-4 mt-4">$ <%=item.Precio%></p>
                                     <a href="Productos.aspx" class="btn btn-info "><i class="bi bi-cart-plus-fill">Volver</i></a>
                                 </div>
