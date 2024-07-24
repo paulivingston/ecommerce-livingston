@@ -14,15 +14,18 @@ namespace Dominio
         public int Cantidad { get; set; }
         public int CantidadTotal { get; set; }
         public DateTime fecha { get; set; }
-        public string Estado { get; set; }
+        public string Estado { get; set; } 
         public string DireccionEntrega { get; set; }
         public decimal Descuento { get; set; }
         public decimal precioTotal { get; set; }
+        public bool pagado { get; set; }
+        public bool enviado { get; set; }
+
         public string PrecioTotal { get { return string.Format("{0:C2}", precioTotal); } }
         public List<ItemCarrito> totalItems { get; set; } 
 
         public Pedido() { }
-        public Pedido(int idPedido, int idUsuario, DateTime fecha, string estado, string direccionEntrega, decimal descuento, decimal total)
+        public Pedido(int idPedido, int idUsuario, DateTime fecha, string estado, string direccionEntrega, decimal descuento, decimal total, bool pagado, bool enviado)
         {
             IdPedido = idPedido;
             IdUsuario = idUsuario;
@@ -31,6 +34,8 @@ namespace Dominio
             DireccionEntrega = direccionEntrega;
             Descuento = descuento;
             this.precioTotal = total;
+            this.pagado = pagado;
+            this.enviado = enviado;
         }
     }
 }

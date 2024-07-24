@@ -5,10 +5,15 @@
     <div class="container mt-5 pt-5 min-vh-100" >
         <div class="row g-0">
 
-            <div class="col-md-3 bg-light border mb-3 p-1">
-                <div class="p-5">
-                    <asp:DropDownList id="ddlFiltroCategoria" class="form-select h-1 mb-4" runat="server" AutoPostBack="false" ></asp:DropDownList>
-                    <asp:DropDownList id="ddlFiltroMarca" class="form-select h-1 mb-4" runat="server" AutoPostBack="false"></asp:DropDownList>
+            <div class="col-md-3 bg-light border mb-3 p-2">
+                <div class="p-4">
+                    <h2>Filtros</h2>
+                </div>
+                <div class="p-4">
+                    <h4>Categoria</h4>
+                    <asp:DropDownList id="ddlFiltroCategoria" class="form-select h-1 mb-4" runat="server" AutoPostBack="false" AppendDataBoundItems="true"><asp:ListItem Value="">- Seleccionar -</asp:ListItem></asp:DropDownList>
+                    <h4>Marca</h4>
+                    <asp:DropDownList id="ddlFiltroMarca" class="form-select h-1 mb-4" runat="server" AutoPostBack="false" AppendDataBoundItems="true"><asp:ListItem Value="">- Seleccionar -</asp:ListItem></asp:DropDownList>
                     <asp:Button class="btn btn-info btn-sm mb-5" Text="Aplicar" runat="server" id="btnFiltro" OnClick="btnFiltro_Click" />
                     <asp:Button class="btn btn-outline-info btn-sm mb-5" Text="Eliminar Filtros" runat="server" id="btnEliminarFilros" OnClick="btnEliminarFilros_Click" />
                 </div>

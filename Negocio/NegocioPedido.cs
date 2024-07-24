@@ -39,6 +39,8 @@ namespace Negocio
                     pedido.DireccionEntrega = datos.Reader["Direccion"].ToString();
                     pedido.Descuento = (decimal)datos.Reader["Descuento"];
                     pedido.precioTotal = (decimal)datos.Reader["PrecioTotal"];
+                    pedido.pagado = (bool)datos.Reader["pagado"];
+                    pedido.enviado = (bool)datos.Reader["enviado"];
 
                     pedidos.Add(pedido);
                 }
@@ -77,6 +79,8 @@ namespace Negocio
                     pedido.DireccionEntrega = datos.Reader["DireccionEntrega"].ToString();
                     pedido.Descuento = (decimal)datos.Reader["Descuento"];
                     pedido.precioTotal = (decimal)datos.Reader["PrecioTotal"];
+                    pedido.pagado = (bool)datos.Reader["pagado"];
+                    pedido.enviado = (bool)datos.Reader["enviado"];
                 }
                 return pedido;
             }
@@ -114,6 +118,8 @@ namespace Negocio
                     pedido.DireccionEntrega = datos.Reader["DireccionEntrega"].ToString();
                     pedido.Descuento = (decimal)datos.Reader["Descuento"];
                     pedido.precioTotal = (decimal)datos.Reader["PrecioTotal"];
+                    pedido.pagado = (bool)datos.Reader["pagado"];
+                    pedido.enviado = (bool)datos.Reader["enviado"];
                     pedidos.Add(pedido);
                 }
                 return pedidos;
@@ -143,6 +149,8 @@ namespace Negocio
                 datos.SetParameter("@DireccionEntrega", pedido.DireccionEntrega);
                 datos.SetParameter("@Descuento", pedido.Descuento);
                 datos.SetParameter("@PrecioTotal", pedido.precioTotal);
+                datos.SetParameter("@pagado", pedido.pagado);
+                datos.SetParameter("@enviado", pedido.enviado);
 
                 return datos.ExecuteScalar();
             }
@@ -171,6 +179,8 @@ namespace Negocio
                 datos.SetParameter("@DireccionEntrega", pedido.DireccionEntrega);
                 datos.SetParameter("@Descuento", pedido.Descuento);
                 datos.SetParameter("@PrecioTotal", pedido.precioTotal);
+                datos.SetParameter("@pagado", pedido.pagado);
+                datos.SetParameter("@enviado", pedido.enviado);
 
                 datos.ExecuteNonQuery();
 
@@ -248,6 +258,9 @@ namespace Negocio
 
                 pedido.Descuento = descuento > 0.00M ? descuento : 0.00M;
                 pedido.precioTotal = total;
+
+                pedido.pagado = true;
+                pedido.enviado = false;
 
                 return pedido;
             }

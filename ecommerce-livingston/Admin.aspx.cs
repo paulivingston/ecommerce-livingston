@@ -513,7 +513,7 @@ namespace ecommerce_livingston
         {
             try
             {
-                int id = Convert.ToInt32(((ImageButton)sender).CommandArgument);
+                int id = Convert.ToInt32(((Button)sender).CommandArgument);
                 Session.Add("idPedidoEditar", id);
 
                 //pedido

@@ -148,12 +148,27 @@ namespace ecommerce_livingston
                 string cat = ddlFiltroCategoria.SelectedValue;
                 string mrc = ddlFiltroMarca.SelectedValue;
 
-                listaPrincipal = listaPrincipal.FindAll(x =>
-                    x.Categoria.Id.ToString()==cat
-                    && x.Marca.Id.ToString()== mrc);
-
-                repArticulos.DataSource = listaPrincipal;
-                repArticulos.DataBind();
+                if(!(string.IsNullOrEmpty(cat) && string.IsNullOrEmpty(mrc)))
+                {
+                    if (string.IsNullOrEmpty(cat))
+                    {
+                        listaPrincipal = listaPrincipal.FindAll(x =>
+                            x.Marca.Id.ToString() == mrc);
+                    }
+                    else if (string.IsNullOrEmpty(mrc))
+                    {
+                        listaPrincipal = listaPrincipal.FindAll(x =>
+                            x.Categoria.Id.ToString() == cat);
+                    }
+                    else
+                    {
+                        listaPrincipal = listaPrincipal.FindAll(x =>
+                            x.Categoria.Id.ToString() == cat
+                            && x.Marca.Id.ToString() == mrc);
+                    }
+                    repArticulos.DataSource = listaPrincipal;
+                    repArticulos.DataBind();
+                }
             }
             catch (Exception ex)
             {

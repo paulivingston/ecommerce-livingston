@@ -13,6 +13,11 @@ namespace Dominio
         public string ImagenUrl { get; set; }
 
         public Categoria() {}
+        public Categoria(int id, string descripcion)
+        {
+            Id = id;
+            Descripcion = descripcion;
+        }
         public Categoria(int id, string descripcion, string img)
         {
             Id = id;
