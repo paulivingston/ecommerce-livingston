@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Carrito de Compras" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Carrito.aspx.cs" Inherits="ecommerce_livingston.Carrito" %>
+﻿ <%@ Page Title="Carrito de Compras" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Carrito.aspx.cs" Inherits="ecommerce_livingston.Carrito" %>
 
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -122,7 +122,7 @@
                                     <div class="col-md-12">
                                         <div class="card mb-4">
                                             <div class="card-header py-3 bg-info">
-                                                <h4 class="mb-0 "><strong>Finalizar reserva</strong></h4>
+                                                <h4 class="mb-0 "><strong>Resumen de Compra</strong></h4>
                                             </div>
                                             <table class="table">
                                                 <thead class="fs-5">
@@ -152,11 +152,6 @@
                                                 <h4 class="mb-0 "><strong>Precio total:  <span class="text-primary ms-5">$<%:TotalAcumulado.ToString() %></span></strong></h4>
                                             </div>
                                         </div>
-                                        <div id="divBtnConfirmarReserva" runat="server">
-                                            <div class="card text-center mt-5 justify-content-center">
-                                                <asp:Button ID="btnConfirmarPedido" Text="Confirmar Reserva" CssClass="btn fs-3 bg-black text-light p-3" OnClientClick="return confirm('¿Seguro de Confirmar?');" OnClick="btnConfirmarPedido_Click" runat="server" />
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <!-- login -->
@@ -172,6 +167,109 @@
                                         </p>
                                     </div>
 
+                                    <%--Metodos de pago--%>
+                                    <asp:UpdatePanel runat="server">
+                                        <ContentTemplate>
+                                            <div id="divMediosDePago" runat="server" style="margin-top: 100px; margin-bottom: 200px;">
+                                                <h1>Elija un metodo de pago</h1>
+                                                <div class="accordion mt-5" id="accordionPago">
+                                                    <%--<div class="accordion-item ">
+                                                        <h2 class="accordion-header">
+                                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                                Mercado Pago
+                                                            </button>
+                                                        </h2>
+                                                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionPago">
+                                                            <div class="accordion-body text-center">
+                                                                <img src="https://logotipoz.com/wp-content/uploads/2021/10/version-horizontal-large-logo-mercado-pago.webp" alt="logo-MP" class="img-fluid w-25" />
+                                                            </div>
+                                                        </div>
+                                                    </div>--%>
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header">
+                                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDebito" aria-expanded="false" aria-controls="collapseDebito">
+                                                                Tarjeta de débito
+                                                            </button>
+                                                        </h2>
+                                                        <div id="collapseDebito" class="accordion-collapse collapse show" data-bs-parent="#accordionPago">
+                                                            <div class="accordion-body">
+                                                                <div class="row gy-3">
+                                                                    <div class="col-md-6">
+                                                                        <label for="nombreDebito" class="form-label">Nombre del titular</label>
+                                                                        <input type="text" class="form-control" id="nombreDebito" placeholder="" runat="server">
+                                                                        <small class="text-body-secondary">Nombre que figura en la tarjeta</small>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <label for="numeroDebito" class="form-label">Número de tarjeta</label>
+                                                                        <input type="number" class="form-control" id="numeroDebito" placeholder="" runat="server">
+                                                                    </div>
+
+                                                                    <div class="col-md-3">
+                                                                        <label for="fechaVenDebito" class="form-label">Fecha de vencimiento</label>
+                                                                        <input type="text" class="form-control" id="fechaVenDebito" placeholder="" runat="server">
+                                                                    </div>
+
+                                                                    <div class="col-md-3">
+                                                                        <label for="codSegDebito" class="form-label">CVV</label>
+                                                                        <input type="number" class="form-control" id="codSegDebito" placeholder="" runat="server">
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label for="dniDebito" class="form-label">Número de documento</label>
+                                                                        <input type="number" class="form-control" id="dniDebito" placeholder="" runat="server">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="accordion-item">
+                                                        <h2 class="accordion-header">
+                                                            <button id="btnCredito" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCredito" aria-expanded="false" aria-controls="collapseCredito" onclick="MostrarCredito();">
+                                                                Tarjeta de crédito
+                                                            </button>
+                                                        </h2>
+                                                        <div id="collapseCredito" class="accordion-collapse collapse" data-bs-parent="#accordionPago">
+                                                            <div class="accordion-body">
+                                                                <div class="row gy-3">
+                                                                    <div class="col-md-6">
+                                                                        <label for="nombreCredito" class="form-label">Nombre del titular</label>
+                                                                        <input type="text" class="form-control" id="nombreCredito" placeholder="" runat="server">
+                                                                        <small class="text-body-secondary">Nombre que figura en la tarjeta</small>
+                                                                    </div>
+
+                                                                    <div class="col-md-6">
+                                                                        <label for="numeroCredito" class="form-label">Número de tarjeta</label>
+                                                                        <input type="number" class="form-control" id="numeroCredito" placeholder="" runat="server">
+                                                                    </div>
+
+                                                                    <div class="col-md-3">
+                                                                        <label for="fechaVenCredito" class="form-label">Fecha de vencimiento</label>
+                                                                        <input type="text" class="form-control" id="fechaVenCredito" placeholder="" runat="server">
+                                                                    </div>
+
+                                                                    <div class="col-md-3">
+                                                                        <label for="codSegCredito" class="form-label">CVV</label>
+                                                                        <input type="number" class="form-control" id="codSegCredito" placeholder="" runat="server">
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label for="dniCredito" class="form-label">Número de documento</label>
+                                                                        <input type="number" class="form-control" id="dniCredito" placeholder="" runat="server">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <asp:Button ID="BtnPagar" Text="Pagar" CssClass="btn fs-3 bg-black text-light p-3" OnClientClick="return confirm('¿Seguro de Confirmar?');" OnClick="btnConfirmarPedido_Click" runat="server" />
+                                            </div>
+                                           
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+
+                                    
+                                    
+                                    <!-- Fin metodos de pago -->
+
                                 </div>
                             </div>
                         </ContentTemplate>
@@ -181,6 +279,8 @@
         </div>
 
     </main>
+
+
 
 
 

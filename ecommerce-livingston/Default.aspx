@@ -4,7 +4,7 @@
     <main>
 
         <!-- carousel -->
-         <div id="carousel-1" class="carousel slide mt-5" data-bs-ride="false">
+        <%-- <div id="carousel-1" class="carousel slide mt-5" data-bs-ride="true">
              <div class="carousel-inner">
                  <div class="carousel-item active"><img class="w-100 d-block" src="/Content/img/banner/banner-01.jpg" alt="Slide Image" /></div>
                  <div class="carousel-item"><img class="w-100 d-block" src="/Content/img/banner/banner-02.jpg" alt="Slide Image" /></div>
@@ -16,8 +16,35 @@
                  <button class="active" type="button" data-bs-target="#carousel-1" data-bs-slide-to="0"></button>
                  <button type="button" data-bs-target="#carousel-1" data-bs-slide-to="1"></button>
                  <button type="button" data-bs-target="#carousel-1" data-bs-slide-to="2"></button>
+                 <button type="button" data-bs-target="#carousel-1" data-bs-slide-to="3"></button>
+                 <button type="button" data-bs-target="#carousel-1" data-bs-slide-to="4"></button>
              </div>
-         </div>
+         </div>--%>
+
+        <div class="container mt-5">
+            <div id="carousel-1" class="carousel slide" data-bs-ride="true">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carousel-1" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carousel-1" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carousel-1" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    <button type="button" data-bs-target="#carousel-1" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active" ><img class="w-100 d-block" src="/Content/img/banner/banner-01.jpg" alt="Slide Image" /></div>
+                 <div class="carousel-item"><img class="w-100 d-block" src="/Content/img/banner/banner-02.jpg" alt="Slide Image" /></div>
+                 <div class="carousel-item"><img class="w-100 d-block" src="/Content/img/banner/banner-03.jpg" alt="Slide Image" /></div>
+                 <div class="carousel-item"><img class="w-100 d-block" src="/Content/img/banner/banner-04.jpg" alt="Slide Image" /></div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel-1" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel-1" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
 
         <!-- categorias -->
          <div class="container mt-5 container-inicio rounded pb-5 mb-4">

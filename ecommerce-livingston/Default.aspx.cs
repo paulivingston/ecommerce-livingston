@@ -28,6 +28,12 @@ namespace ecommerce_livingston
                     List<Marca> marcas = marca.ListarMarcas();
                     rptMarcas.DataSource = marcas;
                     rptMarcas.DataBind();
+
+                    if (Session["mensajeEnDefault"] != null)
+                    {
+                        Mensajes.Mensajes.MensajePopUp(this, Session["mensajeEnDefault"].ToString());
+                        Session.Remove("mensajeEnDefault");
+                    }
                 }
             }
             catch (Exception ex)

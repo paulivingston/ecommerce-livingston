@@ -58,6 +58,7 @@ namespace ecommerce_livingston
             }
         }
 
+        //GUARDAR EN SESION
         public decimal TotalCarrito(List<ItemCarrito> lista)
         {
             decimal total = 0.00M;
@@ -101,6 +102,8 @@ namespace ecommerce_livingston
             }
         }
 
+
+        //CARGAR DISTINTAS PARTES
         public void CargarPantallaCarrito(List<ItemCarrito> lista)
         {
             if (lista != null && lista.Count > 0)
@@ -108,6 +111,7 @@ namespace ecommerce_livingston
                 divResumen.Visible = false;
                 divCarritoVacio.Visible = false;
                 divCarrito.Visible = true;
+                divMediosDePago.Visible = false;
 
                 dgvCarrito.DataSource = lista;
                 dgvCarrito.DataBind();
@@ -118,9 +122,44 @@ namespace ecommerce_livingston
                 divResumen.Visible = false;
                 divCarrito.Visible = false;
                 divCarritoVacio.Visible = true;
+                divMediosDePago.Visible = false;
             }
         }
 
+        public void CargarPantallaFinalizarCompra(bool logged, List<ItemCarrito> lista)
+        {
+            if (lista != null && lista.Count > 0)
+            {
+                divCarritoVacio.Visible = false;
+                divCarrito.Visible = false;
+                divResumen.Visible = true;
+
+                if (logged)
+                {
+                    divRegistroOLoginNecesario.Visible = false;
+                    divMediosDePago.Visible = true;
+                }
+                else
+                {
+                    divRegistroOLoginNecesario.Visible = true;
+                    divMediosDePago.Visible = false;
+                }
+
+                rptCarrito.DataSource = lista;
+                rptCarrito.DataBind();
+                totalAcumulado = TotalCarrito(lista);
+            }
+            else
+            {
+                divCarritoVacio.Visible = true;
+                divCarrito.Visible = false;
+                divResumen.Visible = false;
+            }
+        }
+
+
+
+        //BOTONES CARRITO
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             try
@@ -215,56 +254,74 @@ namespace ecommerce_livingston
             Response.Redirect("Carrito.aspx", false);
         }
 
+        protected void btnContinuarCompra_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Carrito.aspx?text=ok", false);
+        }
+
         protected void btnConfirmarPedido_Click(object sender, EventArgs e)
         {
             try
             {
-                NegocioPedido = new NegocioPedido();
-                NegocioUsuario = new NegocioUsuario();
-                usuario = (Usuario)Session["usuarioActual"];
-
-                if (NegocioUsuario.IsLogged(usuario))
+                //Valido el form
+                if (ValidarDebito() || ValidarCredito())
                 {
-                    items = Session["listaCarrito"] as NegocioItemCarrito;
-                    List<ItemCarrito> lista = items.Items;
+                    //Valido usuario
+                    NegocioPedido = new NegocioPedido();
+                    NegocioUsuario = new NegocioUsuario();
+                    usuario = (Usuario)Session["usuarioActual"];
 
-                    if (lista == null)
+                    if (NegocioUsuario.IsLogged(usuario))
                     {
-                        Mensajes.Mensajes.MensajePopUp(this, "No hay articulos en el carrito");
-                        return;
-                    }
+                        items = Session["listaCarrito"] as NegocioItemCarrito;
+                        List<ItemCarrito> lista = items.Items;
 
-                    Pedido pedido = NegocioPedido.CargarPedido(lista, usuario, totalAcumulado);
+                        if (lista == null)
+                        {
+                            Mensajes.Mensajes.MensajePopUp(this, "No hay articulos en el carrito");
+                            return;
+                        }
 
-                    
-                    int resArticulos = 0;
+                        //Genero pedido
+                        Pedido pedido = NegocioPedido.CargarPedido(lista, usuario, totalAcumulado);
 
-                    int resPedido = (int)NegocioPedido.CrearPedido(pedido);
-                    if (resPedido == 0)
-                    {
-                        Mensajes.Mensajes.MensajePopUp(this, "Ocurrio Un Error al Cargar el Pedido");
-                        return;
-                    }
-                    else
-                    {
-                        NegocioPedido.CargarIdPedido(pedido.totalItems, resPedido);
-                        resArticulos = NegocioPedido.AgregarArticuloPedido(pedido.totalItems);
-                    }
 
-                    if (resArticulos == pedido.totalItems.Count)
-                    {
-                        EmailService emailService = new EmailService();
-                        Usuario user = Session["usuarioActual"] as Usuario;
-                        emailService.ArmarCorreo(user.Mail, "Ojo de Aguila", newHtmlMsj(user));
-                        emailService.EnviarCorreo();
-                        Mensajes.Mensajes.MensajePopUp(this, "Pedido Cargado Correctamente.");
+                        int resArticulos = 0;
 
-                        Response.Redirect("Default.aspx", false);
+                        int resPedido = (int)NegocioPedido.CrearPedido(pedido);
+                        if (resPedido == 0)
+                        {
+                            Mensajes.Mensajes.MensajePopUp(this, "Ocurrio Un Error al Cargar el Pedido");
+                            return;
+                        }
+                        else
+                        {
+                            NegocioPedido.CargarIdPedido(pedido.totalItems, resPedido);
+                            resArticulos = NegocioPedido.AgregarArticuloPedido(pedido.totalItems);
+
+                            Session["listaCarrito"] = null;
+                        }
+
+                        if (resArticulos == pedido.totalItems.Count)
+                        {
+                            EmailService emailService = new EmailService();
+                            Usuario user = Session["usuarioActual"] as Usuario;
+                            emailService.ArmarCorreo(user.Mail, "Ojo de Aguila", newHtmlMsj(user));
+                            emailService.EnviarCorreo();
+
+                            Session.Add("mensajeEnDefault", "Pedido Cargado Correctamente. Un email le llegará a su casilla de correo registrada.");
+                            Response.Redirect("Default.aspx", false);
+                        }
+                        else
+                        {
+                            Mensajes.Mensajes.MensajePopUp(this, "Ocurrio Un Error al Cargar el Pedido");
+                        }
                     }
-                    else
-                    {
-                        Mensajes.Mensajes.MensajePopUp(this, "Ocurrio Un Error al Cargar el Pedido");
-                    }
+                } 
+                else
+                {
+                    Mensajes.Mensajes.MensajePopUp(this, "Hay campos erróneos o vacíos");
+                    return;
                 }
             }
             catch (Exception ex)
@@ -274,54 +331,47 @@ namespace ecommerce_livingston
             }
         }
 
-        protected void btnContinuarCompra_Click(object sender, EventArgs e)
+        private bool ValidarDebito()
         {
-            Response.Redirect("Carrito.aspx?text=ok", false);
+            if (string.IsNullOrEmpty(nombreDebito.Value) || !nombreDebito.Value.All(char.IsLetter) ||
+                string.IsNullOrEmpty(numeroDebito.Value) || (!numeroDebito.Value.All(char.IsDigit) && !numeroDebito.Value.All(char.IsNumber)) ||
+                string.IsNullOrEmpty(fechaVenDebito.Value) ||
+                string.IsNullOrEmpty(codSegDebito.Value) || (!codSegDebito.Value.All(char.IsDigit) && !codSegDebito.Value.All(char.IsNumber)) ||
+                string.IsNullOrEmpty(dniDebito.Value) || (!dniDebito.Value.All(char.IsDigit) && !dniDebito.Value.All(char.IsNumber))
+                )
+            {
+                return false;
+            }
+            return true;
         }
 
-        public void CargarPantallaFinalizarCompra(bool logged, List<ItemCarrito> lista)
+        private bool ValidarCredito()
         {
-            if (lista != null && lista.Count > 0)
+            if (string.IsNullOrEmpty(nombreCredito.Value) || !nombreCredito.Value.All(char.IsLetter) || 
+                string.IsNullOrEmpty(numeroCredito.Value) || (!numeroCredito.Value.All(char.IsDigit) && !numeroCredito.Value.All(char.IsNumber)) ||
+                string.IsNullOrEmpty(fechaVenCredito.Value) ||
+                string.IsNullOrEmpty(codSegCredito.Value) || (!codSegCredito.Value.All(char.IsDigit) && !codSegCredito.Value.All(char.IsNumber)) ||
+                string.IsNullOrEmpty(dniCredito.Value) || (!dniCredito.Value.All(char.IsDigit) && !dniCredito.Value.All(char.IsNumber))
+                )
             {
-                divCarritoVacio.Visible = false;
-                divCarrito.Visible = false;
-                divResumen.Visible = true;
-
-                if (logged)
-                {
-                    divBtnConfirmarReserva.Visible = true;
-                    divRegistroOLoginNecesario.Visible = false;
-                }
-                else
-                {
-                    divRegistroOLoginNecesario.Visible = true;
-                    divBtnConfirmarReserva.Visible = false;
-                }
-                    
-
-                rptCarrito.DataSource = lista;
-                rptCarrito.DataBind();
-                totalAcumulado = TotalCarrito(lista);
+                return false;
             }
-            else
-            {
-                divCarritoVacio.Visible = true;
-                divCarrito.Visible = false;
-                divResumen.Visible = false;
-            }
+            return true;
         }
 
+
+        //MENSAJES
         private string newHtmlMsj(Usuario usuario)
-        {
-            string html = "<div> " +
-                "<h4>Ojo de Aguila</h4> " +
-                "<p>Gracias por su compra, " + usuario.Nombre + "</p> " +
-                "<p>El pedido se encuentra en proceso de preparación</p> " +
-                "<p>En breve recibirá un mail con la confirmación del pedido</p> " +
-                "<p>Saludos</p> " +
-                "</div>";
-            return html;
-        }
+                {
+                    string html = "<div> " +
+                        "<h4>Ojo de Aguila</h4> " +
+                        "<p>Gracias por su compra, " + usuario.Nombre + "</p> " +
+                        "<p>El pedido se encuentra en proceso de preparación</p> " +
+                        "<p>En breve recibirá un mail con la confirmación del pedido</p> " +
+                        "<p>Saludos</p> " +
+                        "</div>";
+                    return html;
+                }
 
-    }
+        }
 }
