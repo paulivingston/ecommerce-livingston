@@ -809,6 +809,15 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[sp_PedidosCancelados]
+AS
+BEGIN
+	select count(*) AS 'Pendientes'
+	from pedidos 
+	where Estado='CANCELADO'
+END
+GO
+
 
 --PEDIDO ARTICULO
 
@@ -863,7 +872,10 @@ BEGIN
 			@IdPedido, 
 			@IdArticulo, 
 			@Cantidad
-		)
+		);
+		UPDATE PEDIDOS
+		SET Cantidad=(SELECT SUM(Cantidad) FROM PEDIDO_ARTICULO WHERE IdPedido=@IdPedido)
+		WHERE IdPedido=@IdPedido;
 	END
 	ELSE
 	BEGIN
@@ -905,6 +917,7 @@ AS
 BEGIN
 	SELECT AVG(PrecioTotal) AS 'Recaudacion'
 	FROM PEDIDOS
+	WHERE Estado!='CANCELADO'
 END
 GO
 
@@ -913,6 +926,7 @@ AS
 BEGIN
 	SELECT SUM(PrecioTotal) AS 'Recaudacion'
 	FROM PEDIDOS
+	WHERE Estado!='CANCELADO'
 END
 GO
 

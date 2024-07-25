@@ -140,11 +140,9 @@ namespace Negocio
 
             try
             {
-                int totalItems = (pedido.totalItems == null) ? pedido.Cantidad : pedido.totalItems.Count;
-
                 datos.SetProcedure("sp_CrearPedido");
                 datos.SetParameter("@IdUsuario", pedido.IdUsuario);
-                datos.SetParameter("@Cantidad", totalItems);
+                datos.SetParameter("@Cantidad", pedido.Cantidad);
                 datos.SetParameter("@Estado", pedido.Estado);
                 datos.SetParameter("@DireccionEntrega", pedido.DireccionEntrega);
                 datos.SetParameter("@Descuento", pedido.Descuento);
@@ -246,6 +244,12 @@ namespace Negocio
         {
             try
             {
+                int cant = 0;
+                foreach (var item in lista)
+                {
+                    cant += item.Cantidad;
+                }
+
                 pedido = new Pedido();
 
                 pedido.IdUsuario = usuario.Id;
@@ -254,7 +258,7 @@ namespace Negocio
                 pedido.Estado = "INICIADO";
                 pedido.DireccionEntrega = dirEntrega ?? usuario.Direccion;
                 pedido.totalItems = new List<ItemCarrito>(lista);
-                pedido.Cantidad = lista.Sum(itm => itm.Cantidad); // articulos distintos, no unidades totales
+                pedido.Cantidad = cant;
 
                 pedido.Descuento = descuento > 0.00M ? descuento : 0.00M;
                 pedido.precioTotal = total;
@@ -533,6 +537,25 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_PedidosPendientes");
+
+                return datos.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public int PedidosCancelados()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_PedidosCancelados");
 
                 return datos.ExecuteScalar();
             }

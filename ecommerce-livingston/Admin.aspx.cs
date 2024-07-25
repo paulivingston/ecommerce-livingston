@@ -275,7 +275,6 @@ namespace ecommerce_livingston
             lblAdministracionUsuarios.Visible = true;
             filtrosUsuarios.Visible = true;
             sectionModificarUsuario.Visible = false;
-            
 
         }
 
@@ -322,6 +321,7 @@ namespace ecommerce_livingston
                 lblRecaudacionProm.Text = string.Format("{0:C2}", NegocioPedido.RecaudacionPromedio());
                 lblPedidosCompletados.Text = NegocioPedido.PedidosCompletados().ToString();
                 lblPedidosPendientes.Text = NegocioPedido.PedidosPendientes().ToString();
+                lblPedidosCancelados.Text = NegocioPedido.PedidosCancelados().ToString();
                 lblCantidadUsuarios.Text = NegocioPedido.CantidadUsuarios().ToString();
                 lblArtRegistrados.Text = NegocioPedido.CantidadArticulos().ToString();
                 lblCantMarcas.Text = NegocioPedido.CantidadMarcas().ToString();

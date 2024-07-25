@@ -120,6 +120,29 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-3">
+                                                <div class="card col bg-secondary text-light mb-5 h-75">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col mt-0">
+                                                                <h5 class="card-title fw-bold">Pedidos cancelados</h5>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <div class="stat text-secondary">
+                                                                    <i class="align-middle" data-feather="dollar-sign"></i>
+                                                                </div>
+                                                            </div>
+                                                            <asp:Label ID="lblPedidosCancelados" CssClass="fs-1" runat="server" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex mt-5" >
+                                    <div class="w-100">
+                                        <div class="row">
                                             <div class="col-3"> <!-- recaudacion -->
                                                 <div class="card col bg-secondary text-light mb-5 h-75">
                                                     <div class="card-body">
@@ -137,75 +160,129 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-3">
+                                                <div class="card col bg-secondary text-light mb-5 h-75">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col mt-0">
+                                                                <h5 class="card-title fw-bold">Recaudación promedio</h5>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <div class="stat text-secondary">
+                                                                    <i class="align-middle" data-feather="truck"></i>
+                                                                </div>
+                                                            </div>
+                                                            <asp:Label ID="lblRecaudacionProm" CssClass="fs-3 mt-1 mb-3" runat="server" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="card col bg-secondary text-light mb-5 h-75">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col mt-0">
+                                                                <h5 class="card-title fw-bold">Recaudación promedio</h5>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <div class="stat text-secondary">
+                                                                    <i class="align-middle" data-feather="truck"></i>
+                                                                </div>
+                                                            </div>
+                                                            <asp:Label ID="Label1" CssClass="fs-3 mt-1 mb-3" runat="server" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="card col bg-secondary text-light mb-5 h-75">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col mt-0">
+                                                                <h5 class="card-title fw-bold">Recaudación promedio</h5>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <div class="stat text-secondary">
+                                                                    <i class="align-middle" data-feather="truck"></i>
+                                                                </div>
+                                                            </div>
+                                                            <asp:Label ID="Label2" CssClass="fs-3 mt-1 mb-3" runat="server" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="w-100 mb-5">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <div class="card col bg-secondary text-light mb-5 h-75">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col mt-0">
-                                                            <h5 class="card-title fw-bold">Recaudación promedio</h5>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <div class="stat text-secondary">
-                                                                <i class="align-middle" data-feather="truck"></i>
+                                <div class="col-12 d-flex mt-5" >
+                                    <div class="w-100">
+                                        <div class="row">
+                                            <div class="col-3"> <!-- usuarios -->
+                                                <div class="card col bg-secondary text-light mb-5 h-75">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col mt-0">
+                                                                <h5 class="card-title fw-bold">Usuarios Activos</h5>
                                                             </div>
+                                                            <div class="col-auto">
+                                                                <div class="stat text-secondary">
+                                                                    <i class="align-middle" data-feather="users"></i>
+                                                                </div>
+                                                            </div>
+                                                            <asp:Label ID="lblCantidadUsuarios" CssClass="fs-1 mt-1 mb-3" runat="server" />
                                                         </div>
-                                                        <asp:Label ID="lblRecaudacionProm" CssClass="fs-3 mt-1 mb-3" runat="server" />
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-3"> <!-- usuarios -->
-                                            <div class="card col bg-secondary text-light mb-5 h-75">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col mt-0">
-                                                            <h5 class="card-title fw-bold">Usuarios registrados</h5>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <div class="stat text-secondary">
-                                                                <i class="align-middle" data-feather="users"></i>
+                                            <div class="col-3"> <!-- articulos -->
+                                                <div class="card col bg-secondary text-light mb-5 h-75">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col mt-0">
+                                                                <h5 class="card-title fw-bold">Artículos Activos</h5>
                                                             </div>
+                                                            <div class="col-auto">
+                                                                <div class="stat text-secondary">
+                                                                    <i class="align-middle" data-feather="dollar-sign"></i>
+                                                                </div>
+                                                            </div>
+                                                            <asp:Label ID="lblArtRegistrados" CssClass="fs-1 mt-1 mb-3" runat="server" />
                                                         </div>
-                                                        <asp:Label ID="lblCantidadUsuarios" CssClass="fs-1 mt-1 mb-3" runat="server" />
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-3"> <!-- articulos -->
-                                            <div class="card col bg-secondary text-light mb-5 h-75">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col mt-0">
-                                                            <h5 class="card-title fw-bold">Artículos registrados</h5>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <div class="stat text-secondary">
-                                                                <i class="align-middle" data-feather="dollar-sign"></i>
+                                            <div class="col-3"> <!-- marcas -->
+                                                <div class="card col bg-secondary text-light mb-5 h-75">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col mt-0">
+                                                                <h5 class="card-title fw-bold">Marcas Activas</h5>
                                                             </div>
+                                                            <div class="col-auto">
+                                                                <div class="stat text-secondary">
+                                                                    <i class="align-middle" data-feather="shopping-cart"></i>
+                                                                </div>
+                                                            </div>
+                                                            <asp:Label ID="lblCantMarcas" CssClass="fs-1 mt-1 mb-3" runat="server" />
                                                         </div>
-                                                        <asp:Label ID="lblArtRegistrados" CssClass="fs-1 mt-1 mb-3" runat="server" />
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-3"> <!-- marcas -->
-                                            <div class="card col bg-secondary text-light mb-5 h-75">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col mt-0">
-                                                            <h5 class="card-title fw-bold">Marcas registradas</h5>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <div class="stat text-secondary">
-                                                                <i class="align-middle" data-feather="shopping-cart"></i>
+                                            <div class="col-3">
+                                                <div class="card col bg-secondary text-light mb-5 h-75">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col mt-0">
+                                                                    <h5 class="card-title fw-bold">Categorias Activas</h5>
+                                                                </div>
+                                                                <div class="col-auto">
+                                                                    <div class="stat text-secondary">
+                                                                        <i class="align-middle" data-feather="truck"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <asp:Label ID="Label3" CssClass="fs-3 mt-1 mb-3" runat="server" />
                                                             </div>
                                                         </div>
-                                                        <asp:Label ID="lblCantMarcas" CssClass="fs-1 mt-1 mb-3" runat="server" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -306,7 +383,7 @@
                                         <asp:Label runat="server" Text='<%# Eval("IdPedido") %>' CssClass="mt-3"></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField HeaderText="Cantidad de articulos">
+                                <asp:TemplateField HeaderText="Cantidad de items">
                                     <ItemTemplate>
                                         <asp:Label runat="server" Text='<%# Eval("Cantidad") %>' CssClass="mt-3"></asp:Label>
                                     </ItemTemplate>
