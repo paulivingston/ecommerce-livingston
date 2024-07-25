@@ -345,6 +345,14 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[sp_CantidadCategorias]
+AS
+BEGIN
+	select count(*) AS 'Categorias' 
+	from CATEGORIAS
+END
+GO
+
 --MARCAS
 
 CREATE PROCEDURE sp_ListarMarcas
@@ -812,7 +820,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_PedidosCancelados]
 AS
 BEGIN
-	select count(*) AS 'Pendientes'
+	select count(*) AS 'Cancelados'
 	from pedidos 
 	where Estado='CANCELADO'
 END
@@ -930,7 +938,27 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[sp_RecaudacionMes]
+AS
+BEGIN
+	SELECT SUM(PrecioTotal) AS 'Recaudacion'
+	FROM PEDIDOS
+	WHERE Estado!='CANCELADO'
+	AND MONTH(Fecha) = MONTH(GETDATE())
+	AND YEAR(Fecha) = YEAR(GETDATE())
+END
+GO
 
+CREATE PROCEDURE [dbo].[sp_RecaudacionMesAnterior]
+AS
+BEGIN
+	SELECT ISNULL(SUM(PrecioTotal),0) AS 'Recaudacion'
+	FROM PEDIDOS
+	WHERE Estado!='CANCELADO'
+	AND MONTH(Fecha) = MONTH(GETDATE())-1
+	AND YEAR(Fecha) = YEAR(GETDATE())
+END
+GO
 
 
 

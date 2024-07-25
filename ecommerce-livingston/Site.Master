@@ -115,8 +115,8 @@
                             </div>
                             <div class="modal-footer">
                                 <div class="d-flex">
+                                    <asp:Button Text="Ingresar" CssClass="btn btn-primary me-3" ID="btnIngresar" OnClick="btnIngresar_Click" runat="server" />
                                     <asp:Button Text="Registrarse" ID="btnRegistro" OnClick="btnRegistro_Click" runat="server" cssClass="btn btn-secondary me-3"/>
-                                    <asp:Button Text="Ingresar" CssClass="btn btn-primary" ID="btnIngresar" OnClick="btnIngresar_Click" runat="server" />
                                 </div>
                             </div>
                         </ContentTemplate>
@@ -146,6 +146,7 @@
 
         <div>
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
+
             </asp:ContentPlaceHolder>
             <hr/>
             <footer class="footer">

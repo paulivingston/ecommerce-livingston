@@ -58,11 +58,13 @@
                 </div>
             </div>
 
+
             <div class="col-md-9 mt-5" style="margin-left:40px">
                 <asp:UpdatePanel runat="server">
                     <ContentTemplate>
 
-                        <!-- estadisticas -->
+                        <%-- ESTADISTICAS --%>
+                        
                         <div class="container-fluid p-0" style="margin-top:100px;" runat="server" id="divEstadisticas">
                             <h1 class="h3 rounded-3 mb-5 pt-3 pb-3 mt-5 fs-1 text-center text-bg-dark text-light" ><strong >Estadísticas</strong></h1>
                             <div class="row">
@@ -182,14 +184,14 @@
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col mt-0">
-                                                                <h5 class="card-title fw-bold">Recaudación promedio</h5>
+                                                                <h5 class="card-title fw-bold">Recaudación mes en curso</h5>
                                                             </div>
                                                             <div class="col-auto">
                                                                 <div class="stat text-secondary">
                                                                     <i class="align-middle" data-feather="truck"></i>
                                                                 </div>
                                                             </div>
-                                                            <asp:Label ID="Label1" CssClass="fs-3 mt-1 mb-3" runat="server" />
+                                                            <asp:Label ID="lblRecaudacionMes" CssClass="fs-3 mt-1 mb-3" runat="server" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -199,14 +201,14 @@
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col mt-0">
-                                                                <h5 class="card-title fw-bold">Recaudación promedio</h5>
+                                                                <h5 class="card-title fw-bold">Recaudación mes anterior</h5>
                                                             </div>
                                                             <div class="col-auto">
                                                                 <div class="stat text-secondary">
                                                                     <i class="align-middle" data-feather="truck"></i>
                                                                 </div>
                                                             </div>
-                                                            <asp:Label ID="Label2" CssClass="fs-3 mt-1 mb-3" runat="server" />
+                                                            <asp:Label ID="lblRecaudacionMesAnterior" CssClass="fs-3 mt-1 mb-3" runat="server" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -280,7 +282,7 @@
                                                                         <i class="align-middle" data-feather="truck"></i>
                                                                     </div>
                                                                 </div>
-                                                                <asp:Label ID="Label3" CssClass="fs-3 mt-1 mb-3" runat="server" />
+                                                                <asp:Label ID="lblCantCategorias" CssClass="fs-1 mt-1 mb-3" runat="server" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -303,8 +305,8 @@
                             
                             <%-- filtros --%>
                             <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" runat="server"><strong>Administración de Pedidos</strong></h1>
-                            <div class="row d-flex justify-content-center align-items-center bg-info pb-2 pt-1" runat="server">
-                                <div class="col-2">
+                            <div class="row d-flex justify-content-center align-items-center bg-info pb-3 pt-2" runat="server">
+                                <div class="col-1">
                                     <h2>Filtros:</h2>
                                 </div>
                                 <div class="col-2">
@@ -313,43 +315,33 @@
                                             Ordenar
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <asp:UpdatePanel runat="server">
-                                                <ContentTemplate>
-                                                    <li>
-                                                        <asp:Button ID="btnOrdenarMayorPrecioPedidos" OnClick="btnOrdenarPrecioPedidos_Click" CommandName="MAYOR" CssClass="btn" Text="Mayor precio" runat="server" />
-                                                    </li>
-                                                    <li>
-                                                        <asp:Button ID="btnOrdenarMenorPrecioPedidos" OnClick="btnOrdenarPrecioPedidos_Click" CommandName="MENOR" CssClass="btn" Text="Menor precio" runat="server" />
-                                                    </li>
-                                                    </ItemTemplate>
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
+                                            <li>
+                                                <asp:Button ID="btnOrdenarMayorPrecioPedidos" OnClick="btnOrdenarPrecioPedidos_Click" CommandName="MAYOR" CssClass="btn" Text="Mayor precio" runat="server" />
+                                            </li>
+                                            <li>
+                                                <asp:Button ID="btnOrdenarMenorPrecioPedidos" OnClick="btnOrdenarPrecioPedidos_Click" CommandName="MENOR" CssClass="btn" Text="Menor precio" runat="server" />
+                                            </li>
                                         </ul>
                                         <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             Estado
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <asp:UpdatePanel runat="server">
-                                                <ContentTemplate>
-                                                    <li>
-                                                        <asp:Button OnClick="btnEstadosPedidosFiltros_Click" CssClass="btn" Text="Iniciado" CommandName="btnIniciado" runat="server" />
-                                                    </li>
-                                                    <li>
-                                                        <asp:Button OnClick="btnEstadosPedidosFiltros_Click" CssClass="btn" Text="Finalizado" CommandName="btnTerminado" runat="server" />
-                                                    </li>
-                                                    <li>
-                                                        <asp:Button OnClick="btnEstadosPedidosFiltros_Click" CssClass="btn" Text="Cancelado" CommandName="btnCancelado" runat="server" />
-                                                    </li>
-                                                    </ItemTemplate>
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
+                                            <li>
+                                                <asp:Button OnClick="btnEstadosPedidosFiltros_Click" CssClass="btn" Text="Iniciado" CommandName="btnIniciado" runat="server" />
+                                            </li>
+                                            <li>
+                                                <asp:Button OnClick="btnEstadosPedidosFiltros_Click" CssClass="btn" Text="Finalizado" CommandName="btnTerminado" runat="server" />
+                                            </li>
+                                            <li>
+                                                <asp:Button OnClick="btnEstadosPedidosFiltros_Click" CssClass="btn" Text="Cancelado" CommandName="btnCancelado" runat="server" />
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
                                 
                                 <div class="col-1">
                                     <label for="txtFiltroIdUser_Pedido" class="form-label">Id Usuario</label>
-                                    <asp:TextBox ID="txtFiltroIdUser_Pedido" TextMode="Number" CssClass="form-control" runat="server"/>
+                                    <asp:TextBox ID="txtFiltroIdUser_Pedido" TextMode="Number" CssClass="form-control"  runat="server"/>
                                 </div>
                                 <div class="col-1">
                                     <label for="txtFiltroIdPedido_Pedido" class="form-label">Id Pedido</label>
@@ -361,10 +353,10 @@
                                 </div>
                                 <div class="col-1">
                                     <label for="txtFiltroFecha" class="form-label">Fecha</label>
-                                    <asp:TextBox ID="txtFiltroFecha" TextMode="DateTimeLocal" CssClass="form-control" placeholder="" runat="server" />
+                                    <asp:TextBox ID="txtFiltroFecha" TextMode="Date" CssClass="form-control" placeholder="" runat="server" />
                                 </div>
-                                <div class="col-2">
-                                    <div class="row">
+                                <div class="col-3">
+                                    <div class="row text-center">
                                         <div class="col">
                                             <asp:Button ID="btnFiltrarPedidos" OnClick="btnFiltrosPersonalizados_Click" Text="Filtrar" CssClass="btn btn-dark" runat="server" />
                                         </div>

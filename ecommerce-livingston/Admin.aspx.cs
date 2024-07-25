@@ -61,7 +61,7 @@ namespace ecommerce_livingston
 
         //pedidos
         private void CargarPedidos()
-        {
+        {   
             NegocioPedido = new NegocioPedido();
             Pedidos = NegocioPedido.ListarPedidos();
             dgvAdminPedidos.DataSource = Pedidos;
@@ -77,7 +77,7 @@ namespace ecommerce_livingston
 
             sectionAdminPedidos.Visible = true;
             sectionAdminPedidosTodos.Visible = true;
-            dgvAdminPedidos.Visible = true;
+            //dgvAdminPedidos.Visible = true;
             sectionAdminPedidoIndividual.Visible = false;
             seccionEditarPedidos.Visible = false;
         }
@@ -319,12 +319,15 @@ namespace ecommerce_livingston
                 lblCantPedidos.Text = NegocioPedido.CantidadPedidos().ToString();
                 lblRecaudacionPedidos.Text = string.Format("{0:C2}", NegocioPedido.RecaudacionTotal());
                 lblRecaudacionProm.Text = string.Format("{0:C2}", NegocioPedido.RecaudacionPromedio());
+                lblRecaudacionMes.Text = string.Format("{0:C2}", NegocioPedido.RecaudacionMes());
+                lblRecaudacionMesAnterior.Text = string.Format("{0:C2}", NegocioPedido.RecaudacionMesAnterior());
                 lblPedidosCompletados.Text = NegocioPedido.PedidosCompletados().ToString();
                 lblPedidosPendientes.Text = NegocioPedido.PedidosPendientes().ToString();
                 lblPedidosCancelados.Text = NegocioPedido.PedidosCancelados().ToString();
                 lblCantidadUsuarios.Text = NegocioPedido.CantidadUsuarios().ToString();
                 lblArtRegistrados.Text = NegocioPedido.CantidadArticulos().ToString();
                 lblCantMarcas.Text = NegocioPedido.CantidadMarcas().ToString();
+                lblCantCategorias.Text = NegocioPedido.CantidadCategorias().ToString();
             }
             catch (Exception ex)
             {
@@ -375,9 +378,14 @@ namespace ecommerce_livingston
         {
             try
             {
-                divEstadisticas.Visible = false;
+                CargarPedidos();
                 NegocioPedido = new NegocioPedido();
                 Pedidos = NegocioPedido.ListarPedidos();
+
+                if (int.TryParse(txtFiltroIdUser_Pedido.Text, out int idPedidoUser)) Pedidos.RemoveAll(itm => itm.IdUsuario != idPedidoUser);
+                if (int.TryParse(txtFiltroIdPedido_Pedido.Text, out int idPedido)) Pedidos.RemoveAll(itm => itm.IdPedido != idPedido);
+                if(!string.IsNullOrWhiteSpace(txtFiltroNombreUsuario_Pedido.Text)) Pedidos.RemoveAll(itm => itm.Usuario.ToUpperInvariant() != txtFiltroNombreUsuario_Pedido.Text.ToUpperInvariant());
+                if (DateTime.TryParse(txtFiltroFecha.Text, out DateTime fechaDesde) && !string.IsNullOrWhiteSpace(txtFiltroFecha.Text)) Pedidos.RemoveAll(itm => itm.fecha.Date != fechaDesde.Date);
 
                 if (((Button)sender).CommandName == "MAYOR")
                     Pedidos = Pedidos.OrderByDescending(itm => itm.precioTotal).ToList();
@@ -399,9 +407,15 @@ namespace ecommerce_livingston
         {
             try
             {
-                divEstadisticas.Visible = false;
+                CargarPedidos();
                 NegocioPedido = new NegocioPedido();
                 Pedidos = NegocioPedido.ListarPedidos();
+
+                if (int.TryParse(txtFiltroIdUser_Pedido.Text, out int idPedidoUser)) Pedidos.RemoveAll(itm => itm.IdUsuario != idPedidoUser);
+                if (int.TryParse(txtFiltroIdPedido_Pedido.Text, out int idPedido)) Pedidos.RemoveAll(itm => itm.IdPedido != idPedido);
+                if (!string.IsNullOrWhiteSpace(txtFiltroNombreUsuario_Pedido.Text)) Pedidos.RemoveAll(itm => itm.Usuario.ToUpperInvariant() != txtFiltroNombreUsuario_Pedido.Text.ToUpperInvariant());
+                if (DateTime.TryParse(txtFiltroFecha.Text, out DateTime fechaDesde) && !string.IsNullOrWhiteSpace(txtFiltroFecha.Text)) Pedidos.RemoveAll(itm => itm.fecha.Date != fechaDesde.Date);
+
 
                 string estado = ((Button)sender).CommandName;
                 if (estado == "btnIniciado")
@@ -425,23 +439,14 @@ namespace ecommerce_livingston
         {
             try
             {
-                divEstadisticas.Visible = false;
+                CargarPedidos();
                 NegocioPedido = new NegocioPedido();
                 Pedidos = NegocioPedido.ListarPedidos();
 
-                int idPedidoUser = string.IsNullOrWhiteSpace(txtFiltroIdUser_Pedido.Text) ? 0 : Convert.ToInt32(txtFiltroIdUser_Pedido.Text);
-                int idPedido = string.IsNullOrWhiteSpace(txtFiltroIdPedido_Pedido.Text) ? 0 : Convert.ToInt32(txtFiltroIdPedido_Pedido.Text);
-                string nombreUser = string.IsNullOrWhiteSpace(txtFiltroNombreUsuario_Pedido.Text) ? string.Empty : txtFiltroNombreUsuario_Pedido.Text;
-                DateTime fechaDesde = string.IsNullOrWhiteSpace(txtFiltroFecha.Text) ? DateTime.MinValue : Convert.ToDateTime(txtFiltroFecha.Text);
-
-                if (idPedidoUser != 0)
-                    Pedidos.RemoveAll(itm => itm.IdUsuario != idPedidoUser);
-                if (idPedido != 0)
-                    Pedidos.RemoveAll(itm => itm.IdPedido != idPedido);
-                if (nombreUser != string.Empty)
-                    Pedidos.RemoveAll(itm => itm.Usuario.ToUpperInvariant() != nombreUser.ToUpperInvariant());
-                if (fechaDesde != DateTime.MinValue)
-                    Pedidos.RemoveAll(itm => itm.fecha.Date != fechaDesde.Date);
+                if (int.TryParse(txtFiltroIdUser_Pedido.Text, out int idPedidoUser)) Pedidos.RemoveAll(itm => itm.IdUsuario != idPedidoUser);
+                if (int.TryParse(txtFiltroIdPedido_Pedido.Text, out int idPedido)) Pedidos.RemoveAll(itm => itm.IdPedido != idPedido);
+                if (!string.IsNullOrWhiteSpace(txtFiltroNombreUsuario_Pedido.Text)) Pedidos.RemoveAll(itm => itm.Usuario.ToUpperInvariant() != txtFiltroNombreUsuario_Pedido.Text.ToUpperInvariant());
+                if (DateTime.TryParse(txtFiltroFecha.Text, out DateTime fechaDesde) && !string.IsNullOrWhiteSpace(txtFiltroFecha.Text)) Pedidos.RemoveAll(itm => itm.fecha.Date != fechaDesde.Date);
 
                 dgvAdminPedidos.DataSource = Pedidos;
                 dgvAdminPedidos.DataBind();
@@ -1703,8 +1708,6 @@ namespace ecommerce_livingston
 
 
         #endregion
-
-
 
 
 

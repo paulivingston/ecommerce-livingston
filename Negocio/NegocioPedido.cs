@@ -512,6 +512,44 @@ namespace Negocio
             }
         }
 
+        public decimal RecaudacionMes()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_RecaudacionMes");
+
+                return datos.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public decimal RecaudacionMesAnterior()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_RecaudacionMesAnterior");
+
+                return datos.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
         public int PedidosCompletados()
         {
             datos = new DatabaseAccess();
@@ -613,6 +651,25 @@ namespace Negocio
             try
             {
                 datos.SetProcedure("sp_CantidadMarcas");
+
+                return datos.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
+        public decimal CantidadCategorias()
+        {
+            datos = new DatabaseAccess();
+            try
+            {
+                datos.SetProcedure("sp_CantidadCategorias");
 
                 return datos.ExecuteScalar();
             }
