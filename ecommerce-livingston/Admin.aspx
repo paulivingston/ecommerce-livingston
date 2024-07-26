@@ -22,6 +22,9 @@
                                 <li class="w-100 ">
                                     <asp:Button ID="btnPedidosTodos" Text="Todos los Pedidos" CssClass="nav-link px-0 d-none d-sm-inline text-black ms-4" OnClick="btnPedidosTodos_Click" runat="server" />
                                 </li>
+                                <li class="w-100 ">
+                                    <asp:Button ID="btnDescuentos" Text="Cupones de Descuento" CssClass="nav-link px-0 d-none d-sm-inline text-black ms-4" OnClick="btnDescuentos_Click" runat="server" />
+                                </li>
                             </ul>
                         </li>
                         <li> <!-- articulos -->
@@ -594,9 +597,80 @@
                             </ContentTemplate>
                         </asp:UpdatePanel>
                         
+
+                        <%-- panel descuentos --%>
+
+                        <asp:Panel ID="panelCuponDescuento" runat="server" Visible="false">
+
+                        <div class="row">
+                            <h1 class="text-light text-center bg-dark border border-light rounded-2 p-2" style="margin-top: 100px;" id="H1" runat="server"><strong>Cupones de Descuento</strong></h1>
+                            <div class="col-10 mt-5" id="sectionCuponDescuento" runat="server">
+                                <asp:Button ID="btnAgregarDescuento" Text="Agregar nuevo Cupon" CssClass="fs-5 m-3 btn btn-primary btn-lg m-3" runat="server" OnClick="btnAgregarDescuento_Click" />
+                            </div>
+                            <asp:GridView ID="dgvDescuentos" AutoGenerateColumns="false" CssClass="table table-striped table-bordered mt-5" runat="server">
+                                <Columns>
+                                    <asp:BoundField HeaderText="Id Cupón" DataField="Id" />
+                                    <asp:BoundField HeaderText="Codigo" DataField="Codigo"/>
+                                    <asp:TemplateField HeaderText="Porcentaje">
+                                        <ItemTemplate>
+                                            <asp:Label Text='<%#string.Format("{0:P0}", Convert.ToInt32(Eval("Porcentaje"))*0.01)%>' runat="server" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Estado">
+                                        <ItemTemplate>
+                                            <asp:Label runat="server" Text='<%# Convert.ToBoolean(Eval("Estado")) ? "ACTIVO" : "INACTIVO" %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Cambiar Estado" >
+                                        <ItemTemplate>
+                                            <asp:Button Text="ALTA" ID="btnDarAltaCupon" CssClass="btn btn-outline-success" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="true" OnClick="btnCambiarEstadoCupon_Click" Visible='<%# Convert.ToBoolean(Eval("Estado")) ? false : true %>' />
+                                            <asp:Button Text="BAJA TEMPORAL" ID="btnDarBajaCupon" CssClass="btn btn-outline-danger" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="false" OnClick="btnCambiarEstadoCupon_Click" Visible='<%# Convert.ToBoolean(Eval("Estado")) ? true : false %>'/>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Eliminar">
+                                        <ItemTemplate>
+                                            <asp:Button Text="ELIMINAR" ID="btnEliminarCupon" CssClass="btn btn-outline-danger" runat="server" CommandArgument='<%#Eval("Id") %>' OnClientClick="return confirm('¿Desea eliminar el cupon seleccionado?');" OnClick="btnEliminarCupon_Click" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                            </asp:GridView>
+
+                        </div>
+                        
+                        <%-- panel nuevo cupon descuento --%>
+                        <div class="row d-flex justify-content-center align-items-center" id="sectionNuevoCupon" visible="false" runat="server">
+                            <div class="card rounded-4 col-8 bg-light ms-3" style="margin-top: 100px; margin-bottom: 100px;">
+                                <div class=" card-header text-center">
+                                    <h1> Agregar Cupon de Descuento </h1>
+                                </div>
+                                <div class="row p-2">
+                                    <div class="col-6 mt-3">
+                                        <label for="txtCodigoCupon" class="form-label">Codigo <span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control" ID="txtCodigoCupon" runat="server" />
+                                    </div>
+                                    <div class="col-8 mt-3">
+                                        <label for="txtPorcentajeCupon" class="form-label">Porcentaje de descuento<span class="text-danger">*</span></label>
+                                        <asp:TextBox CssClass="form-control" type="number" ID="txtPorcentajeCupon" runat="server" />
+                                    </div>
+
+                                    <div class="col-12 mt-3">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <asp:Button Text="Guardar Descuento" ID="btnGuardarNuevoCupon" CssClass="btn btn-dark px-4 mb-3 p-2 fs-4 text-center" runat="server" OnClick="btnGuardarNuevoCupon_Click" />
+                                        </div>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <asp:LinkButton Text="Volver a Cupones de Descuento" CssClass="link-body-emphasis m-3" ID="btnVolverDescuento" OnClick="btnVolverDescuento_Click" runat="server" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         
                         </asp:Panel>
 
+                        </asp:Panel>
+
+
+                        
 
 
                         <%-- SUBMENU ARTICULOS --%>

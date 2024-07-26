@@ -60,6 +60,8 @@ namespace ecommerce_livingston
                     }
                     repArticulos.DataSource = listaArticulos;
                     repArticulos.DataBind();
+
+                    CantidadCarrito();
                 }
             }
             catch (Exception ex)
@@ -121,19 +123,32 @@ namespace ecommerce_livingston
             }
         }
 
-        public void totalItemsCarrito()
+        public void CantidadCarrito()
         {
-            if (Session["cantidadItems"] == null)
-                Session.Add("cantidadItems", 0);
+            if (Session["countCarrito"] == null) Session.Add("countCarrito", 0);
+            int count = 0;
 
-            int total = (int)Session["cantidadItems"];
-            total++;
-            Session["cantidadItems"] = total;
-
-            Label lblcantidad = (Label)Master.FindControl("lblTotalArticulos");
-            if (lblcantidad != null)
+            if (Session["listaCarrito"] != null)
             {
-                lblcantidad.Text = total.ToString();
+                var itemList = ((NegocioItemCarrito)Session["listaCarrito"]).Items;
+                foreach (var item in itemList) count += item.Cantidad;
+            }
+
+            Session["countCarrito"] = count;
+
+            SiteMaster masterPage = (SiteMaster)Master;
+            if (count > 0)
+            {
+                Label lblcantidad = (Label)Master.FindControl("lblTotalArticulos");
+                if (lblcantidad != null)
+                {
+                    lblcantidad.Text = count.ToString();
+                    masterPage.Flag = true;
+                }
+            }
+            else
+            {
+                masterPage.Flag = false;
             }
         }
 
@@ -191,6 +206,7 @@ namespace ecommerce_livingston
                 int itemId = int.Parse((sender as Button).CommandArgument);
                 item = new ItemCarrito();
 
+
                 List<Articulo> list = Session["listaPrincipal"] as List<Articulo>;
                 NegocioItemCarrito carrito = Session["listaCarrito"] as NegocioItemCarrito;
                 ItemCarrito itemMatch = carrito.Items.Find(itm => itm.Id == itemId);
@@ -213,6 +229,12 @@ namespace ecommerce_livingston
                     item.Cantidad = 1;
                     carrito.AgregarItem(item);
 
+                    //Session["countCarrito"] = Convert.ToInt32(Session["countCarrito"]) + 1;
+                    //Label lblTotalArticulos = (Label)Master.FindControl("lblTotalArticulos");
+                    //lblTotalArticulos.Text = Session["countCarrito"].ToString();
+                    //SiteMaster masterPage = (SiteMaster)Master;
+                    //masterPage.Flag = true;
+
                     Mensajes.Mensajes.MensajePopUp(this, "Articulo agregado el carrito");
                 }
                 else
@@ -221,7 +243,7 @@ namespace ecommerce_livingston
                     return;
                 }
 
-                totalItemsCarrito();
+                CantidadCarrito();
             }
             catch (Exception ex)
             {

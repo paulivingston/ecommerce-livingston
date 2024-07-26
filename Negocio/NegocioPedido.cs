@@ -455,6 +455,8 @@ namespace Negocio
             }
         }
 
+        
+
         public int CantidadPedidos()
         {
             datos = new DatabaseAccess();

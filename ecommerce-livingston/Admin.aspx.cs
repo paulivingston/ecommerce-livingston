@@ -31,6 +31,9 @@ namespace ecommerce_livingston
         NegocioCategoria NegocioCategoria;
         List<Categoria> Categorias;
         Categoria categoria;
+        NegocioDescuento NegocioDescuento;
+        List<Descuento> Descuentos;
+        Descuento descuento;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -60,6 +63,7 @@ namespace ecommerce_livingston
 
 
         //pedidos
+
         private void CargarPedidos()
         {   
             NegocioPedido = new NegocioPedido();
@@ -77,7 +81,33 @@ namespace ecommerce_livingston
 
             sectionAdminPedidos.Visible = true;
             sectionAdminPedidosTodos.Visible = true;
-            //dgvAdminPedidos.Visible = true;
+            dgvAdminPedidos.Visible = true;
+            panelCuponDescuento.Visible= false;
+            sectionAdminPedidoIndividual.Visible = false;
+            seccionEditarPedidos.Visible = false;
+        }
+        private void CargarDescuentos()
+        {
+            NegocioDescuento = new NegocioDescuento();
+            Descuentos = NegocioDescuento.ListarDescuentos();
+            dgvDescuentos.DataSource = Descuentos;
+            dgvDescuentos.DataBind();
+
+            divEstadisticas.Visible = false;
+            sectionAdminUsuarios.Visible = false;
+            sectionModificarUsuario.Visible = false;
+            panelAdminMarcas.Visible = false;
+            sectionNuevaMarca.Visible = false;
+            panelAdminCategorias.Visible = false;
+            sectionNuevaCategoria.Visible = false;
+
+            panelCuponDescuento.Visible = true;
+            sectionCuponDescuento.Visible = true;
+            dgvDescuentos.Visible = true;
+            sectionNuevoCupon.Visible = false;
+            sectionAdminPedidos.Visible = true;
+            sectionAdminPedidosTodos.Visible = false;
+            dgvAdminPedidos.Visible = false;
             sectionAdminPedidoIndividual.Visible = false;
             seccionEditarPedidos.Visible = false;
         }
@@ -85,6 +115,10 @@ namespace ecommerce_livingston
         protected void btnPedidosTodos_Click(object sender, EventArgs e)
         {
             CargarPedidos();
+        }
+        protected void btnDescuentos_Click(object sender, EventArgs e)
+        {
+            CargarDescuentos();
         }
 
         //articulos
@@ -144,7 +178,6 @@ namespace ecommerce_livingston
                 Response.Redirect("Error.aspx", false);
             }
         }
-
         protected void CargaDdl()
         {
             try
@@ -165,7 +198,6 @@ namespace ecommerce_livingston
                 throw ex;
             }
         }
-
         private void CargarNuevoArticulo()
         {
             //vistas
@@ -210,7 +242,6 @@ namespace ecommerce_livingston
             panelAdminMarcas.Visible = true;
             sectionNuevaMarca.Visible = false;
         }
-
         private void CargarCategorias()
         {
             NegocioCategoria = new NegocioCategoria();
@@ -282,7 +313,6 @@ namespace ecommerce_livingston
         {
             CargarUsuarios();
         }
-
         protected void btnAgregarNuevoUsuario_Click(object sender, EventArgs e)
         {
             btnGuardarUsuario.Text = "Agregar Usuario";
@@ -567,10 +597,84 @@ namespace ecommerce_livingston
             }
         }
 
+
+        //descuentos 
+
+        protected void btnAgregarDescuento_Click(object sender, EventArgs e)
+        {
+            sectionCuponDescuento.Visible = false;
+            dgvDescuentos.Visible = false;
+            sectionNuevoCupon.Visible = true;
+        }
+
+        protected void btnCambiarEstadoCupon_Click(object sender, EventArgs e)
+        {
+            NegocioDescuento = new NegocioDescuento();
+            NegocioDescuento.CambiarEstadoDescuento(Convert.ToInt32(((Button)sender).CommandArgument), Convert.ToBoolean(((Button)sender).CommandName));
+            dgvDescuentos.DataSource = NegocioDescuento.ListarDescuentos();
+            dgvDescuentos.DataBind();
+        }
+
+        protected void btnEliminarCupon_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                NegocioDescuento = new NegocioDescuento();
+                NegocioDescuento.EliminarDescuento(Convert.ToInt32(((Button)sender).CommandArgument));
+                CargarDescuentos();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
+        }
+
+        protected void btnGuardarNuevoCupon_Click(object sender, EventArgs e)
+        {
+            descuento = new Descuento();
+            NegocioDescuento = new NegocioDescuento();
+            int porcentaje = !string.IsNullOrWhiteSpace(txtPorcentajeCupon.Text) ?  Convert.ToInt32(txtPorcentajeCupon.Text) : 0;
+
+            if (string.IsNullOrWhiteSpace(txtCodigoCupon.Text))
+            {
+                Mensajes.Mensajes.MensajePopUp(this, "Faltan completar campos");
+                return;
+            }
+            if(txtCodigoCupon.Text.Contains(" "))
+            {
+                Mensajes.Mensajes.MensajePopUp(this, "El código no puede contener espacios");
+                return;
+            }
+            if (porcentaje <= 0 || porcentaje >100)
+            {
+                Mensajes.Mensajes.MensajePopUp(this, "El porcentaje de descuento debe ser un valor mayor que 0% y menor o igual que 100%");
+                return;
+            }
+            else
+            {
+                descuento.Codigo = txtCodigoCupon.Text.ToUpperInvariant();
+                descuento.Porcentaje = porcentaje;
+
+                NegocioDescuento.AgregarDescuento(descuento);
+                Mensajes.Mensajes.MensajePopUp(this, "Nuevo cupon de descuento registrado con exito!");
+
+                txtCodigoCupon.Text = "";
+                txtPorcentajeCupon.Text = "";
+
+                CargarDescuentos();
+            }
+        }
+
+        protected void btnVolverDescuento_Click(object sender, EventArgs e)
+        {
+            CargarDescuentos();
+        }
+
         //commented section
         //protected void btnAgregarArticuloPedido_Click(object sender, EventArgs e)
         //{
-            
+
 
         //    if (Session["idPedidoEditar"] == null)
         //    {
@@ -580,7 +684,7 @@ namespace ecommerce_livingston
         //    }
 
         //    int idPedido = (int)Session["idPedidoEditar"];
-            
+
         //    int idArticulo = int.Parse(ddlAgregarArticuloPedido.SelectedValue);
         //    List<ItemCarrito> listaArticulosPedido = Session["PedidoArticulosListaEdit"] as List<ItemCarrito>;
 
@@ -636,7 +740,7 @@ namespace ecommerce_livingston
         //        Response.Redirect("Error.aspx", false);
         //    }
         //}
-        
+
         //protected void btnAgregarArtPedido_Click(object sender, EventArgs e)
         //{
         //    try
@@ -660,7 +764,7 @@ namespace ecommerce_livingston
         //{
         //    int idArticulo = int.Parse(((ImageButton)sender).CommandArgument);
         //    List<ItemCarrito> listaArticulosPedido = Session["PedidoArticulosListaEdit"] as List<ItemCarrito>;
-            
+
         //    listaArticulosPedido.Find(itm => itm.Id == idArticulo).Cantidad -= 1; //restamos aca el item
         //    if (listaArticulosPedido.Find(itm => itm.Id == idArticulo).Cantidad == 0)
         //    {
@@ -723,7 +827,7 @@ namespace ecommerce_livingston
         //        }
 
         //        CargarPedido(pedido);
-                
+
         //        int res = 0;
         //        //busco sesion actual y error si no existe
         //        List<ItemCarrito> listaArticulosPedido = Session["PedidoArticulosListaEdit"] as List<ItemCarrito>;

@@ -13,18 +13,21 @@ namespace ecommerce_livingston
     public partial class Carrito : System.Web.UI.Page
     {
         NegocioUsuario NegocioUsuario;
+        NegocioDescuento NegocioDescuento;
         Usuario usuario;
         NegocioItemCarrito items;
         NegocioPedido NegocioPedido;
         Articulo articulo;
         public bool logged = false;
+        protected int descuento = 0;
         protected decimal totalAcumulado = 0;
         public decimal TotalAcumulado
         {
             get { return totalAcumulado; }
             set { totalAcumulado = value; }
         }
-        public bool Flag { get; set; }
+        protected decimal subtotal = 0;
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -47,6 +50,11 @@ namespace ecommerce_livingston
                     }
                 }
 
+                // count icono carrito
+                if (Session["countCarrito"] == null) Session.Add("countCarrito", 0);
+                CantidadCarrito();
+
+                //total carrito
                 if (Session["totalCarrito"] != null)
                 {
                     totalAcumulado = (decimal)Session["totalCarrito"];
@@ -75,32 +83,44 @@ namespace ecommerce_livingston
                     total += (item.Precio * item.Cantidad);
             }
 
+            subtotal = total;
+
+            if (Session["descuento"] != null)
+            {
+                descuento = Convert.ToInt32(Session["descuento"]);
+                if (descuento > 0) total -= (total /= descuento);
+            }
+
             Session["totalCarrito"] = total;
             return total;
         }
 
-        public void CantidadCarrito(string modo, int idMath = 0)
+        public void CantidadCarrito()
         {
-            if (Session["countCarrito"] == null)
-                Session.Add("countCarrito", 0);
+            if (Session["countCarrito"] == null) Session.Add("countCarrito", 0);
+            int count = 0;
 
-            int count = (int)Session["countCarrito"];
-
-            if (modo == "suma") { count++; }
-            else if (modo == "resta") { if (count > 0) count--; }
-            else if (modo == "eliminar" && count > 0)
+            if (Session["listaCarrito"] != null)
             {
-                count = 0;
                 var itemList = ((NegocioItemCarrito)Session["listaCarrito"]).Items;
                 foreach (var item in itemList) count += item.Cantidad;
             }
+
             Session["countCarrito"] = count;
 
-            Label lblcantidad = (Label)Master.FindControl("lblTotalArticulos");
-            if (lblcantidad != null)
+            SiteMaster masterPage = (SiteMaster)Master;
+            if (count > 0)
             {
-                lblcantidad.Text = count.ToString();
-                Flag = true;
+                Label lblcantidad = (Label)Master.FindControl("lblTotalArticulos");
+                if (lblcantidad != null)
+                {
+                    lblcantidad.Text = count.ToString();
+                    masterPage.Flag = true;
+                }
+            }
+            else
+            {
+                masterPage.Flag = false;
             }
         }
 
@@ -176,7 +196,7 @@ namespace ecommerce_livingston
 
                 totalAcumulado = TotalCarrito(items.Items);
 
-                CantidadCarrito("eliminar", id);
+                CantidadCarrito();
             }
             catch (Exception ex)
             {
@@ -205,7 +225,7 @@ namespace ecommerce_livingston
 
                     totalAcumulado = TotalCarrito(items.Items);
 
-                    CantidadCarrito("suma");
+                    CantidadCarrito();
                 } 
                 else
                 {
@@ -228,15 +248,15 @@ namespace ecommerce_livingston
                 items = Session["listaCarrito"] as NegocioItemCarrito;
                 ItemCarrito itemMatch = items.Items.Find(itm => itm.Id == id);
 
-                if (itemMatch != null && itemMatch.Cantidad > 0) 
-                    items.ModificarCantidad(id, --itemMatch.Cantidad);
+                if (itemMatch.Cantidad == 1) items.EliminarItem(id);
+                else items.ModificarCantidad(id, --itemMatch.Cantidad);
 
                 dgvCarrito.DataSource = items.Items;
                 dgvCarrito.DataBind();
 
                 totalAcumulado = TotalCarrito(items.Items);
 
-                CantidadCarrito("resta");
+                CantidadCarrito();
             }
             catch (Exception ex)
             {
@@ -263,7 +283,41 @@ namespace ecommerce_livingston
         {
             Session.Remove("listaCarrito");
             Session.Remove("countCarrito");
+            Session.Remove("descuento");
             Response.Redirect("Carrito.aspx", false);
+        }
+
+        protected void btnAplicarDescuento_Click(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(txtCuponDescuento.Text))
+            {
+                NegocioDescuento = new NegocioDescuento();
+                descuento = Convert.ToInt32(NegocioDescuento.AplicarDescuento(txtCuponDescuento.Text));
+
+                if (descuento>0)
+                {
+                    if (Session["descuento"] == null) Session.Add("descuento", descuento);
+                    else Session["descuento"] = descuento;
+
+                    items = Session["listaCarrito"] as NegocioItemCarrito;
+                    var lista = items?.Items;
+                    totalAcumulado = TotalCarrito(lista);
+
+                    Mensajes.Mensajes.MensajePopUp(this, "Cupon Aplicado Correctamente");
+                    return;
+                }
+                else
+                {
+                    Mensajes.Mensajes.MensajePopUp(this, "El cupon no existe o no se encuentra activo");
+                    return;
+                }
+            }
+            else
+            {
+                Mensajes.Mensajes.MensajePopUp(this, "Debe ingresar el codigo si quiere aplicar a algun descuento");
+                return;
+            }
+            
         }
 
         protected void btnContinuarCompra_Click(object sender, EventArgs e)

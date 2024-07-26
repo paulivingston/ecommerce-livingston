@@ -74,16 +74,20 @@
                                                 <h5 class="mb-0">Resumen</h5>
                                             </div>
                                             <div class="card-body">
+                                                <div class="input-group mb-3">
+                                                    <asp:TextBox ID="txtCuponDescuento" type="text" class="form-control" placeholder="Código de descuento" aria-label="Código de descuento" aria-describedby="button-addon2" runat="server" />
+                                                    <asp:Button Text="Aplicar" CssClass="btn btn-outline-secondary" ID="btnAplicarDescuento" OnClick="btnAplicarDescuento_Click" runat="server" />
+                                                </div>
                                                 <ul class="list-group list-group-flush">
                                                     <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">Total artículos
-                                                          <span><strong class="">$<%:TotalAcumulado.ToString() %></strong></span>
+                                                          <span><strong class="">$<%:subtotal.ToString() %></strong></span>
                                                     </li>
                                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0">Envío
                                                          <span>Gratis</span>
                                                     </li>
                                                     <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                                                             Descuentos
-                                                         <span>0%</span>
+                                                         <span><%:descuento.ToString() %>%</span>
                                                     </li>
                                                     <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                                                         <div>
@@ -93,9 +97,8 @@
                                                         <span><strong class="fs-5">$<%:TotalAcumulado.ToString() %></strong></span>
                                                     </li>
                                                 </ul>
-                                                
                                                 <div class="d-flex justify-content-end">
-                                                    <asp:Button Text="Cancelar" ID="btnEliminarListaCarrito" CssClass="btn btn-secondary ms-2" OnClick="btnEliminarListaCarrito_Click" runat="server" />
+                                                    <asp:Button Text="Cancelar" ID="btnEliminarListaCarrito" CssClass="btn btn-secondary ms-2" OnClientClick="return confirm('¿Seguro quiere cancelar la compra?');" OnClick="btnEliminarListaCarrito_Click" runat="server" />
                                                     <button type="button" class="btn btn-success btn-block ms-2" id="btnContinuarCompra" onserverclick="btnContinuarCompra_Click" runat="server">
                                                         Continuar compra
                                                     </button>
@@ -127,7 +130,7 @@
                                             <table class="table">
                                                 <thead class="fs-5">
                                                     <tr class="text-center">
-                                                        <th scope="col">Imágen</th>
+                                                        <th scope="col">Imagen</th>
                                                         <th scope="col">Producto</th>
                                                         <th scope="col">Cantidad</th>
                                                         <th scope="col">Precio</th>
@@ -138,16 +141,19 @@
                                                     <ItemTemplate>
                                                         <tbody>
                                                             <tr class="text-center fs-5 ">
-                                                                <td class=""><img src="<%# Eval("ImagenUrl") %>" class="w-25" alt="img_producto" /></td>
-                                                                <td class="pt-5"><%# Eval("Nombre") %></td>
-                                                                <td class="pt-5"><%# Eval("Cantidad") %></td>
-                                                                <td class="pt-5"><%# string.Format("{0:C2}", Eval("precio")) %></td>
-                                                                <td class="pt-5"><%# Eval("TotalParcial") %></td>
+                                                                <td class="col-4"><img src="<%# Eval("ImagenUrl") %>" class="w-25" alt="img_producto" /></td>
+                                                                <td class="pt-3 col-3"><%# Eval("Nombre") %></td>
+                                                                <td class="pt-3 col-2"><%# Eval("Cantidad") %></td>
+                                                                <td class="pt-2"><%# string.Format("{0:C2}", Eval("precio")) %></td>
+                                                                <td class="pt-2"><%# Eval("TotalParcial") %></td>
                                                             </tr>
                                                         </tbody>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </table>
+                                            <div class="card-header py-3 d-flex justify-content-end">
+                                                <h5 class="mb-0 "><strong>Descuento Aplicado:  <span class="text-primary ms-5"><%:descuento.ToString() %>%</span></strong></h5>
+                                            </div>
                                             <div class="card-header py-3 d-flex justify-content-end">
                                                 <h4 class="mb-0 "><strong>Precio total:  <span class="text-primary ms-5">$<%:TotalAcumulado.ToString() %></span></strong></h4>
                                             </div>
@@ -197,7 +203,6 @@
                                                                     <div class="col-md-6">
                                                                         <label for="nombreDebito" class="form-label">Nombre del titular</label>
                                                                         <input type="text" class="form-control" id="nombreDebito" placeholder="" runat="server">
-                                                                        <small class="text-body-secondary">Nombre que figura en la tarjeta</small>
                                                                     </div>
 
                                                                     <div class="col-md-6">
@@ -234,7 +239,6 @@
                                                                     <div class="col-md-6">
                                                                         <label for="nombreCredito" class="form-label">Nombre del titular</label>
                                                                         <input type="text" class="form-control" id="nombreCredito" placeholder="" runat="server">
-                                                                        <small class="text-body-secondary">Nombre que figura en la tarjeta</small>
                                                                     </div>
 
                                                                     <div class="col-md-6">
@@ -260,7 +264,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <asp:Button ID="BtnPagar" Text="Pagar" CssClass="btn fs-3 bg-black text-light p-3" OnClientClick="return confirm('¿Seguro de Confirmar?');" OnClick="btnConfirmarPedido_Click" runat="server" />
+                                                <div class="text-end">
+                                                    <asp:Button ID="BtnPagar" Text="Pagar" CssClass="btn fs-3 bg-primary text-light p-3 mt-4 px-5" OnClientClick="return confirm('¿Seguro quiere realizar la compra?');" OnClick="btnConfirmarPedido_Click" runat="server" />
+                                                </div>
                                             </div>
                                            
                                         </ContentTemplate>

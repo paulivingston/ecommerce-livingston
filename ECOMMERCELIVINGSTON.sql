@@ -86,6 +86,15 @@ CREATE TABLE PEDIDO_ARTICULO(
 
 GO
 
+CREATE TABLE DESCUENTOS(
+	Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	Codigo VARCHAR(30) NOT NULL,
+	Porcentaje INT NOT NULL,
+	Estado BIT NOT NULL
+)
+
+GO
+
 ------------FIN TABLAS------------
 
 
@@ -957,6 +966,76 @@ BEGIN
 	WHERE Estado!='CANCELADO'
 	AND MONTH(Fecha) = MONTH(GETDATE())-1
 	AND YEAR(Fecha) = YEAR(GETDATE())
+END
+GO
+
+--DESCUENTO
+
+CREATE PROCEDURE [dbo].[sp_ListarDescuentos]
+AS
+BEGIN
+	SELECT 
+		Id,
+		Codigo,
+		Porcentaje, 
+		Estado 
+	FROM DESCUENTOS
+END
+GO
+
+CREATE PROCEDURE [dbo].[sp_AplicarDescuento]
+@Codigo VARCHAR(30)
+AS
+BEGIN
+	SELECT Porcentaje
+	FROM DESCUENTOS
+	WHERE Codigo=@Codigo
+	AND Estado=1
+END
+GO
+
+CREATE PROCEDURE [dbo].[sp_AgregarCuponDescuento]
+@Codigo VARCHAR(30),
+@Porcentaje INT
+AS
+BEGIN
+	IF(SELECT COUNT(Codigo) FROM DESCUENTOS WHERE Codigo=@Codigo)=0 
+	BEGIN
+		INSERT INTO [dbo].[DESCUENTOS]
+			   ([Codigo],
+			   [Porcentaje],
+			   [Estado])
+		 VALUES
+			   (@Codigo, 
+			   @Porcentaje,
+			   1)
+
+		RETURN 1;
+	END
+	ELSE
+	BEGIN
+		RETURN 0;
+	END
+END
+GO
+
+CREATE PROCEDURE [dbo].[sp_CambiarEstadoDescuento]
+@Id VARCHAR(30),
+@Estado BIT
+AS
+BEGIN
+	UPDATE DESCUENTOS
+	SET Estado = @Estado
+	WHERE Id=@Id
+END
+GO
+
+CREATE PROCEDURE [dbo].[sp_EliminarDescuento]
+@Id VARCHAR(30)
+AS
+BEGIN
+	DELETE FROM DESCUENTOS
+	WHERE Id=@Id
 END
 GO
 

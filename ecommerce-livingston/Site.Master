@@ -176,11 +176,11 @@
                             </p>
                         </div>
                         <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                            <h6 class="text-uppercase fw-bold mb-4 text-center" id="contacto-foot">Profesor</h6>
+                            <h6 class="text-uppercase fw-bold mb-4 text-center" id="contacto-foot">Contacto</h6>
                             <p class="text-center">
-                                <a href="https://github.com/msarfernandez" class="link-grayish text-decoration-none text-black">
-                                    <img src="/Content/img/logos/github.png" alt="logo github" width="25"/>
-                                    Max Sar Fernandez
+                                <a href="mailto:pau.livingston@gmail.com" class="link-grayish text-decoration-none text-black">
+                                    <img src="/Content/img/logos/gmail.png" alt="logo gmail" width="25"/>
+                                    pau.livingston@gmail.com
                                 </a>
                             </p>
                         </div>

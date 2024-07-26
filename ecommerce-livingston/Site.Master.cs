@@ -23,7 +23,10 @@ namespace ecommerce_livingston
         {
             try
             {
-                if (Session["countCarrito"] != null)
+                if (Session["countCarrito"] == null)
+                    Session.Add("countCarrito", 0);
+
+                if (Convert.ToInt32(Session["countCarrito"]) > 0)
                 {
                     lblTotalArticulos.Text = Session["countCarrito"].ToString();
                     Flag = true;
