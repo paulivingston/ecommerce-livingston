@@ -310,6 +310,7 @@ namespace ecommerce_livingston
             lblAdministracionUsuarios.Visible = true;
             filtrosUsuarios.Visible = true;
             sectionModificarUsuario.Visible = false;
+            dgvAdminUsuario.Visible = true;
 
         }
 
@@ -330,13 +331,13 @@ namespace ecommerce_livingston
             txtDomicilio.Text = string.Empty;
 
             dgvAdminUsuario.Visible = false;
-            btnAltaUsuario.Visible = false;
-            btnBajaUsuario.Visible = false;
             btnEliminarUsuario.Visible = false;
             sectionModificarUsuario.Visible = true;
             lblAdministracionUsuarios.Visible = true;
             divEstadisticas.Visible = false;
             filtrosUsuarios.Visible = false;
+            sectionAdminUsuarios.Visible = true;
+
         }
 
         #endregion
@@ -1625,7 +1626,7 @@ namespace ecommerce_livingston
             txtNombre.Text = usuario.Nombre;
             txtApellido.Text = usuario.Apellido;
             txtEmail.Text = usuario.Mail;
-            txtClave.Text = usuario.Clave;
+            txtClave.Text = Server.HtmlEncode(usuario.Clave);
             txtDni.Text = usuario.Dni.ToString();
             txtDomicilio.Text = usuario.Direccion;
             ddlTipoUsuario.SelectedValue = usuario.Nivel.ToString();
@@ -1657,7 +1658,19 @@ namespace ecommerce_livingston
 
         protected void btnFiltrarNivelUsuarios_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                NegocioUsuario = new NegocioUsuario();
+                Usuarios = NegocioUsuario.ListarUsuarios();
+                Usuarios = Usuarios.Where(itm => itm.Nivel==((Button)sender).CommandName).ToList();
+                dgvAdminUsuario.DataSource = Usuarios;
+                dgvAdminUsuario.DataBind();
+            }
+            catch (Exception ex)
+            {
+                Session.Add("error", ex);
+                Response.Redirect("Error.aspx", false);
+            }
         }
         
 
@@ -1714,9 +1727,7 @@ namespace ecommerce_livingston
         {
             sectionModificarUsuario.Visible = true;
             dgvAdminUsuario.Visible = false;
-            CargarUsuarioEditar(int.Parse((sender as ImageButton).CommandArgument));
-            btnAltaUsuario.Visible = true;
-            btnBajaUsuario.Visible = true;
+            CargarUsuarioEditar(int.Parse(((Button)sender).CommandArgument));
             btnEliminarUsuario.Visible = true;
             filtrosUsuarios.Visible = false;
         }
@@ -1766,6 +1777,7 @@ namespace ecommerce_livingston
                     usuario.UrlImgUsuario = "img/usuarios/default.png";
                     usuario.Nivel = ddlTipoUsuario.SelectedValue.ToString();
                     usuario.Activo = true;
+
                     NegocioUsuario = new NegocioUsuario();
 
                     //agregar
@@ -1785,15 +1797,7 @@ namespace ecommerce_livingston
                         res++;
                     }
 
-                    if (res == 0)
-                        Mensajes.Mensajes.MensajePopUp(this, "Ocurrio un Error Inesperado"); // va a tirar dos msj si no guarda, mejorar para manejar el error
-
                     //recargo
-                    Usuarios = NegocioUsuario.ListarUsuarios();
-                    dgvAdminUsuario.DataSource = Usuarios;
-                    dgvAdminUsuario.DataBind();
-                    dgvAdminUsuario.Visible = true;
-                    sectionModificarUsuario.Visible = false;
                     CargarUsuarios();
                 }
                 else
@@ -1810,10 +1814,7 @@ namespace ecommerce_livingston
 
         protected void lnkVolverListaUsuarios_Click(object sender, EventArgs e)
         {
-            dgvAdminUsuario.Visible = true;
-            sectionModificarUsuario.Visible = false;
             CargarUsuarios();
-            
         }
 
 

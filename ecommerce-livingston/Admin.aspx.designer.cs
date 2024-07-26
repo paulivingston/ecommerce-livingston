@@ -1074,7 +1074,7 @@ namespace ecommerce_livingston
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel updatePanelModificarUsuario;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl updatePanelModificarUsuario;
 
         /// <summary>
         /// sectionModificarUsuario control.
@@ -1165,24 +1165,6 @@ namespace ecommerce_livingston
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlTipoUsuario;
-
-        /// <summary>
-        /// btnAltaUsuario control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAltaUsuario;
-
-        /// <summary>
-        /// btnBajaUsuario control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBajaUsuario;
 
         /// <summary>
         /// btnEliminarUsuario control.
