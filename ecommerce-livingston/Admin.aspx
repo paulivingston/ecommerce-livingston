@@ -531,7 +531,7 @@
                                                 </div>
                                                 <div class="col-6 mt-3">
                                                     <label for="txtTotalModificarPedido" class="form-label">Total</label>
-                                                    <asp:TextBox CssClass="form-control" ID="txtTotalModificarPedido" placeholder="Total" runat="server" />
+                                                    <asp:TextBox CssClass="form-control" ID="txtTotalModificarPedido" placeholder="Total" runat="server" disabled/>
                                                 </div>
                                                 <div id="lblAlertUsuarioNoEncontrado" class="row justify-content-center" runat="server" visible="false">
                                                     <div class="alert alert-warning align-items-center col-10 mt-3" role="alert">
@@ -589,11 +589,6 @@
 
                                     </Columns>
                                 </asp:GridView>
-                                <div>
-                                    <div>
-
-                                    </div>
-                                </div>
                             </ContentTemplate>
                         </asp:UpdatePanel>
                         

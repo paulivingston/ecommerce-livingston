@@ -134,6 +134,46 @@ namespace Negocio
             }
         }
 
+        public List<Pedido> ListarPedidosPorUsuario(int id)
+        {
+            datos = new DatabaseAccess();
+
+            try
+            {
+                datos.SetProcedure("sp_ListarPedidosPorUsuario");
+                datos.SetParameter("@id", id);
+
+                datos.ReadData();
+
+                pedidos = new List<Pedido>();
+                while (datos.Reader.Read())
+                {
+                    pedido = new Pedido();
+                    pedido.IdPedido = (int)datos.Reader["IdPedido"];
+                    pedido.IdUsuario = (int)datos.Reader["IdUsuario"];
+                    pedido.Usuario = datos.Reader["Usuario"].ToString();
+                    pedido.Cantidad = (int)datos.Reader["CantidadArticulos"];
+                    pedido.fecha = (DateTime)datos.Reader["Fecha"];
+                    pedido.Estado = datos.Reader["Estado"].ToString();
+                    pedido.DireccionEntrega = datos.Reader["Direccion"].ToString();
+                    pedido.Descuento = (decimal)datos.Reader["Descuento"];
+                    pedido.precioTotal = (decimal)datos.Reader["PrecioTotal"];
+                    pedido.pagado = (bool)datos.Reader["Pagado"];
+                    pedido.enviado = (bool)datos.Reader["Enviado"];
+                    pedidos.Add(pedido);
+                }
+                return pedidos;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.CloseConnection();
+            }
+        }
+
         public int CrearPedido(Pedido pedido)
         {
             datos = new DatabaseAccess();

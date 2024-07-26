@@ -42,10 +42,16 @@ namespace ecommerce_livingston
                     btnSignOut.Visible = true;
 
                     var user = (Usuario)Session["usuarioActual"];
-                    if (user.Nivel.ToUpperInvariant() == "A")
+                    if (user.Nivel.ToUpperInvariant() == "A") 
+                    {
                         btnIrAdmin.Visible = true;
+                        btnIrMisPedidos.Visible = false;
+                    }
                     else
+                    {
                         btnIrAdmin.Visible = false;
+                        btnIrMisPedidos.Visible = true;
+                    }
                 }
                 else
                 {

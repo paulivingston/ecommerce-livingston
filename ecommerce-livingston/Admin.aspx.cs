@@ -388,7 +388,7 @@ namespace ecommerce_livingston
             txtEstadoModificarPedido.Text = pedido.Estado; //ver de poner ddl con opciones
             txtFechaModificarPedido.Text = pedido.fecha.ToString();
             txtDescuentoModificarPedido.Text = pedido.Descuento.ToString();
-            //txtTotalModificarPedido.Text = pedido.PrecioTotal;
+            txtTotalModificarPedido.Text = pedido.PrecioTotal.ToString();
             txtCantidadTotalModificarPedido.Text = pedido.CantidadTotal.ToString();
         }
 
@@ -455,7 +455,7 @@ namespace ecommerce_livingston
                 string estado = ((Button)sender).CommandName;
                 if (estado == "btnIniciado")
                     Pedidos = Pedidos.Where(itm => itm.Estado == "INICIADO").ToList();
-                else if (estado == "btnFinalizado")
+                else if (estado == "btnTerminado")
                     Pedidos = Pedidos.Where(itm => itm.Estado == "FINALIZADO").ToList();
                 else if (estado == "btnCancelado")
                     Pedidos = Pedidos.Where(itm => itm.Estado == "CANCELADO").ToList();

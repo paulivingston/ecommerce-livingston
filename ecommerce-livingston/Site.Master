@@ -55,6 +55,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto d-flex">
                         <li class="nav-item me-3"><a type="button" class="nav-link active position-relative" aria-current="page" id="btnIrAdmin" href="Admin.aspx" runat="server" visible="false">Admin</a></li>
+                        <li class="nav-item me-3"><a type="button" class="nav-link active position-relative" aria-current="page" id="btnIrMisPedidos" href="MisPedidos.aspx" runat="server" visible="false">Mis Pedidos</a></li>
                         <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Nosotros">Nosotros</a></li>
                         <li class="nav-item me-3"><a class="nav-link active" aria-current="page" href="Productos">Productos</a></li>
                         <li class="nav-item me-3"><a type="button" class="btn fs-5" data-bs-toggle="modal" data-bs-target="#modalBusqueda">🔍</a></li>

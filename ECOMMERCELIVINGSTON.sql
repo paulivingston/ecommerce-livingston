@@ -614,20 +614,20 @@ GO
 
 CREATE PROCEDURE [dbo].[sp_ListarPedidos]
 AS BEGIN
-SELECT  P.IdPedido as 'IDPedido',
-		P.IdUsuarios as 'IDUsuario', 
-		U.Nombre+' '+U.Apellido as 'Usuario',
-		P.Cantidad as 'CantidadArticulos', 
-		P.Fecha as 'Fecha',
-		P.Estado as 'Estado', 
-		P.DireccionEntrega as 'Direccion', 
-		P.Descuento as 'Descuento', 
-		P.PrecioTotal as 'PrecioTotal',
-		P.pagado as 'Pagado',
-		P.enviado as 'Enviado'
-FROM PEDIDOS P 
-INNER JOIN USUARIOS U 
-ON P.IdUsuarios = U.Id
+	SELECT  P.IdPedido as 'IDPedido',
+			P.IdUsuarios as 'IDUsuario', 
+			U.Nombre+' '+U.Apellido as 'Usuario',
+			P.Cantidad as 'CantidadArticulos', 
+			P.Fecha as 'Fecha',
+			P.Estado as 'Estado', 
+			P.DireccionEntrega as 'Direccion', 
+			P.Descuento as 'Descuento', 
+			P.PrecioTotal as 'PrecioTotal',
+			P.pagado as 'Pagado',
+			P.enviado as 'Enviado'
+	FROM PEDIDOS P 
+	INNER JOIN USUARIOS U 
+	ON P.IdUsuarios = U.Id
 END
 GO
 
@@ -672,6 +672,27 @@ AS BEGIN
 	INNER JOIN USUARIOS U 
 	ON IdUsuarios = U.Id 
 	WHERE IdPedido = @id
+END
+GO
+
+CREATE PROCEDURE [dbo].[sp_ListarPedidosPorUsuario]
+@id INT
+AS BEGIN
+	SELECT  P.IdPedido as 'IDPedido',
+			P.IdUsuarios as 'IDUsuario', 
+			U.Nombre+' '+U.Apellido as 'Usuario',
+			P.Cantidad as 'CantidadArticulos', 
+			P.Fecha as 'Fecha',
+			P.Estado as 'Estado', 
+			P.DireccionEntrega as 'Direccion', 
+			P.Descuento as 'Descuento', 
+			P.PrecioTotal as 'PrecioTotal',
+			P.pagado as 'Pagado',
+			P.enviado as 'Enviado'
+	FROM PEDIDOS P 
+	INNER JOIN USUARIOS U 
+	ON P.IdUsuarios = U.Id
+	WHERE IdUsuarios=@id
 END
 GO
 
