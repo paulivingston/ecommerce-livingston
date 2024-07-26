@@ -10,7 +10,7 @@ GO
 ------------TABLAS------------
 
 CREATE TABLE MARCAS (
-	Id INT not null PRIMARY KEY,
+	Id INT IDENTITY(1,1) not null PRIMARY KEY,
 	Descripcion varchar(50) not null,
 	ImagenUrl VARCHAR(1000)NOT NULL
 )
@@ -18,7 +18,7 @@ CREATE TABLE MARCAS (
 GO
 
 CREATE TABLE CATEGORIAS (
-	Id INT not null PRIMARY KEY,
+	Id INT IDENTITY(1,1) not null PRIMARY KEY,
 	Descripcion varchar(50) not null,
 	ImagenUrl VARCHAR(1000)NOT NULL
 )
@@ -28,7 +28,7 @@ GO
 CREATE TABLE ARTICULOS(
 	Id INT PRIMARY KEY NOT NULL,
 	Nombre VARCHAR(50) NULL,
-	Descripcion VARCHAR(150) NULL,
+	Descripcion VARCHAR(300) NULL,
 	IdMarca INT NULL,
 	IdCategoria INT NULL,
 	ImagenUrl VARCHAR(1000) NULL,
@@ -111,17 +111,17 @@ BEGIN
 		A.Nombre, 
 		A.Descripcion, 
 		A.IdMarca, 
-		M.Descripcion AS 'Marca', 
+		ISNULL(M.Descripcion,'Sin Marca') AS 'Marca', 
 		A.IdCategoria, 
-		C.Descripcion AS 'Categoria', 
+		ISNULL(C.Descripcion,'Sin Categoria') AS 'Categoria', 
 		A.Precio, 
 		A.Estado, 
 		A.Stock, 
 		A.ImagenUrl 
 	FROM ARTICULOS AS A 
-	INNER JOIN MARCAS AS M 
+	LEFT JOIN MARCAS AS M 
 	ON A.IdMarca = M.Id 
-	INNER JOIN CATEGORIAS AS C 
+	LEFT JOIN CATEGORIAS AS C 
 	ON A.IdCategoria = C.Id
 END 
 GO
@@ -160,17 +160,17 @@ BEGIN
 		A.Nombre AS 'Nombre', 
 		A.Descripcion AS 'Descripcion', 
 		A.IdMarca AS 'IdMarca', 
-		M.Descripcion AS 'Marca', 
+		ISNULL(M.Descripcion, 'Sin Marca') AS 'Marca', 
 		A.IdCategoria AS 'IdCategoria', 
-		C.Descripcion AS 'Categoria', 
+		ISNULL(C.Descripcion,'Sin Categoria') AS 'Categoria', 
 		A.Precio AS 'Precio', 
 		A.Estado AS 'Estado', 
 		A.Stock AS 'Stock', 
 		A.ImagenUrl AS 'ImagenUrl' 
 	FROM ARTICULOS AS A 
-	INNER JOIN MARCAS AS M 
+	LEFT JOIN MARCAS AS M 
 	ON A.IdMarca = M.Id 
-	INNER JOIN CATEGORIAS AS C 
+	LEFT JOIN CATEGORIAS AS C 
 	ON A.IdCategoria = C.Id
 	WHERE A.Id = @id
 END 
@@ -293,18 +293,15 @@ END
 GO
 
 CREATE PROCEDURE sp_CrearCategoria
-@Id int, 
 @descripcion varchar(50), 
 @ImagenUrl varchar(1000)
 AS
 BEGIN
 	INSERT INTO CATEGORIAS (
-		Id, 
 		Descripcion, 
 		ImagenUrl
 	) 
 	VALUES (
-		@Id, 
 		@descripcion, 
 		@ImagenUrl
 	)
@@ -329,6 +326,12 @@ CREATE PROCEDURE sp_EliminarCategoria
 @id int
 AS
 BEGIN
+	UPDATE A
+	SET A.Estado = 0
+	FROM ARTICULOS A 
+	LEFT JOIN CATEGORIAS c ON A.IdCategoria=C.Id
+	WHERE C.Id = @id
+
 	DELETE FROM CATEGORIAS 
 	WHERE Id = @id
 END
@@ -376,18 +379,15 @@ END
 GO
 
 CREATE PROCEDURE sp_CrearMarca
-@Id int, 
 @descripcion varchar(50), 
 @ImagenUrl varchar(1000)
 AS
 BEGIN
 	INSERT INTO MARCAS (
-		Id, 
 		Descripcion, 
 		ImagenUrl
 	) 
 	VALUES (
-		@Id, 
 		@descripcion, 
 		@ImagenUrl
 	)
@@ -412,6 +412,12 @@ CREATE PROCEDURE sp_EliminarMarca
 @id int
 AS
 BEGIN
+	UPDATE A
+	SET A.Estado = 0
+	FROM ARTICULOS A 
+	LEFT JOIN MARCAS M ON A.IdMarca=M.Id
+	WHERE M.Id = @id
+
 	DELETE FROM MARCAS 
 	WHERE Id = @id
 END
@@ -953,7 +959,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_RecaudacionPromedio]
 AS
 BEGIN
-	SELECT AVG(PrecioTotal) AS 'Recaudacion'
+	SELECT ISNULL(AVG(PrecioTotal),0) AS 'Recaudacion'
 	FROM PEDIDOS
 	WHERE Estado!='CANCELADO'
 END
@@ -962,7 +968,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_RecaudacionTotal]
 AS
 BEGIN
-	SELECT SUM(PrecioTotal) AS 'Recaudacion'
+	SELECT ISNULL(SUM(PrecioTotal),0) AS 'Recaudacion'
 	FROM PEDIDOS
 	WHERE Estado!='CANCELADO'
 END
@@ -971,7 +977,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_RecaudacionMes]
 AS
 BEGIN
-	SELECT SUM(PrecioTotal) AS 'Recaudacion'
+	SELECT ISNULL(SUM(PrecioTotal),0) AS 'Recaudacion'
 	FROM PEDIDOS
 	WHERE Estado!='CANCELADO'
 	AND MONTH(Fecha) = MONTH(GETDATE())
@@ -1068,63 +1074,78 @@ GO
 ------------INSERTS------------
 
 INSERT [dbo].[ARTICULOS] ([Id], [Nombre], [Descripcion], [IdMarca], [IdCategoria], [ImagenUrl], [Precio], [Estado], [Stock]) VALUES 
-(0, N'Anteojos de Sol Rusty Bruk Sblk Polarizado S10', N'Género: Unisex
-Color del Armazón: Negro brillante
-Color y Tipo del Lente: negro uniforme polarizado
-Material: Acetato
-Estilo: Cuadrado', 4, 1, N'https://www.masvision.com.ar/cdn/shop/files/BRUKSBLK-POLS10FRENTE_869x576.jpg?v=1683294063', CAST(50000 AS Decimal(18, 0)), 1, 500)
-,(1, N'Anteojos de Sol Vulk Arvin Mdblu Revo Blue', N'Género: Hombre
-Color del Armazón: Azul marino
-Color y Tipo del Lente: Celeste espejado
-Material: Acetato 
-Estilo: Cuadrado', 1, 1, N'https://www.masvision.com.ar/cdn/shop/files/ArvinMDBLUREVOBLUEF_870x580.jpg?v=1683207183', CAST(52000 AS Decimal(18, 0)), 1, 500)
-,(2, N'Anteojos de Sol Vulk Boston Mblk Revo Red', N'Género: Unisex
-Color del Armazón: Negro mate
-Color y Tipo del Lente: Rojo Degrade
-Material: Acetato
-Estilo: Cuadrado', 1, 1, N'https://www.masvision.com.ar/cdn/shop/files/BOSTON-MBLK-REVO-RED---FRENTE--PRINCIPAL-WEB_869x427.jpg?v=1683208233', CAST(55000 AS Decimal(18, 0)), 1, 300)
-,(3, N'Anteojos de Sol Rusty Ant Ul C3 Revo Blue', N'Género: Unisex
-Color del Armazón: Negro
-Color y Tipo del Lente: Azul Espejado
-Material: Metal y Acetato
-Estilo: Redondo', 4, 1, N'https://www.masvision.com.ar/cdn/shop/files/UL---C3---PERFIL_871x428.jpg?v=1683204061', CAST(36000 AS Decimal(18, 0)), 1, 5)
-,(4, N'Anteojos de Sol Rusty Marilyn 23 Sblk 940', N'Género: Unisex
-Color del Armazón: Negro
-Color y Tipo del Lente: verde oscuro
-Material: Acetato
-Estilo: Envolvente ovalado', 4, 1, N'https://www.masvision.com.ar/cdn/shop/products/MARILYN23AGALERIA-WEB-SBLK-940_871x428.jpg?v=1674065465', CAST(46000 AS Decimal(18, 0)), 1, 50)
-
-
-INSERT [dbo].[CATEGORIAS] ([Id], [Descripcion], [ImagenUrl]) VALUES 
-(1, N'SUN', N'https://www.masvision.com.ar/cdn/shop/files/VULKGENIEMBLKGREENEMERALD_800x_5a25ed4d-aacd-488e-b6b0-c432016884b6_800x503.jpg?v=1699153586')
-,(2, N'OPTICS', N'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566')
-,(3, N'CONTACTS', N'https://www.masvision.com.ar/cdn/shop/products/Air-Optix-Plus-Hydraglyde-multifocal-550x440_550x440.jpg?v=1701444968')
-,(4, N'GOGGLES', N'https://acdn.mitiendanube.com/stores/600/169/products/ziro-c2-vista-2_final1-7bc2b67baf1b98968d16527473812183-480-0.webp')
+(0, 'Aviadores Retro', 'Un clásico reinventado con monturas metálicas finas y lentes ligeramente degradadas, ideal para un look atemporal.', 1, 1, N'https://www.masvision.com.ar/cdn/shop/products/0RB3025__001_58_000A_8_1_870x435.jpg?v=1707401289', CAST(50000 AS Decimal(18, 0)), 1, 500)
+,(1, 'Wayfarer Urbanos', 'El modelo Wayfarer con un toque moderno, en colores vibrantes y materiales resistentes, perfecto para el día a día en la ciudad.', 2, 1, N'https://www.masvision.com.ar/cdn/shop/files/b04dbd239a5328de3d36fe86b2ec5c5d5487283f_jpg_870x435.webp?v=1714076430', CAST(52000 AS Decimal(18, 0)), 1, 10000)
+,(2, 'Cat Eye Felinos', 'Monturas en forma de ojo de gato, con detalles elegantes y lentes polarizadas, para un estilo sofisticado y femenino.', 3, 1, N'https://www.masvision.com.ar/cdn/shop/files/BOSTON-MBLK-REVO-RED---FRENTE--PRINCIPAL-WEB_869x427.jpg?v=1683208233', CAST(55000 AS Decimal(18, 0)), 1, 300)
+,(3, 'Redondos Vintage', 'Lentes redondas de gran tamaño con monturas de acetato, evocando el espíritu hippie de los años 70.', 4, 1, N'https://www.masvision.com.ar/cdn/shop/files/UL---C3---PERFIL_871x428.jpg?v=1683204061', CAST(36000 AS Decimal(18, 0)), 1, 5)
+,(4, 'Sport Shield', 'Gafas deportivas envolventes con lentes intercambiables y protección UV máxima, ideales para actividades al aire libre.', 1, 1, N'https://www.masvision.com.ar/cdn/shop/products/MARILYN23AGALERIA-WEB-SBLK-940_871x428.jpg?v=1674065465', CAST(46000 AS Decimal(18, 0)), 1, 50)
+,(5, 'Oversized Glam', 'Lentes extra grandes y monturas llamativas, para un look atrevido y lleno de personalidad.', 2, 1, N'https://www.masvision.com.ar/cdn/shop/files/20500003217121_800x503.webp?v=1710344137', CAST(76000 AS Decimal(18, 0)), 1, 50)
+,(6, 'Clásicos de Carey', 'Monturas de carey con un diseño atemporal, combinando elegancia y durabilidad.', 3, 1, N'https://www.masvision.com.ar/cdn/shop/files/original_png-0OO9290__929020__P21__shad__cfr_870x435.png?v=1702567122', CAST(58000 AS Decimal(18, 0)), 1, 150)
+,(7, 'Rectangulares Minimalistas', 'Lentes rectangulares con monturas finas y discretas, perfectas para un estilo casual y versátil.', 4, 1, N'https://www.masvision.com.ar/cdn/shop/products/0KP4069__J248_000A_870x435.jpg?v=1681154198', CAST(31000 AS Decimal(18, 0)), 1, 350)
+,(8, 'Butterfly Chic', 'Monturas en forma de mariposa con detalles metálicos, para un look femenino y sofisticado.', 4, 1, N'https://www.masvision.com.ar/cdn/shop/files/0KP4073__K644_060A_870x435.jpg?v=1707163369', CAST(91000 AS Decimal(18, 0)), 1, 250)
+,(9, 'Metalicos Futuristicas', 'Monturas metálicas con formas geométricas y lentes espejados, para un estilo vanguardista y moderno.', 4, 1, N'https://www.masvision.com.ar/cdn/shop/products/AGALERIA-WEB-SBLK053-S10-POL_871x428.jpg?v=1680534128', CAST(72000 AS Decimal(18, 0)), 1, 50)
+,(10, 'Clásicos de Biblioteca', 'Monturas redondas de acetato en tonos cálidos, perfectas para los amantes de la lectura tradicional.', 1, 1, N'https://www.masvision.com.ar/cdn/shop/products/MARILYN23AGALERIA-WEB-SBLK-940_871x428.jpg?v=1674065465', CAST(63000 AS Decimal(18, 0)), 1, 5000)
+,(11, 'Urbanos y Flexibles', 'Lentes rectangulares de policarbonato ultraligero y flexibles, ideales para el día a día y actividades al aire libre.', 1, 2, 'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566', CAST(23000 AS Decimal(18, 0)), 1, 500)
+,(12, 'Elegancia Discreta', 'Monturas de metal finas y delicadas, con lentes ligeramente tintadas para reducir el cansancio visual.', 2, 2, 'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566', CAST(36000 AS Decimal(18, 0)), 1, 500)
+,(13, 'Vintage Chic', 'Monturas de carey con un diseño retro, combinando estilo y comodidad.', 2, 2, 'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566', CAST(28000 AS Decimal(18, 0)), 1, 500)
+,(14, 'Lentes de Lupa', 'Monturas con lentes de aumento extra para tareas de precisión como manualidades o trabajos detallados.', 2, 2, 'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566', CAST(45000 AS Decimal(18, 0)), 1, 500)
+,(15, 'Sport Reading', 'Gafas deportivas con lentes graduadas, perfectas para leer mientras haces ejercicio.', 3, 2, 'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566', CAST(31000 AS Decimal(18, 0)), 1, 500)
+,(16, 'FreshDaily Comfort', 'Lentes de contacto diarias desechables diseñadas para brindar una máxima comodidad durante todo el día. Ideales para ojos sensibles y para quienes buscan una solución práctica y higiénica.', 4, 3, 'https://www.masvision.com.ar/cdn/shop/products/Air-Optix-Plus-Hydraglyde-multifocal-550x440_550x440.jpg?v=1701444968', CAST(75000 AS Decimal(18, 0)), 1, 50)
+,(17, 'AquaLens', 'Lentes de contacto hidrogel de silicona de reemplazo quincenal con alto contenido de agua para mantener tus ojos hidratados y saludables. Diseñadas para usuarios que buscan una opción duradera y cómoda.', 4, 3, 'https://www.masvision.com.ar/cdn/shop/products/Air-Optix-Plus-Hydraglyde-multifocal-550x440_550x440.jpg?v=1701444968', CAST(93000 AS Decimal(18, 0)), 1, 10)
+,(18, 'AstigmatismComfort', 'Lentes de contacto tóricas mensuales diseñadas para corregir el astigmatismo y brindar una visión clara y estable en todas las direcciones.', 1, 3, 'https://www.masvision.com.ar/cdn/shop/products/Air-Optix-Plus-Hydraglyde-multifocal-550x440_550x440.jpg?v=1701444968', CAST(63000 AS Decimal(18, 0)), 1, 1)
+,(19, 'Storm Chaser', 'Goggles de alta montaña con tratamiento antiempañamiento y ventilación activa, diseñados para enfrentar las condiciones más extremas.', 3, 4, 'https://acdn.mitiendanube.com/stores/600/169/products/ziro-c2-vista-2_final1-7bc2b67baf1b98968d16527473812183-480-0.webp', CAST(102000 AS Decimal(18, 0)), 1, 1)
+,(20, 'Freeride Force', 'Goggles robustos y duraderos, con correa ajustable y sistema de ventilación para un máximo confort.', 2, 4, 'https://acdn.mitiendanube.com/stores/600/169/products/ziro-c2-vista-2_final1-7bc2b67baf1b98968d16527473812183-480-0.webp', CAST(98000 AS Decimal(18, 0)), 1, 1)
 
 
 INSERT [dbo].[IMAGENES] ([IdArticulo], [ImagenUrl]) VALUES 
-(1, N'https://www.masvision.com.ar/cdn/shop/products/MARILYN23GALERIA-WEB-SBLK-940_871x428.jpg?v=1674065467')
-,(1, N'https://www.masvision.com.ar/cdn/shop/products/MARILYN23AGALERIA-WEB-SBLK-940_871x428.jpg?v=1674065465')
-,(2, N'https://www.masvision.com.ar/cdn/shop/files/ArvinMDBLUREVOBLUEF_870x580.jpg?v=1683207183')
-,(2, N'https://www.masvision.com.ar/cdn/shop/files/ArvinMDBLUREVOBLUEF_870x580.jpg?v=1683207183')
-,(5, N'https://www.masvision.com.ar/cdn/shop/files/ArvinMDBLUREVOBLUEF_870x580.jpg?v=1683207183')
-,(7, N'https://www.masvision.com.ar/cdn/shop/files/ArvinMDBLUREVOBLUEF_870x580.jpg?v=1683207183')
-,(3, N'https://www.masvision.com.ar/cdn/shop/products/MARILYN23GALERIA-WEB-SBLK-940_871x428.jpg?v=1674065467')
-,(4, N'https://www.masvision.com.ar/cdn/shop/products/MARILYN23GALERIA-WEB-SBLK-940_871x428.jpg?v=1674065467')
-,(5, N'https://www.masvision.com.ar/cdn/shop/products/MARILYN23GALERIA-WEB-SBLK-940_871x428.jpg?v=1674065467')
+(1, 'https://www.masvision.com.ar/cdn/shop/products/0RB3025__001_58_000A_8_1_870x435.jpg?v=1707401289')
+,(1, 'https://www.masvision.com.ar/cdn/shop/products/Ray-Ban-RB3025-001-58_1_640x333.jpg?v=1707401289')
+,(2, 'https://www.masvision.com.ar/cdn/shop/files/b04dbd239a5328de3d36fe86b2ec5c5d5487283f_jpg_870x435.webp?v=1714076430')
+,(2, 'https://www.masvision.com.ar/cdn/shop/files/4bc2d49ee73dcb290bb0ef0823506c12b060b6e5_jpg_870x435.webp?v=1714076430')
+,(3, 'https://www.masvision.com.ar/cdn/shop/files/BOSTON-MBLK-REVO-RED---FRENTE--PRINCIPAL-WEB_869x427.jpg?v=1683208233')
+,(4, 'https://www.masvision.com.ar/cdn/shop/files/UL---C3---PERFIL_871x428.jpg?v=1683204061')
+,(5, 'https://www.masvision.com.ar/cdn/shop/files/20500003217121_800x503.webp?v=1710344137')
+,(5, 'https://www.masvision.com.ar/cdn/shop/files/205000032171212_800x503.webp?v=1710344137')
+,(5, 'https://www.masvision.com.ar/cdn/shop/files/205000032171213_800x503.webp?v=1710344137')
+,(6, 'https://www.masvision.com.ar/cdn/shop/files/original_png-0OO9290__929020__P21__shad__cfr_870x435.png?v=1702567122')
+,(6, 'https://www.masvision.com.ar/cdn/shop/files/original_png-0OO9290__929020__P21__shad__qt_870x435.png?v=1702567122')
+,(6, 'https://www.masvision.com.ar/cdn/shop/files/original_png-0OO9290__929020__P21__shad__lt_870x435.png?v=1702567122')
+,(7, 'https://www.masvision.com.ar/cdn/shop/products/0KP4069__J248_000A_870x435.jpg?v=1681154198')
+,(7, 'https://www.masvision.com.ar/cdn/shop/products/0KP4069__J248_030A_870x435.jpg?v=1681154198')
+,(8, 'https://www.masvision.com.ar/cdn/shop/files/0KP4073__K644_000A_870x435.jpg?v=1707163369')
+,(8, 'https://www.masvision.com.ar/cdn/shop/files/0KP4073__K644_060A_870x435.jpg?v=1707163369')
+,(9, 'https://www.masvision.com.ar/cdn/shop/products/AGALERIA-WEB-SBLK053-S10-POL_871x428.jpg?v=1680534128')
+,(9, 'https://www.masvision.com.ar/cdn/shop/files/GALERIA-WEB-SBLK053-S10-POL_871x428.jpg?v=1710870861')
+,(10, 'https://www.masvision.com.ar/cdn/shop/products/AGALERIA-WEB-SBLK053-S10-POL_871x428.jpg?v=1680534128')
+,(11, 'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566')
+,(12, 'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566')
+,(13, 'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566')
+,(14, 'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566')
+,(15, 'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566')
+,(16, 'https://www.masvision.com.ar/cdn/shop/products/Air-Optix-Plus-Hydraglyde-multifocal-550x440_550x440.jpg?v=1701444968')
+,(17, 'https://www.masvision.com.ar/cdn/shop/products/Air-Optix-Plus-Hydraglyde-multifocal-550x440_550x440.jpg?v=1701444968')
+,(18, 'https://www.masvision.com.ar/cdn/shop/products/Air-Optix-Plus-Hydraglyde-multifocal-550x440_550x440.jpg?v=1701444968')
+,(19, 'https://acdn.mitiendanube.com/stores/600/169/products/ziro-c2-vista-2_final1-7bc2b67baf1b98968d16527473812183-480-0.webp')
+,(20, 'https://acdn.mitiendanube.com/stores/600/169/products/ziro-c2-vista-2_final1-7bc2b67baf1b98968d16527473812183-480-0.webp')
 
 
+INSERT [dbo].[CATEGORIAS] ([Descripcion], [ImagenUrl]) VALUES 
+('SUN', 'https://www.masvision.com.ar/cdn/shop/files/VULKGENIEMBLKGREENEMERALD_800x_5a25ed4d-aacd-488e-b6b0-c432016884b6_800x503.jpg?v=1699153586')
+,('OPTICS', 'https://www.masvision.com.ar/cdn/shop/products/PCDA_Hazel_col01_RX_Frente_870x574.jpg?v=1674487566')
+,('CONTACTS', 'https://www.masvision.com.ar/cdn/shop/products/Air-Optix-Plus-Hydraglyde-multifocal-550x440_550x440.jpg?v=1701444968')
+,('GOGGLES', 'https://acdn.mitiendanube.com/stores/600/169/products/ziro-c2-vista-2_final1-7bc2b67baf1b98968d16527473812183-480-0.webp')
 
-INSERT [dbo].[MARCAS] ([Id], [Descripcion], [ImagenUrl]) VALUES 
-(1, N'Ray-Ban', N'https://www.masvision.com.ar/cdn/shop/files/marca_Ray-Ban_small.png?v=1697029603')
-,(2, N'Vulk', N'https://www.masvision.com.ar/cdn/shop/files/marca_Vulk_small.png?v=1697029603')
-,(3, N'Vogue', N'https://www.masvision.com.ar/cdn/shop/files/marca_Vogue_small.png?v=1697029603')
-,(4, N'Rusty', N'https://www.masvision.com.ar/cdn/shop/files/marca_Rusty_small.png?v=1697029603')
+
+INSERT [dbo].[MARCAS] ([Descripcion], [ImagenUrl]) VALUES 
+('Ray-Ban', 'https://www.masvision.com.ar/cdn/shop/files/marca_Ray-Ban_small.png?v=1697029603')
+,('Vulk', 'https://www.masvision.com.ar/cdn/shop/files/marca_Vulk_small.png?v=1697029603')
+,('Vogue', 'https://www.masvision.com.ar/cdn/shop/files/marca_Vogue_small.png?v=1697029603')
+,('Rusty', 'https://www.masvision.com.ar/cdn/shop/files/marca_Rusty_small.png?v=1697029603')
 
 
 INSERT [dbo].[USUARIOS] ([Nombre], [Apellido], [DNI], [Mail], [Clave], [Direccion], [Nivel], [ImagenUrl], [Activo]) VALUES 
-(N'Pepito', N'Admin', 11111111, N'pepito.admin@gmail.com', N'password2', N'donde vive pepito 456', N'A', N'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwD5S3sw60LDdyNbWwv0Od9IBWQ1vYaAMLEmwizhyb-8HkWJsB5tU2F7ljmaRyfzArkq4&usqp=CAU', 1)
-,(N'Pepe', N'Pepa', 11111111, N'pepe.pepa@gmail.com', N'password1', N'donde vive pepe 123', N'E', N'https://dthezntil550i.cloudfront.net/f4/latest/f41908291942413280009640715/1280_960/1b2d9510-d66d-43a2-971a-cfcbb600e7fe.png', 1)
-,(N'Otro Pepe', N' No Admin', 11542111, N'otro.pepe@gmail.com', N'password2', N'donde vive pepito 456', N'E', N'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwD5S3sw60LDdyNbWwv0Od9IBWQ1vYaAMLEmwizhyb-8HkWJsB5tU2F7ljmaRyfzArkq4&usqp=CAU', 0)
+('Pepito', 'Admin', 40215203, 'pepito.admin@gmail.com', 'password2', 'donde vive pepito 456', 'A', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwD5S3sw60LDdyNbWwv0Od9IBWQ1vYaAMLEmwizhyb-8HkWJsB5tU2F7ljmaRyfzArkq4&usqp=CAU', 1)
+,('Pepe', 'Pepa', 26302125, 'pepe.pepa@gmail.com', 'password1', 'donde vive pepe 123', 'C', 'https://dthezntil550i.cloudfront.net/f4/latest/f41908291942413280009640715/1280_960/1b2d9510-d66d-43a2-971a-cfcbb600e7fe.png', 1)
+,('Otro Pepe', 'No Admin', 39654852, 'otro.pepe@gmail.com', 'password2', 'donde vive pepito 456', 'C', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwD5S3sw60LDdyNbWwv0Od9IBWQ1vYaAMLEmwizhyb-8HkWJsB5tU2F7ljmaRyfzArkq4&usqp=CAU', 0)
 
 ------------FIN INSERTS------------

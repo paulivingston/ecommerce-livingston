@@ -859,7 +859,7 @@
                                             <label for="ddlMarca" class="form-label">Marca<span class="text-danger">*</span></label>
                                         </div>
                                         <div class="row ps-2">
-                                            <asp:DropDownList runat="server" ID="ddlMarca" CssClass="btn btn-light dropdown-toggle" Width="280px"></asp:DropDownList>
+                                            <asp:DropDownList runat="server" ID="ddlMarca" CssClass="btn btn-light dropdown-toggle" Width="280px" AppendDataBoundItems="true"><asp:ListItem Value="0">- Seleccionar -</asp:ListItem></asp:DropDownList>
                                         </div>
                                     </div>
                                     <div class="col-6 mt-3">
@@ -867,7 +867,7 @@
                                             <label for="ddlCategoria" class="form-label">Categoría <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="row ps-2">
-                                            <asp:DropDownList runat="server" ID="ddlCategoria" CssClass="btn btn-light dropdown-toggle" Width="280px"></asp:DropDownList>
+                                            <asp:DropDownList runat="server" ID="ddlCategoria" CssClass="btn btn-light dropdown-toggle" Width="280px" AppendDataBoundItems="true"><asp:ListItem Value="0">- Seleccionar -</asp:ListItem></asp:DropDownList>
                                         </div>
                                     </div>
                                 </div>
@@ -970,7 +970,7 @@
                                             </div>
                                             <div class="col-12 bg-danger text-center">
                                                 <i class="bi bi-trash-fill fs-5"></i>
-                                                <asp:Button runat="server" ID="btnEliminarMarca" Text="Eliminar" Font-Bold="true" CssClass="btn" OnClick="btnEliminarMarca_Click" OnClientClick="return confirm('¿Estás seguro de que deseas eliminar esta marca?');"/>
+                                                <asp:Button runat="server" ID="btnEliminarMarca" Text="Eliminar" Font-Bold="true" CssClass="btn" OnClick="btnEliminarMarca_Click" OnClientClick="return confirm('¿Estás seguro de que deseas eliminar esta marca? Todos los articulos de esta marca seran dados de baja temporalmente');"/>
                                             </div>
                                             <div class="col-12 card-footer text-center bg-primary">
                                                 <i class="bi bi-pencil-fill fs-5"></i>
@@ -1010,7 +1010,7 @@
 
                                     <div class="col-12 mt-3">
                                         <div class="d-flex justify-content-center align-items-center">
-                                            <asp:Button Text="Guardar Marca" ID="Button1" CssClass="btn btn-light mb-3 ps-5 pe-5 fs-4" runat="server" OnClick="btnGuardarNewMarca_Click" />
+                                            <asp:Button Text="Guardar Marca" ID="Button1" CssClass="btn btn-dark mb-3 ps-5 pe-5 fs-4" runat="server" OnClick="btnGuardarNewMarca_Click" />
                                         </div>
                                         <div class="d-flex justify-content-start align-items-start">
                                             <asp:LinkButton Text="Volver a Marcas" CssClass="link-body-emphasis m-3" ID="btnVolverMarca" OnClick="btnVolverMarca_Click" runat="server" />
@@ -1057,7 +1057,7 @@
                                             </div>
                                             <div class="col-12 bg-danger text-center">
                                                 <i class="bi bi-trash-fill fs-5"></i>
-                                                <asp:Button runat="server" ID="btnEliminarCategoria" Text="Eliminar" Font-Bold="true" CssClass="btn" OnClick="btnEliminarCategoria_Click" OnClientClick="return confirm('¿Estás seguro de que deseas eliminar esta categoria?');"/>
+                                                <asp:Button runat="server" ID="btnEliminarCategoria" Text="Eliminar" Font-Bold="true" CssClass="btn" OnClick="btnEliminarCategoria_Click" OnClientClick="return confirm('¿Estás seguro de que deseas eliminar esta categoria? Todos los articulos de esta categoría seran dados de baja temporalmente');"/>
                                             </div>
                                             <div class="col-12 card-footer text-center bg-primary">
                                                 <i class="bi bi-pencil-fill fs-5"></i>
@@ -1074,7 +1074,7 @@
 
                         <%-- panel nueva categoria--%>
                         <div class="row d-flex justify-content-center align-items-center" id="sectionNuevaCategoria" visible="false" runat="server">
-                            <div class="card rounded-4 col-8 bg-primary text-light ms-5" style="margin-top: 100px; margin-bottom: 100px;">
+                            <div class="card rounded-4 col-8 bg-light ms-5" style="margin-top: 100px; margin-bottom: 100px;">
                                 <div class=" card-header text-center">
                                     <h1>Nueva Categoria</h1>
                                 </div>
@@ -1097,7 +1097,7 @@
 
                                     <div class="col-12 mt-3">
                                         <div class="d-flex justify-content-center align-items-center">
-                                            <asp:Button Text="Guardar categoría" ID="btnAgregarCate" CssClass="btn btn-light mb-3 ps-5 pe-5 fs-4" runat="server" OnClick="btnGuardarNewCategoria_Click" />
+                                            <asp:Button Text="Guardar categoría" ID="btnAgregarCate" CssClass="btn btn-dark mb-3 ps-5 pe-5 fs-4" runat="server" OnClick="btnGuardarNewCategoria_Click" />
                                         </div>
                                         <div class="d-flex justify-content-start align-items-start">
                                             <asp:LinkButton Text="Volver a categorías" CssClass="link-body-emphasis m-3" ID="volverCate" OnClick="volverCategoria_Click" runat="server" />

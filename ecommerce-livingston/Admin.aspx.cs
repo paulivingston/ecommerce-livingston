@@ -184,6 +184,8 @@ namespace ecommerce_livingston
         {
             try
             {
+                
+
                 NegocioCategoria = new NegocioCategoria();
                 NegocioMarca = new NegocioMarca();
                 ddlCategoria.DataSource = NegocioCategoria.ListarCategorias();
@@ -1127,8 +1129,8 @@ namespace ecommerce_livingston
                 articulo = NegocioArticulo.ListarArticulos(id);
 
                 CargarArticuloEnformulario(articulo);
-                ddlCategoria.SelectedValue = articulo.Categoria.Id.ToString();
-                ddlMarca.SelectedValue = articulo.Marca.Id.ToString();
+                ddlCategoria.SelectedValue = articulo.Categoria.Descripcion == "Sin Categoria" ? "0" : articulo.Categoria.Id.ToString();
+                ddlMarca.SelectedValue = articulo.Marca.Descripcion == "Sin Marca" ? "0" : articulo.Marca.Id.ToString();
 
                 dgvAdminArticuloIndividual.Visible = true;
                 dgvAdminArticulo.Visible = false;
@@ -1151,15 +1153,24 @@ namespace ecommerce_livingston
             NegocioArticulo = new NegocioArticulo();
             int id = int.Parse(((Button)sender).CommandArgument);
 
-            string estado = ((Button)sender).CommandName;
-            if (estado == "ALTA")
-                NegocioArticulo.CambiarEstado(id, true);
-            else if (estado == "BAJA")
-                NegocioArticulo.CambiarEstado(id, false);
+            if(NegocioArticulo.ListarArticulos(id).Marca.Descripcion == "Sin Marca"
+                || NegocioArticulo.ListarArticulos(id).Categoria.Descripcion == "Sin Categoria")
+            {
+                string estado = ((Button)sender).CommandName;
+                if (estado == "ALTA")
+                    NegocioArticulo.CambiarEstado(id, true);
+                else if (estado == "BAJA")
+                    NegocioArticulo.CambiarEstado(id, false);
 
-            Articulos = NegocioArticulo.ListarArticulos();
-            dgvAdminArticulo.DataSource = Articulos;
-            dgvAdminArticulo.DataBind();
+                Articulos = NegocioArticulo.ListarArticulos();
+                dgvAdminArticulo.DataSource = Articulos;
+                dgvAdminArticulo.DataBind();
+            }
+            else
+            {
+                Mensajes.Mensajes.MensajePopUp(this, "No se puede dar de alta el artículo sin marca y/o categoria");
+                return;
+            }
         }
 
         protected void dgvAdmin_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -1179,6 +1190,14 @@ namespace ecommerce_livingston
         {
             try
             {
+                if (ddlMarca.SelectedValue=="0" || ddlCategoria.SelectedValue=="0")
+                {
+                    lblRespuestaError.Text = "Debe seleccionar una marca y categoria";
+                    lblErrorArticulos.Visible = true;
+                    sectionNuevoArticulo.Visible = true;
+                    return;
+                }
+
                 string tipo = ((Button)sender).Text; 
                 marca = new Marca();
                 marca.Id = Convert.ToInt32(ddlMarca.SelectedValue);
@@ -1279,12 +1298,7 @@ namespace ecommerce_livingston
 
         protected void btnLinkVolverListaArticulos_Click(object sender, EventArgs e)
         {
-            NegocioArticulo = new NegocioArticulo();
-            dgvAdminArticulo.DataSource = NegocioArticulo.ListarArticulos();
-            dgvAdminArticulo.DataBind();
-            sectionAdminArticulos.Visible=true;
-            dgvAdminArticulo.Visible = true;
-            dgvAdminArticuloIndividual.Visible = false;
+            CargarArticulos();
         }
 
         protected void btnEliminarArticulo_Click(object sender, EventArgs e)
