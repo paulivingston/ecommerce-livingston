@@ -374,6 +374,7 @@ namespace ecommerce_livingston
                             emailService.EnviarCorreo();
 
                             Session["listaCarrito"] = null;
+                            Session["countCarrito"] = null;
 
                             Session.Add("mensajeEnDefault", "Pedido Cargado Correctamente. Le llegará un mail a su casilla de correo con la información del pedido.");
                             Response.Redirect("Default.aspx", false);

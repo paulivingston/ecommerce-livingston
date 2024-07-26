@@ -35,6 +35,10 @@ namespace ecommerce_livingston
                         Session.Remove("mensajeEnDefault");
                     }
                 }
+
+                // count icono carrito
+                if (Session["countCarrito"] == null) Session.Add("countCarrito", 0);
+                CantidadCarrito();
             }
             catch (Exception ex)
             {
@@ -78,6 +82,35 @@ namespace ecommerce_livingston
             {
                 Session.Add("error", ex);
                 Response.Redirect("Error.aspx", false);
+            }
+        }
+
+        public void CantidadCarrito()
+        {
+            if (Session["countCarrito"] == null) Session.Add("countCarrito", 0);
+            int count = 0;
+
+            if (Session["listaCarrito"] != null)
+            {
+                var itemList = ((NegocioItemCarrito)Session["listaCarrito"]).Items;
+                foreach (var item in itemList) count += item.Cantidad;
+            }
+
+            Session["countCarrito"] = count;
+
+            SiteMaster masterPage = (SiteMaster)Master;
+            if (count > 0)
+            {
+                Label lblcantidad = (Label)Master.FindControl("lblTotalArticulos");
+                if (lblcantidad != null)
+                {
+                    lblcantidad.Text = count.ToString();
+                    masterPage.Flag = true;
+                }
+            }
+            else
+            {
+                masterPage.Flag = false;
             }
         }
     }
