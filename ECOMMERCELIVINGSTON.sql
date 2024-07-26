@@ -220,7 +220,6 @@ CREATE PROCEDURE sp_ModificarArticulo
 @idMarca int,
 @idCategoria int,
 @precio decimal(18,0),
-@estado bit,
 @stock int,
 @imagenUrl varchar(1000)
 AS
@@ -232,7 +231,6 @@ BEGIN
 		IdMarca = @idMarca, 
 		IdCategoria = @idCategoria, 
 		Precio = @precio, 
-		Estado = @estado, 
 		Stock = @stock, 
 		ImagenUrl = @imagenUrl 
 	WHERE Id = @id

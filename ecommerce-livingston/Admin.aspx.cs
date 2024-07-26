@@ -184,7 +184,8 @@ namespace ecommerce_livingston
         {
             try
             {
-                
+                ddlCategoria.Items.Clear();
+                ddlMarca.Items.Clear();
 
                 NegocioCategoria = new NegocioCategoria();
                 NegocioMarca = new NegocioMarca();
@@ -196,6 +197,9 @@ namespace ecommerce_livingston
                 ddlMarca.DataTextField = "Descripcion";
                 ddlMarca.DataValueField = "Id";
                 ddlMarca.DataBind();
+
+                ddlCategoria.Items.Insert(0,new ListItem("- Seleccionar -", "0"));
+                ddlMarca.Items.Insert(0,new ListItem("- Seleccionar -", "0"));
             }
             catch (Exception ex)
             {
@@ -1129,6 +1133,7 @@ namespace ecommerce_livingston
                 articulo = NegocioArticulo.ListarArticulos(id);
 
                 CargarArticuloEnformulario(articulo);
+
                 ddlCategoria.SelectedValue = articulo.Categoria.Descripcion == "Sin Categoria" ? "0" : articulo.Categoria.Id.ToString();
                 ddlMarca.SelectedValue = articulo.Marca.Descripcion == "Sin Marca" ? "0" : articulo.Marca.Id.ToString();
 
@@ -1192,7 +1197,7 @@ namespace ecommerce_livingston
             {
                 if (ddlMarca.SelectedValue=="0" || ddlCategoria.SelectedValue=="0")
                 {
-                    lblRespuestaError.Text = "Debe seleccionar una marca y categoria";
+                    lblRespuestaError.Text = "Debe seleccionar una marca y/o categoria";
                     lblErrorArticulos.Visible = true;
                     sectionNuevoArticulo.Visible = true;
                     return;
@@ -1263,7 +1268,6 @@ namespace ecommerce_livingston
                 articulo.Precio = result;
                 articulo.Marca = marca;
                 articulo.Categoria = categoria;
-                articulo.Estado = true;
                 articulo.Stock = int.Parse(tbStockArt.Text);
 
                 //guardo

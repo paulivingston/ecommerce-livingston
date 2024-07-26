@@ -185,7 +185,6 @@ namespace Negocio
                 datos.SetParameter("@idMarca", articulo.Marca.Id);
                 datos.SetParameter("@idCategoria", articulo.Categoria.Id);
                 datos.SetParameter("@precio", articulo.Precio);
-                datos.SetParameter("@estado", articulo.Estado);
                 datos.SetParameter("@stock", articulo.Stock);
                 datos.SetParameter("@imagenUrl", articulo.ImagenUrl);
 

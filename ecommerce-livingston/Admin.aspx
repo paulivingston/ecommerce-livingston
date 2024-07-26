@@ -859,7 +859,7 @@
                                             <label for="ddlMarca" class="form-label">Marca<span class="text-danger">*</span></label>
                                         </div>
                                         <div class="row ps-2">
-                                            <asp:DropDownList runat="server" ID="ddlMarca" CssClass="btn btn-light dropdown-toggle" Width="280px" AppendDataBoundItems="true"><asp:ListItem Value="0">- Seleccionar -</asp:ListItem></asp:DropDownList>
+                                            <asp:DropDownList runat="server" ID="ddlMarca" CssClass="btn btn-light dropdown-toggle" Width="280px" ></asp:DropDownList>
                                         </div>
                                     </div>
                                     <div class="col-6 mt-3">
@@ -867,7 +867,7 @@
                                             <label for="ddlCategoria" class="form-label">Categoría <span class="text-danger">*</span></label>
                                         </div>
                                         <div class="row ps-2">
-                                            <asp:DropDownList runat="server" ID="ddlCategoria" CssClass="btn btn-light dropdown-toggle" Width="280px" AppendDataBoundItems="true"><asp:ListItem Value="0">- Seleccionar -</asp:ListItem></asp:DropDownList>
+                                            <asp:DropDownList runat="server" ID="ddlCategoria" CssClass="btn btn-light dropdown-toggle" Width="280px" ></asp:DropDownList>
                                         </div>
                                     </div>
                                 </div>
