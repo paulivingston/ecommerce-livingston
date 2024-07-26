@@ -327,7 +327,7 @@ namespace ecommerce_livingston
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel seccionEditarPedidos;
+        protected global::System.Web.UI.WebControls.Panel seccionEditarPedidos;
 
         /// <summary>
         /// Div1 control.

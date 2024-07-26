@@ -498,8 +498,7 @@
 
                         
                         <%-- panel editar pedidos --%>
-                        <asp:UpdatePanel ID="seccionEditarPedidos" Visible="false" runat="server" UpdateMode="Conditional">
-                            <ContentTemplate>
+                        <asp:Panel ID="seccionEditarPedidos" Visible="false" runat="server" UpdateMode="Conditional">
                                   
                                     <div class="row d-flex justify-content-center align-items-center">
                                         <div class="card rounded-4 col-10 bg-info ms-5" style="margin-top: 100px; margin-bottom: 100px;" id="Div1" runat="server">
@@ -558,39 +557,38 @@
                                             </div>
                                         </div>
                                     </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
+
+                            
 
                         <%-- panel articulos por pedido --%>
-                        <asp:UpdatePanel runat="server">
-                            <ContentTemplate>
-                                <asp:GridView ID="dgvArticulosPedido" AutoGenerateColumns="false" CssClass="table table-striped table-bordered mt-5" runat="server">
-                                    <Columns>
+                        <asp:GridView ID="dgvArticulosPedido" AutoGenerateColumns="false" CssClass="table table-striped table-bordered mt-5" runat="server">
+                            <Columns>
 
-                                        <asp:BoundField HeaderText="Id Articulo" DataField="Id" />
-                                        <asp:BoundField HeaderText="Articulo" DataField="Nombre"/>
-                                        <asp:BoundField HeaderText="Descripcion" DataField="Descripcion"/>
-                                        <asp:BoundField HeaderText="Marca" DataField="Marca"/>
-                                        <asp:BoundField HeaderText="Categoria" DataField="Categoria" />
+                                <asp:BoundField HeaderText="Id Articulo" DataField="Id" />
+                                <asp:BoundField HeaderText="Articulo" DataField="Nombre"/>
+                                <asp:BoundField HeaderText="Descripcion" DataField="Descripcion"/>
+                                <asp:BoundField HeaderText="Marca" DataField="Marca"/>
+                                <asp:BoundField HeaderText="Categoria" DataField="Categoria" />
 
-                                        <asp:TemplateField HeaderText="Precio Unitario">
-                                            <ItemTemplate>
-                                                <asp:Label Text='<%#string.Format("{0:C2}", Eval("Precio"))%>' runat="server" />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Precio Unitario">
+                                    <ItemTemplate>
+                                        <asp:Label Text='<%#string.Format("{0:C2}", Eval("Precio"))%>' runat="server" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
 
-                                        <asp:TemplateField HeaderText="Precio Total">
-                                            <ItemTemplate>
-                                                <asp:Label Text='<%#string.Format("{0:C2}", Convert.ToInt32(Eval("Precio"))*Convert.ToInt32(Eval("Cantidad")))%>' runat="server" />
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
+                                <asp:TemplateField HeaderText="Precio Total">
+                                    <ItemTemplate>
+                                        <asp:Label Text='<%#string.Format("{0:C2}", Convert.ToInt32(Eval("Precio"))*Convert.ToInt32(Eval("Cantidad")))%>' runat="server" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
 
-                                        <asp:BoundField HeaderText="Cantidad" DataField="Cantidad" />
+                                <asp:BoundField HeaderText="Cantidad" DataField="Cantidad" />
 
-                                    </Columns>
-                                </asp:GridView>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
+                            </Columns>
+                        </asp:GridView>
+
+                            </asp:Panel>
+
                         
                         <%-- panel descuentos --%>
                         <asp:Panel ID="panelCuponDescuento" runat="server" Visible="false">

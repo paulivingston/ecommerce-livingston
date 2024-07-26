@@ -85,6 +85,7 @@ namespace ecommerce_livingston
             panelCuponDescuento.Visible= false;
             sectionAdminPedidoIndividual.Visible = false;
             seccionEditarPedidos.Visible = false;
+            dgvArticulosPedido.Visible = false;
         }
         private void CargarDescuentos()
         {
@@ -110,6 +111,7 @@ namespace ecommerce_livingston
             dgvAdminPedidos.Visible = false;
             sectionAdminPedidoIndividual.Visible = false;
             seccionEditarPedidos.Visible = false;
+            dgvArticulosPedido.Visible = false;
         }
 
         protected void btnPedidosTodos_Click(object sender, EventArgs e)
@@ -1145,6 +1147,7 @@ namespace ecommerce_livingston
                 btnAgregar.Text = "Guardar Cambios";
                 divFiltrosArticulos.Visible = false;
                 dgvAdminArticulo.Visible = false;
+                dgvArticulosPedido.Visible = true;
             }
             catch (Exception ex)
             {
