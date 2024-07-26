@@ -77,8 +77,8 @@
                      <div class="slider responsive">
                          <asp:Repeater runat="server" ID="rptMarcas">
                              <ItemTemplate>
-                                 <div class="card div-inicio-img text-center">
-                                  <asp:ImageButton ImageUrl='<%# Eval("ImagenUrl") %>' class="card-img" OnClick="btnImgMarca_Click" CommandArgument='<%# Eval("Id") %>' runat="server" style="max-height:170px; width:15rem;"/>
+                                <div class="card div-inicio-img text-center">
+                                    <asp:ImageButton ImageUrl='<%# Eval("ImagenUrl") %>' class="card-img" OnClick="btnImgMarca_Click" CommandArgument='<%# Eval("Id") %>' runat="server" style="max-height:170px; width:15rem;"/>
                                 </div>
                              </ItemTemplate>
                          </asp:Repeater>

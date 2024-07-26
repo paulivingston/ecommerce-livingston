@@ -141,22 +141,24 @@ namespace ecommerce_livingston
                 sectionAdminArticulos.Visible = true;
                 dgvAdminArticuloIndividual.Visible = false;
                 sectionNuevoArticulo.Visible = false;
+                divFiltrosArticulos.Visible = true;
+                dgvAdminArticulo.Visible = true;
 
                 //filtros
                 NegocioMarca = new NegocioMarca();
                 NegocioCategoria = new NegocioCategoria();
 
-                ddlFiltroMarca.DataSource = NegocioMarca.ListarMarcas();
-                ddlFiltroMarca.DataValueField = "Id";
-                ddlFiltroMarca.DataTextField = "Descripcion";
-                ddlFiltroMarca.DataBind();
+                //ddlFiltroMarca.DataSource = NegocioMarca.ListarMarcas();
+                //ddlFiltroMarca.DataValueField = "Id";
+                //ddlFiltroMarca.DataTextField = "Descripcion";
+                //ddlFiltroMarca.DataBind();
                 rptMarcas.DataSource = NegocioMarca.ListarMarcas();
                 rptMarcas.DataBind();
 
-                ddlFiltroCategoria.DataSource = NegocioCategoria.ListarCategorias();
-                ddlFiltroCategoria.DataValueField = "Id";
-                ddlFiltroCategoria.DataTextField = "Descripcion";
-                ddlFiltroCategoria.DataBind();
+                //ddlFiltroCategoria.DataSource = NegocioCategoria.ListarCategorias();
+                //ddlFiltroCategoria.DataValueField = "Id";
+                //ddlFiltroCategoria.DataTextField = "Descripcion";
+                //ddlFiltroCategoria.DataBind();
                 rptCategorias.DataSource = NegocioCategoria.ListarCategorias();
                 rptCategorias.DataBind();
 
@@ -211,12 +213,14 @@ namespace ecommerce_livingston
             panelAdminMarcas.Visible = false;
             sectionNuevaMarca.Visible = false;
 
-            sectionAdminArticulos.Visible = false;
+            sectionAdminArticulos.Visible = true;
             dgvAdminArticuloIndividual.Visible = false;
             sectionNuevoArticulo.Visible = true;
             tituloEditarArticulo.Visible = false;
             btnAgregar.Text = "Crear Articulo";
             btnEliminarArticulo.Visible = false;
+            divFiltrosArticulos.Visible = false;
+            dgvAdminArticulo.Visible = false;
 
             //cargar ddls
             CargaDdl();
@@ -1017,36 +1021,36 @@ namespace ecommerce_livingston
             }
         }
 
-        protected void btnFiltro_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                List<Articulo> listaArticulos;
-                List<Articulo> listaFiltrada;
+        //protected void btnFiltro_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        List<Articulo> listaArticulos;
+        //        List<Articulo> listaFiltrada;
 
-                if (Session["listaFiltrada"] == null)
-                    Session.Add("listaFiltrada", new List<Articulo>());
+        //        if (Session["listaFiltrada"] == null)
+        //            Session.Add("listaFiltrada", new List<Articulo>());
 
-                listaArticulos = (List<Articulo>)Session["listaArticulosAdmin"];
-                if (listaArticulos == null) return;
+        //        listaArticulos = (List<Articulo>)Session["listaArticulosAdmin"];
+        //        if (listaArticulos == null) return;
 
-                string cat = ddlFiltroCategoria.SelectedValue;
-                string mrc = ddlFiltroMarca.SelectedValue;
+        //        string cat = ddlFiltroCategoria.SelectedValue;
+        //        string mrc = ddlFiltroMarca.SelectedValue;
 
-                listaFiltrada = listaArticulos.FindAll(x =>
-                    x.Categoria.Id.ToString() == cat
-                    && x.Marca.Id.ToString() == mrc);
+        //        listaFiltrada = listaArticulos.FindAll(x =>
+        //            x.Categoria.Id.ToString() == cat
+        //            && x.Marca.Id.ToString() == mrc);
 
-                Session["listaFiltrada"] = listaFiltrada;
-                dgvAdminArticulo.DataSource = listaFiltrada;
-                dgvAdminArticulo.DataBind();
-            }
-            catch (Exception ex)
-            {
-                Session.Add("error", ex);
-                Response.Redirect("Error.aspx");
-            }
-        }
+        //        Session["listaFiltrada"] = listaFiltrada;
+        //        dgvAdminArticulo.DataSource = listaFiltrada;
+        //        dgvAdminArticulo.DataBind();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Session.Add("error", ex);
+        //        Response.Redirect("Error.aspx");
+        //    }
+        //}
 
         protected void btnFiltroPrecioDesc_Click(object sender, EventArgs e)
         {
@@ -1100,8 +1104,6 @@ namespace ecommerce_livingston
 
         //lista
 
-        
-
         private void CargarArticuloEnformulario(Articulo art)
         {
             tbIdArt.Text = art.Id.ToString();
@@ -1133,6 +1135,8 @@ namespace ecommerce_livingston
                 tituloNuevoArticulo.Visible = false;
                 tituloEditarArticulo.Visible = true;
                 btnAgregar.Text = "Guardar Cambios";
+                divFiltrosArticulos.Visible = false;
+                dgvAdminArticulo.Visible = false;
             }
             catch (Exception ex)
             {
@@ -1169,9 +1173,6 @@ namespace ecommerce_livingston
         {
             imgNuevoArt.ImageUrl = tbImgArt.Text;
         }
-
-
-
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -1275,7 +1276,6 @@ namespace ecommerce_livingston
 
         } //revisar validaciones
 
-        
         protected void btnLinkVolverListaArticulos_Click(object sender, EventArgs e)
         {
             NegocioArticulo = new NegocioArticulo();
@@ -1285,7 +1285,6 @@ namespace ecommerce_livingston
             dgvAdminArticulo.Visible = true;
             dgvAdminArticuloIndividual.Visible = false;
         }
-
 
         protected void btnEliminarArticulo_Click(object sender, EventArgs e)
         {
@@ -1656,6 +1655,12 @@ namespace ecommerce_livingston
             }
         }
 
+        protected void btnFiltrarNivelUsuarios_Click(object sender, EventArgs e)
+        {
+
+        }
+        
+
         protected void btnFiltrarUsuarios_Click(object sender, EventArgs e)
         {
             try
@@ -1691,6 +1696,11 @@ namespace ecommerce_livingston
         {
             try
             {
+                txtNombreFiltro_Usuario.Text = "";
+                txtApellidoFiltro_Usuario.Text = "";
+                txtDNIFiltro_Usuario.Text = "";
+                txtIdFiltro_Usuario.Text = "";
+
                 CargarUsuarios();
             }
             catch (Exception ex)
@@ -1716,15 +1726,11 @@ namespace ecommerce_livingston
             NegocioUsuario = new NegocioUsuario();
             int id = int.Parse(((Button)sender).CommandArgument);
 
-            string estado = ((Button)sender).CommandName;
-            if (estado == "ALTA")
-                NegocioUsuario.AltaUsuario(id);
-            else if (estado == "BAJA")
-                NegocioUsuario.BajaUsuario(id);
+            if (Convert.ToBoolean(((Button)sender).CommandName)) NegocioUsuario.AltaUsuario(id);
+            else NegocioUsuario.BajaUsuario(id);
 
-            Usuarios = NegocioUsuario.ListarUsuarios();
-            dgvAdminUsuario.DataSource = Usuarios;
-            dgvAdminUsuario.DataBind();
+            CargarUsuarios();
+
         }
 
         protected void btnEliminarUsuario_Click(object sender, EventArgs e)

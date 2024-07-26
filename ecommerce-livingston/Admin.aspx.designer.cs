@@ -537,6 +537,15 @@ namespace ecommerce_livingston
         protected global::System.Web.UI.WebControls.Panel sectionAdminArticulos;
 
         /// <summary>
+        /// divFiltrosArticulos control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divFiltrosArticulos;
+
+        /// <summary>
         /// rptMarcas control.
         /// </summary>
         /// <remarks>
@@ -589,33 +598,6 @@ namespace ecommerce_livingston
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnFiltroEstadoBaja;
-
-        /// <summary>
-        /// ddlFiltroCategoria control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFiltroCategoria;
-
-        /// <summary>
-        /// ddlFiltroMarca control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFiltroMarca;
-
-        /// <summary>
-        /// btnFiltro control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFiltro;
 
         /// <summary>
         /// btnBorrarFilros control.
@@ -726,6 +708,15 @@ namespace ecommerce_livingston
         protected global::System.Web.UI.WebControls.TextBox tbPrecioArt;
 
         /// <summary>
+        /// imgNuevoArt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imgNuevoArt;
+
+        /// <summary>
         /// tbImgArt control.
         /// </summary>
         /// <remarks>
@@ -742,15 +733,6 @@ namespace ecommerce_livingston
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbDescripArt;
-
-        /// <summary>
-        /// imgNuevoArt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgNuevoArt;
 
         /// <summary>
         /// btnAgregar control.
